@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 type Lang = 'es' | 'en';
@@ -21,16 +21,22 @@ type Translation = {
   error: string;
   portfolioTitle: string;
   portfolioSubtitle: string;
+  knowledgeTitle: string;
+  knowledgeSubtitle: string;
+  methodologiesTitle: string;
+  architecturesTitle: string;
+  patternsTitle: string;
   filters: Record<ProjectCategory, string>;
   placeholders: { name: string; email: string; subject: string; message: string };
   mdsoft: readonly string[];
   ib: readonly string[];
+  migrationHighlights: readonly string[];
   educationText: string;
 };
 
 const content: Record<Lang, Translation> = {
   es: {
-    nav: ['Inicio', 'Resumen', 'Experiencia', 'Skills', 'Proyectos', 'Contacto'],
+    nav: ['Inicio', 'Resumen', 'Experiencia', 'Skills', 'Conocimiento', 'Proyectos', 'Contacto'],
     heroTitle: 'Hola, soy',
     role: 'Desarrollador Full Stack',
     summaryTitle: 'Resumen Profesional',
@@ -47,6 +53,11 @@ const content: Record<Lang, Translation> = {
     error: 'No se pudo enviar el mensaje. Intenta nuevamente.',
     portfolioTitle: 'Aplicaciones en las que he trabajado',
     portfolioSubtitle: 'Mobile, Web y APIs desarrolladas, modernizadas e integradas bajo arquitectura limpia y enfoque en UX.',
+    knowledgeTitle: 'Base de Conocimiento Técnico',
+    knowledgeSubtitle: 'Metodologías, arquitecturas y patrones de diseño aplicados en proyectos reales.',
+    methodologiesTitle: 'Metodologías que aplico',
+    architecturesTitle: 'Arquitecturas que domino',
+    patternsTitle: 'Patrones de diseño y propósito',
     filters: { all: 'Todo', mobile: 'Mobile', web: 'Web', api: 'APIs' },
     placeholders: { name: 'Nombre', email: 'Email', subject: 'Asunto', message: 'Mensaje' },
     mdsoft: [
@@ -62,10 +73,14 @@ const content: Record<Lang, Translation> = {
       'Uso Boilerplate como base de buenas prácticas.',
       'Aplico SOLID en repositorios y mantenimientos para código limpio y mantenible.'
     ],
+    migrationHighlights: [
+      'Realicé la migración de una app móvil desde Java (tecnología obsoleta en el proyecto) hacia .NET MAUI 9, modernizando arquitectura y mantenibilidad.',
+      'Ejecuté la migración de un ERP construido en .NET Framework 4.8 + AngularJS + Bootstrap hacia una nueva versión con Clean Architecture, enfoque modular en .NET 10 y Angular 20+.'
+    ],
     educationText: 'Instituto Tecnológico de las Américas (ITLA) — Desarrollo de Software (En curso)'
   },
   en: {
-    nav: ['Home', 'Summary', 'Experience', 'Skills', 'Projects', 'Contact'],
+    nav: ['Home', 'Summary', 'Experience', 'Skills', 'Knowledge', 'Projects', 'Contact'],
     heroTitle: "Hello, I'm",
     role: 'Full Stack Developer',
     summaryTitle: 'Professional Summary',
@@ -82,6 +97,11 @@ const content: Record<Lang, Translation> = {
     error: 'Message could not be sent. Please try again.',
     portfolioTitle: 'Applications I have worked on',
     portfolioSubtitle: 'Mobile, Web and API projects built, modernized, and integrated with clean architecture and UX focus.',
+    knowledgeTitle: 'Technical Knowledge Base',
+    knowledgeSubtitle: 'Methodologies, architectures and design patterns applied in real-world projects.',
+    methodologiesTitle: 'Methodologies I use',
+    architecturesTitle: 'Architectures I master',
+    patternsTitle: 'Design patterns and purpose',
     filters: { all: 'All', mobile: 'Mobile', web: 'Web', api: 'APIs' },
     placeholders: { name: 'Name', email: 'Email', subject: 'Subject', message: 'Message' },
     mdsoft: [
@@ -97,12 +117,45 @@ const content: Record<Lang, Translation> = {
       'Use Boilerplate as a best-practices foundation.',
       'Apply SOLID in repositories and maintenance for clean, maintainable code.'
     ],
+    migrationHighlights: [
+      'Completed a mobile app migration from Java (legacy project technology) to .NET MAUI 9, improving architecture and maintainability.',
+      'Led migration of an ERP built with .NET Framework 4.8 + AngularJS + Bootstrap into a new version using Clean Architecture, modular .NET 10, and Angular 20+.'
+    ],
     educationText: 'Institute of the Americas (ITLA) — Software Development (In progress)'
   }
 };
 
 const backendSkills = ['ASP.NET Framework, ASP.NET Core, ASP.NET', 'Boilerplate', '.NET MAUI, MVVM, MVC, XAML, XML', 'SQL Server, MySQL, SQLite, MongoDB, Oracle', 'EF, Dapper, ADO.NET', 'SOLID, DI, REST APIs, HTTP methods', 'Clean Architecture, Onion Architecture, Vertical Slice Architecture, Modular Clean Architecture', 'Design Patterns, Regex, Parallel Programming, Async/Await, OOP', 'Node.js, Next.js'];
 const frontendSkills = ['HTML5, CSS3, SCSS, Tailwind CSS, Bootstrap', 'AngularJS, Angular 20', 'React.js', 'Blazor, Razor', 'JavaScript, TypeScript', 'XAML (.NET MAUI), Jetpack Compose (Kotlin XML)'];
+
+const methodologies: Record<Lang, string[]> = {
+  es: ['Agile: entregas incrementales y mejora continua.', 'Scrum: sprints, refinamiento y seguimiento con enfoque de valor.', 'Kanban: flujo visual para controlar WIP y reducir cuellos de botella.'],
+  en: ['Agile: incremental delivery and continuous improvement.', 'Scrum: sprint-based planning, refinement, and value-driven execution.', 'Kanban: visual flow management to control WIP and reduce bottlenecks.']
+};
+
+const architectures: Record<Lang, string[]> = {
+  es: ['Clean Architecture', 'Onion Architecture', 'Vertical Slice Architecture', 'Modular Clean Architecture', 'MVC', 'MVVM'],
+  en: ['Clean Architecture', 'Onion Architecture', 'Vertical Slice Architecture', 'Modular Clean Architecture', 'MVC', 'MVVM']
+};
+
+const patterns: Record<Lang, Array<{ name: string; description: string }>> = {
+  es: [
+    { name: 'Repository', description: 'Abstrae acceso a datos para desacoplar dominio e infraestructura.' },
+    { name: 'Unit of Work', description: 'Coordina transacciones para persistir cambios de forma consistente.' },
+    { name: 'Dependency Injection', description: 'Gestiona dependencias para facilitar testing y escalabilidad.' },
+    { name: 'Factory', description: 'Centraliza la creación de objetos complejos según contexto.' },
+    { name: 'Strategy', description: 'Permite intercambiar algoritmos/comportamientos sin cambiar clientes.' },
+    { name: 'Mediator', description: 'Reduce acoplamiento entre módulos coordinando interacciones.' }
+  ],
+  en: [
+    { name: 'Repository', description: 'Abstracts data access to decouple domain and infrastructure.' },
+    { name: 'Unit of Work', description: 'Coordinates transactions to persist changes consistently.' },
+    { name: 'Dependency Injection', description: 'Manages dependencies to improve testability and scalability.' },
+    { name: 'Factory', description: 'Centralizes creation of complex objects based on context.' },
+    { name: 'Strategy', description: 'Enables swapping algorithms/behaviors without changing clients.' },
+    { name: 'Mediator', description: 'Reduces coupling by coordinating interactions between modules.' }
+  ]
+};
 
 const projects = {
   es: [
@@ -123,12 +176,39 @@ const projects = {
   ]
 } as const;
 
+const nameVariants = ['Elvis Jesús Hernández Suárez', 'Elvis Hernandez'];
+
 export function App() {
   const [lang, setLang] = useState<Lang>('es');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [activeFilter, setActiveFilter] = useState<ProjectCategory>('all');
+  const [typedName, setTypedName] = useState('');
+  const [nameIndex, setNameIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
   const reduceMotion = useReducedMotion();
   const t = content[lang];
+
+  useEffect(() => {
+    if (reduceMotion) {
+      setTypedName(nameVariants[0]);
+      return;
+    }
+
+    const current = nameVariants[nameIndex];
+    const nextText = isDeleting ? current.slice(0, Math.max(0, typedName.length - 1)) : current.slice(0, typedName.length + 1);
+    const timeout = setTimeout(() => {
+      setTypedName(nextText);
+
+      if (!isDeleting && nextText === current) {
+        setTimeout(() => setIsDeleting(true), 900);
+      } else if (isDeleting && nextText.length === 0) {
+        setIsDeleting(false);
+        setNameIndex((prev) => (prev + 1) % nameVariants.length);
+      }
+    }, isDeleting ? 45 : 75);
+
+    return () => clearTimeout(timeout);
+  }, [typedName, isDeleting, nameIndex, reduceMotion]);
 
   const anim = useMemo(
     () =>
@@ -170,8 +250,9 @@ export function App() {
               <li><a href="#summary">{t.nav[1]}</a></li>
               <li><a href="#experience">{t.nav[2]}</a></li>
               <li><a href="#skills">{t.nav[3]}</a></li>
-              <li><a href="#portfolio">{t.nav[4]}</a></li>
-              <li><a href="#contact">{t.nav[5]}</a></li>
+              <li><a href="#knowledge">{t.nav[4]}</a></li>
+              <li><a href="#portfolio">{t.nav[5]}</a></li>
+              <li><a href="#contact">{t.nav[6]}</a></li>
             </ul>
           </nav>
           <div className="header-social-links">
@@ -192,7 +273,7 @@ export function App() {
             <div className="row gy-4 align-items-center">
               <div className="col-lg-6 order-2 order-lg-1">
                 <div className="hero-content">
-                  <h1>{t.heroTitle} <span className="highlight">Elvis Jesús Hernández Suárez</span></h1>
+                  <h1>{t.heroTitle} <span className="highlight typed-name">{typedName}<span className="typed-cursor">|</span></span></h1>
                   <h2>{t.role}</h2>
                   <p>{t.location} · inelvis16031124@gmail.com · +1 849-869-8664</p>
                   <motion.div className="professional-status" aria-label={t.status} animate={reduceMotion ? {} : { opacity: [0.95, 1, 0.95] }} transition={{ duration: 3, repeat: Infinity }}>
@@ -207,19 +288,34 @@ export function App() {
 
         <motion.section id="summary" className="section" {...anim}><div className="container section-title"><h2>{t.summaryTitle}</h2><p>{t.summary}</p></div></motion.section>
 
-        <motion.section id="experience" className="resume section" {...anim}><div className="container"><h3 className="resume-title">{t.experience}</h3>
-          <article className="experience-item"><h4>MDSOFT — Mobile Developer</h4><ul>{t.mdsoft.map((item) => <li key={item}>{item}</li>)}</ul></article>
-          <article className="experience-item"><h4>IB Systems — Full Stack Developer</h4><ul>{t.ib.map((item) => <li key={item}>{item}</li>)}</ul></article>
-          <h3 className="resume-title mt-4">{t.education}</h3><p>{t.educationText}</p></div></motion.section>
+        <motion.section id="experience" className="resume section" {...anim}>
+          <div className="container">
+            <h3 className="resume-title">{t.experience}</h3>
+            <article className="experience-item"><h4>MDSOFT — Mobile Developer</h4><ul>{t.mdsoft.map((item) => <li key={item}>{item}</li>)}</ul></article>
+            <article className="experience-item"><h4>IB Systems — Full Stack Developer</h4><ul>{t.ib.map((item) => <li key={item}>{item}</li>)}</ul></article>
+            <article className="experience-item"><h4>{lang === 'es' ? 'Migraciones destacadas' : 'Migration highlights'}</h4><ul>{t.migrationHighlights.map((item) => <li key={item}>{item}</li>)}</ul></article>
+            <h3 className="resume-title mt-4">{t.education}</h3><p>{t.educationText}</p>
+          </div>
+        </motion.section>
 
         <motion.section id="skills" className="services section" {...anim}><div className="container"><div className="row g-4"><div className="col-lg-6"><div className="service-item"><h3>Backend</h3><ul>{backendSkills.map((s) => <li key={s}>{s}</li>)}</ul></div></div><div className="col-lg-6"><div className="service-item"><h3>Frontend</h3><ul>{frontendSkills.map((s) => <li key={s}>{s}</li>)}</ul></div></div></div></div></motion.section>
 
-        <motion.section id="portfolio" className="portfolio section" {...anim}>
+        <motion.section id="knowledge" className="section knowledge-section" {...anim}>
           <div className="container section-title">
-            <h2>{t.portfolioTitle}</h2>
-            <p>{t.portfolioSubtitle}</p>
+            <h2>{t.knowledgeTitle}</h2>
+            <p>{t.knowledgeSubtitle}</p>
           </div>
+          <div className="container">
+            <div className="row g-4">
+              <div className="col-lg-4"><div className="service-item"><h3>{t.methodologiesTitle}</h3><ul>{methodologies[lang].map((item) => <li key={item}>{item}</li>)}</ul></div></div>
+              <div className="col-lg-4"><div className="service-item"><h3>{t.architecturesTitle}</h3><ul>{architectures[lang].map((item) => <li key={item}>{item}</li>)}</ul></div></div>
+              <div className="col-lg-4"><div className="service-item"><h3>{t.patternsTitle}</h3><ul>{patterns[lang].map((item) => <li key={item.name}><strong>{item.name}:</strong> {item.description}</li>)}</ul></div></div>
+            </div>
+          </div>
+        </motion.section>
 
+        <motion.section id="portfolio" className="portfolio section" {...anim}>
+          <div className="container section-title"><h2>{t.portfolioTitle}</h2><p>{t.portfolioSubtitle}</p></div>
           <div className="container">
             <ul className="portfolio-filters isotope-filters">
               {(['all', 'mobile', 'web', 'api'] as const).map((filter) => (
@@ -228,16 +324,12 @@ export function App() {
                 </li>
               ))}
             </ul>
-
             <div className="row gy-4 isotope-container">
               {filteredProjects.map((project, index) => (
                 <motion.div key={project.id} className={`col-lg-4 col-md-6 portfolio-item isotope-item filter-${project.category}`} initial={reduceMotion ? {} : { opacity: 0, y: 12 }} whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.04 }}>
                   <div className="portfolio-content h-100">
                     <img src={project.image} className="img-fluid" alt={project.title} />
-                    <div className="portfolio-info">
-                      <h4>{project.title}</h4>
-                      <p>{project.description}</p>
-                    </div>
+                    <div className="portfolio-info"><h4>{project.title}</h4><p>{project.description}</p></div>
                   </div>
                 </motion.div>
               ))}

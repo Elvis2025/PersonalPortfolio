@@ -42,3 +42,24 @@
 .portfolio-info p {
   margin-bottom: 0;
 }
+
+.typed-name {
+  min-width: 12ch;
+  display: inline-block;
+}
+
+.typed-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--accent-color);
+  animation: typed-blink 1s steps(1) infinite;
+}
+
+@keyframes typed-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.knowledge-section .service-item {
+  height: 100%;
+}
