@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <rect width="1200" height="900" fill="#101a20"/>
+  <text x="120" y="160" fill="#e7f2f7" font-size="56" font-family="Raleway">Web Full Stack Modules</text>
+  <text x="120" y="220" fill="#b8d4e2" font-size="30" font-family="Roboto">Angular · TypeScript · ASP.NET · SQL Server</text>
+  <rect x="120" y="280" width="960" height="520" rx="28" fill="#141f26" stroke="#1387c1" stroke-width="4"/>
+  <rect x="180" y="350" width="360" height="360" rx="18" fill="#213642"/>
+  <rect x="600" y="350" width="420" height="110" rx="14" fill="#213642"/>
+  <rect x="600" y="500" width="420" height="110" rx="14" fill="#213642"/>
+  <rect x="600" y="650" width="420" height="60" rx="14" fill="#1387c1"/>
+</svg>

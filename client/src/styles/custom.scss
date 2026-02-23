@@ -1,0 +1,44 @@
+.lang-toggle {
+  margin-left: 10px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 70%);
+  color: var(--default-color);
+  background: transparent;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.professional-status {
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-color), transparent 85%);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 35%);
+  color: var(--default-color);
+}
+
+.professional-status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-color);
+}
+
+.service-item ul {
+  padding-left: 1rem;
+}
+
+.experience-item + .experience-item {
+  margin-top: 1.5rem;
+}
+
+.portfolio-filters li {
+  cursor: pointer;
+}
+
+.portfolio-info p {
+  margin-bottom: 0;
+}
