@@ -4,7 +4,26 @@ import profileImage from '../../assets/img/profile/MyProfile01.webp';
 
 type Lang = 'es' | 'en';
 
-const content = {
+const content: Record<Lang, {
+  nav: readonly string[];
+  heroTitle: string;
+  role: string;
+  summaryTitle: string;
+  summary: string;
+  status: string;
+  experience: string;
+  education: string;
+  contact: string;
+  location: string;
+  send: string;
+  loading: string;
+  success: string;
+  error: string;
+  placeholders: { name: string; email: string; subject: string; message: string };
+  mdsoft: readonly string[];
+  ib: readonly string[];
+  educationText: string;
+}> = {
   es: {
     nav: ['Inicio', 'Resumen', 'Experiencia', 'Skills', 'Contacto'],
     heroTitle: 'Hola, soy',
@@ -69,7 +88,7 @@ const content = {
     ],
     educationText: 'Institute of the Americas (ITLA) — Software Development (In progress)'
   }
-} as const;
+};
 
 const backendSkills = ['ASP.NET Framework, ASP.NET Core, ASP.NET', 'Boilerplate', '.NET MAUI, MVVM, MVC, XAML, XML', 'SQL Server, MySQL, SQLite, MongoDB, Oracle', 'EF, Dapper, ADO.NET', 'SOLID, DI, REST APIs, HTTP methods', 'Clean Architecture, Onion Architecture, Vertical Slice Architecture, Modular Clean Architecture', 'Design Patterns, Regex, Parallel Programming, Async/Await, OOP', 'Node.js, Next.js'];
 const frontendSkills = ['HTML5, CSS3, SCSS, Tailwind CSS, Bootstrap', 'AngularJS, Angular 20', 'React.js', 'Blazor, Razor', 'JavaScript, TypeScript', 'XAML (.NET MAUI), Jetpack Compose (Kotlin XML)'];
