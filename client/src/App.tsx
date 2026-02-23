@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 
 type Lang = 'es' | 'en';
 type ProjectCategory = 'all' | 'mobile' | 'web' | 'api';
+type KnowledgeCategory = 'all' | 'methodologies' | 'architectures' | 'patterns' | 'languages';
 
 type Translation = {
   nav: readonly string[];
@@ -23,15 +24,23 @@ type Translation = {
   portfolioSubtitle: string;
   knowledgeTitle: string;
   knowledgeSubtitle: string;
-  methodologiesTitle: string;
-  architecturesTitle: string;
-  patternsTitle: string;
+  migrationTitle: string;
+  knowledgeFilters: Record<KnowledgeCategory, string>;
   filters: Record<ProjectCategory, string>;
   placeholders: { name: string; email: string; subject: string; message: string };
   mdsoft: readonly string[];
   ib: readonly string[];
   migrationHighlights: readonly string[];
   educationText: string;
+};
+
+type KnowledgeItem = {
+  id: number;
+  category: KnowledgeCategory;
+  title: string;
+  description: string;
+  icon: string;
+  image: string;
 };
 
 const content: Record<Lang, Translation> = {
@@ -54,10 +63,15 @@ const content: Record<Lang, Translation> = {
     portfolioTitle: 'Aplicaciones en las que he trabajado',
     portfolioSubtitle: 'Mobile, Web y APIs desarrolladas, modernizadas e integradas bajo arquitectura limpia y enfoque en UX.',
     knowledgeTitle: 'Base de Conocimiento Técnico',
-    knowledgeSubtitle: 'Metodologías, arquitecturas y patrones de diseño aplicados en proyectos reales.',
-    methodologiesTitle: 'Metodologías que aplico',
-    architecturesTitle: 'Arquitecturas que domino',
-    patternsTitle: 'Patrones de diseño y propósito',
+    knowledgeSubtitle: 'Todo lo que he ido aprendiendo y aplicando: metodologías, arquitecturas, patrones, lenguajes y tecnologías.',
+    migrationTitle: 'Migraciones destacadas',
+    knowledgeFilters: {
+      all: 'Todos',
+      methodologies: 'Metodologías de trabajo',
+      architectures: 'Arquitecturas de software',
+      patterns: 'Patrones de Diseño',
+      languages: 'Lenguajes y Tecnologías'
+    },
     filters: { all: 'Todo', mobile: 'Mobile', web: 'Web', api: 'APIs' },
     placeholders: { name: 'Nombre', email: 'Email', subject: 'Asunto', message: 'Mensaje' },
     mdsoft: [
@@ -74,8 +88,8 @@ const content: Record<Lang, Translation> = {
       'Aplico SOLID en repositorios y mantenimientos para código limpio y mantenible.'
     ],
     migrationHighlights: [
-      'Realicé la migración de una app móvil desde Java (tecnología obsoleta en el proyecto) hacia .NET MAUI 9, modernizando arquitectura y mantenibilidad.',
-      'Ejecuté la migración de un ERP construido en .NET Framework 4.8 + AngularJS + Bootstrap hacia una nueva versión con Clean Architecture, enfoque modular en .NET 10 y Angular 20+.'
+      'Realicé la migración de una app móvil desde Java hacia .NET MAUI 9, modernizando arquitectura, rendimiento y mantenibilidad.',
+      'Ejecuté la migración de un ERP construido en .NET Framework 4.8 + AngularJS + Bootstrap hacia una nueva versión con Clean Architecture, modular .NET 10 y Angular 20+.'
     ],
     educationText: 'Instituto Tecnológico de las Américas (ITLA) — Desarrollo de Software (En curso)'
   },
@@ -98,10 +112,15 @@ const content: Record<Lang, Translation> = {
     portfolioTitle: 'Applications I have worked on',
     portfolioSubtitle: 'Mobile, Web and API projects built, modernized, and integrated with clean architecture and UX focus.',
     knowledgeTitle: 'Technical Knowledge Base',
-    knowledgeSubtitle: 'Methodologies, architectures and design patterns applied in real-world projects.',
-    methodologiesTitle: 'Methodologies I use',
-    architecturesTitle: 'Architectures I master',
-    patternsTitle: 'Design patterns and purpose',
+    knowledgeSubtitle: 'Everything I have learned and applied: methodologies, architectures, patterns, languages, and technologies.',
+    migrationTitle: 'Migration highlights',
+    knowledgeFilters: {
+      all: 'All',
+      methodologies: 'Work Methodologies',
+      architectures: 'Software Architectures',
+      patterns: 'Design Patterns',
+      languages: 'Languages & Technologies'
+    },
     filters: { all: 'All', mobile: 'Mobile', web: 'Web', api: 'APIs' },
     placeholders: { name: 'Name', email: 'Email', subject: 'Subject', message: 'Message' },
     mdsoft: [
@@ -118,7 +137,7 @@ const content: Record<Lang, Translation> = {
       'Apply SOLID in repositories and maintenance for clean, maintainable code.'
     ],
     migrationHighlights: [
-      'Completed a mobile app migration from Java (legacy project technology) to .NET MAUI 9, improving architecture and maintainability.',
+      'Completed a mobile app migration from Java to .NET MAUI 9, improving architecture, performance, and maintainability.',
       'Led migration of an ERP built with .NET Framework 4.8 + AngularJS + Bootstrap into a new version using Clean Architecture, modular .NET 10, and Angular 20+.'
     ],
     educationText: 'Institute of the Americas (ITLA) — Software Development (In progress)'
@@ -128,32 +147,34 @@ const content: Record<Lang, Translation> = {
 const backendSkills = ['ASP.NET Framework, ASP.NET Core, ASP.NET', 'Boilerplate', '.NET MAUI, MVVM, MVC, XAML, XML', 'SQL Server, MySQL, SQLite, MongoDB, Oracle', 'EF, Dapper, ADO.NET', 'SOLID, DI, REST APIs, HTTP methods', 'Clean Architecture, Onion Architecture, Vertical Slice Architecture, Modular Clean Architecture', 'Design Patterns, Regex, Parallel Programming, Async/Await, OOP', 'Node.js, Next.js'];
 const frontendSkills = ['HTML5, CSS3, SCSS, Tailwind CSS, Bootstrap', 'AngularJS, Angular 20', 'React.js', 'Blazor, Razor', 'JavaScript, TypeScript', 'XAML (.NET MAUI), Jetpack Compose (Kotlin XML)'];
 
-const methodologies: Record<Lang, string[]> = {
-  es: ['Agile: entregas incrementales y mejora continua.', 'Scrum: sprints, refinamiento y seguimiento con enfoque de valor.', 'Kanban: flujo visual para controlar WIP y reducir cuellos de botella.'],
-  en: ['Agile: incremental delivery and continuous improvement.', 'Scrum: sprint-based planning, refinement, and value-driven execution.', 'Kanban: visual flow management to control WIP and reduce bottlenecks.']
-};
-
-const architectures: Record<Lang, string[]> = {
-  es: ['Clean Architecture', 'Onion Architecture', 'Vertical Slice Architecture', 'Modular Clean Architecture', 'MVC', 'MVVM'],
-  en: ['Clean Architecture', 'Onion Architecture', 'Vertical Slice Architecture', 'Modular Clean Architecture', 'MVC', 'MVVM']
-};
-
-const patterns: Record<Lang, Array<{ name: string; description: string }>> = {
+const knowledgeData: Record<Lang, KnowledgeItem[]> = {
   es: [
-    { name: 'Repository', description: 'Abstrae acceso a datos para desacoplar dominio e infraestructura.' },
-    { name: 'Unit of Work', description: 'Coordina transacciones para persistir cambios de forma consistente.' },
-    { name: 'Dependency Injection', description: 'Gestiona dependencias para facilitar testing y escalabilidad.' },
-    { name: 'Factory', description: 'Centraliza la creación de objetos complejos según contexto.' },
-    { name: 'Strategy', description: 'Permite intercambiar algoritmos/comportamientos sin cambiar clientes.' },
-    { name: 'Mediator', description: 'Reduce acoplamiento entre módulos coordinando interacciones.' }
+    { id: 1, category: 'methodologies', title: 'Agile', description: 'Marco de trabajo iterativo para entregar valor continuo y adaptarse rápido a cambios.', icon: 'bi-lightning-charge', image: '/img/portfolio/project-web-fullstack.svg' },
+    { id: 2, category: 'methodologies', title: 'Scrum', description: 'Organización por sprints, ceremonias y backlog para planificar y ejecutar con foco en valor.', icon: 'bi-kanban', image: '/img/portfolio/project-xamarin-modernization.svg' },
+    { id: 3, category: 'methodologies', title: 'Kanban', description: 'Gestión visual del flujo de trabajo, control de WIP y optimización continua del delivery.', icon: 'bi-columns-gap', image: '/img/portfolio/project-sql-integrations.svg' },
+    { id: 4, category: 'architectures', title: 'Clean Architecture', description: 'Separa dominio, aplicación e infraestructura para lograr escalabilidad y mantenibilidad.', icon: 'bi-diagram-3', image: '/img/portfolio/project-api-aspnet.svg' },
+    { id: 5, category: 'architectures', title: 'Onion Architecture', description: 'Dependencias orientadas al núcleo del dominio, con infraestructura desacoplada.', icon: 'bi-bullseye', image: '/img/portfolio/project-mobile-b2b.svg' },
+    { id: 6, category: 'architectures', title: 'Vertical Slice + Modular', description: 'Organiza por funcionalidades y módulos para acelerar evolución del sistema.', icon: 'bi-grid-1x2', image: '/img/portfolio/project-ux-refactor.svg' },
+    { id: 7, category: 'patterns', title: 'Repository & Unit of Work', description: 'Abstracción de acceso a datos y consistencia transaccional en operaciones complejas.', icon: 'bi-database', image: '/img/portfolio/project-sql-integrations.svg' },
+    { id: 8, category: 'patterns', title: 'Strategy + Factory', description: 'Selección dinámica de comportamientos y construcción encapsulada de objetos.', icon: 'bi-gear-wide-connected', image: '/img/portfolio/project-api-aspnet.svg' },
+    { id: 9, category: 'patterns', title: 'DI + Mediator', description: 'Reducción de acoplamiento entre componentes y orquestación clara de casos de uso.', icon: 'bi-shuffle', image: '/img/portfolio/project-web-fullstack.svg' },
+    { id: 10, category: 'languages', title: 'C# / .NET (ASP.NET, MAUI)', description: 'Desarrollo de APIs, sistemas empresariales y apps móviles multiplataforma modernas.', icon: 'bi-code-slash', image: '/img/portfolio/project-mobile-b2b.svg' },
+    { id: 11, category: 'languages', title: 'TypeScript / JavaScript / Angular / React', description: 'Construcción de frontends robustos, mantenibles y escalables para productos web.', icon: 'bi-window-stack', image: '/img/portfolio/project-web-fullstack.svg' },
+    { id: 12, category: 'languages', title: 'SQL Server / SQLite / MySQL / MongoDB', description: 'Modelado de datos, optimización de consultas, procedimientos y almacenamiento local/remoto.', icon: 'bi-hdd-network', image: '/img/portfolio/project-sql-integrations.svg' }
   ],
   en: [
-    { name: 'Repository', description: 'Abstracts data access to decouple domain and infrastructure.' },
-    { name: 'Unit of Work', description: 'Coordinates transactions to persist changes consistently.' },
-    { name: 'Dependency Injection', description: 'Manages dependencies to improve testability and scalability.' },
-    { name: 'Factory', description: 'Centralizes creation of complex objects based on context.' },
-    { name: 'Strategy', description: 'Enables swapping algorithms/behaviors without changing clients.' },
-    { name: 'Mediator', description: 'Reduces coupling by coordinating interactions between modules.' }
+    { id: 1, category: 'methodologies', title: 'Agile', description: 'Iterative framework to deliver continuous value and quickly adapt to change.', icon: 'bi-lightning-charge', image: '/img/portfolio/project-web-fullstack.svg' },
+    { id: 2, category: 'methodologies', title: 'Scrum', description: 'Sprint-based execution with ceremonies and backlog prioritization focused on value.', icon: 'bi-kanban', image: '/img/portfolio/project-xamarin-modernization.svg' },
+    { id: 3, category: 'methodologies', title: 'Kanban', description: 'Visual flow management, WIP control, and continuous delivery optimization.', icon: 'bi-columns-gap', image: '/img/portfolio/project-sql-integrations.svg' },
+    { id: 4, category: 'architectures', title: 'Clean Architecture', description: 'Separates domain, application, and infrastructure for scalability and maintainability.', icon: 'bi-diagram-3', image: '/img/portfolio/project-api-aspnet.svg' },
+    { id: 5, category: 'architectures', title: 'Onion Architecture', description: 'Dependencies point to the domain core, keeping infrastructure decoupled.', icon: 'bi-bullseye', image: '/img/portfolio/project-mobile-b2b.svg' },
+    { id: 6, category: 'architectures', title: 'Vertical Slice + Modular', description: 'Feature- and module-oriented structure for faster system evolution.', icon: 'bi-grid-1x2', image: '/img/portfolio/project-ux-refactor.svg' },
+    { id: 7, category: 'patterns', title: 'Repository & Unit of Work', description: 'Data access abstraction with transactional consistency for complex operations.', icon: 'bi-database', image: '/img/portfolio/project-sql-integrations.svg' },
+    { id: 8, category: 'patterns', title: 'Strategy + Factory', description: 'Dynamic behavior selection and encapsulated object creation.', icon: 'bi-gear-wide-connected', image: '/img/portfolio/project-api-aspnet.svg' },
+    { id: 9, category: 'patterns', title: 'DI + Mediator', description: 'Lower coupling between components and clearer use-case orchestration.', icon: 'bi-shuffle', image: '/img/portfolio/project-web-fullstack.svg' },
+    { id: 10, category: 'languages', title: 'C# / .NET (ASP.NET, MAUI)', description: 'Development of APIs, enterprise systems, and modern cross-platform mobile apps.', icon: 'bi-code-slash', image: '/img/portfolio/project-mobile-b2b.svg' },
+    { id: 11, category: 'languages', title: 'TypeScript / JavaScript / Angular / React', description: 'Building robust, maintainable, and scalable frontends for web products.', icon: 'bi-window-stack', image: '/img/portfolio/project-web-fullstack.svg' },
+    { id: 12, category: 'languages', title: 'SQL Server / SQLite / MySQL / MongoDB', description: 'Data modeling, query optimization, stored procedures, and local/remote storage.', icon: 'bi-hdd-network', image: '/img/portfolio/project-sql-integrations.svg' }
   ]
 };
 
@@ -182,6 +203,7 @@ export function App() {
   const [lang, setLang] = useState<Lang>('es');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [activeFilter, setActiveFilter] = useState<ProjectCategory>('all');
+  const [activeKnowledgeFilter, setActiveKnowledgeFilter] = useState<KnowledgeCategory>('all');
   const [typedName, setTypedName] = useState('');
   const [nameIndex, setNameIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -219,6 +241,7 @@ export function App() {
   );
 
   const filteredProjects = projects[lang].filter((project) => activeFilter === 'all' || project.category === activeFilter);
+  const filteredKnowledge = knowledgeData[lang].filter((item) => activeKnowledgeFilter === 'all' || item.category === activeKnowledgeFilter);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -255,7 +278,7 @@ export function App() {
               <li><a href="#contact">{t.nav[6]}</a></li>
             </ul>
           </nav>
-          <div className="header-social-links">
+          <div className="header-social-links social-spaced">
             <a href="https://x.com/elvish24?s=21" aria-label="X"><i className="bi bi-twitter-x" /></a>
             <a href="https://www.facebook.com/share/1AzuN7NYMz/?mibextid=wwXIfr" aria-label="Facebook"><i className="bi bi-facebook" /></a>
             <a href="https://www.instagram.com/elvis_h24" aria-label="Instagram"><i className="bi bi-instagram" /></a>
@@ -293,23 +316,35 @@ export function App() {
             <h3 className="resume-title">{t.experience}</h3>
             <article className="experience-item"><h4>MDSOFT — Mobile Developer</h4><ul>{t.mdsoft.map((item) => <li key={item}>{item}</li>)}</ul></article>
             <article className="experience-item"><h4>IB Systems — Full Stack Developer</h4><ul>{t.ib.map((item) => <li key={item}>{item}</li>)}</ul></article>
-            <article className="experience-item"><h4>{lang === 'es' ? 'Migraciones destacadas' : 'Migration highlights'}</h4><ul>{t.migrationHighlights.map((item) => <li key={item}>{item}</li>)}</ul></article>
+            <article className="experience-item"><h4>{t.migrationTitle}</h4><ul>{t.migrationHighlights.map((item) => <li key={item}>{item}</li>)}</ul></article>
             <h3 className="resume-title mt-4">{t.education}</h3><p>{t.educationText}</p>
           </div>
         </motion.section>
 
         <motion.section id="skills" className="services section" {...anim}><div className="container"><div className="row g-4"><div className="col-lg-6"><div className="service-item"><h3>Backend</h3><ul>{backendSkills.map((s) => <li key={s}>{s}</li>)}</ul></div></div><div className="col-lg-6"><div className="service-item"><h3>Frontend</h3><ul>{frontendSkills.map((s) => <li key={s}>{s}</li>)}</ul></div></div></div></div></motion.section>
 
-        <motion.section id="knowledge" className="section knowledge-section" {...anim}>
-          <div className="container section-title">
-            <h2>{t.knowledgeTitle}</h2>
-            <p>{t.knowledgeSubtitle}</p>
-          </div>
+        <motion.section id="knowledge" className="portfolio section" {...anim}>
+          <div className="container section-title"><h2>{t.knowledgeTitle}</h2><p>{t.knowledgeSubtitle}</p></div>
           <div className="container">
-            <div className="row g-4">
-              <div className="col-lg-4"><div className="service-item"><h3>{t.methodologiesTitle}</h3><ul>{methodologies[lang].map((item) => <li key={item}>{item}</li>)}</ul></div></div>
-              <div className="col-lg-4"><div className="service-item"><h3>{t.architecturesTitle}</h3><ul>{architectures[lang].map((item) => <li key={item}>{item}</li>)}</ul></div></div>
-              <div className="col-lg-4"><div className="service-item"><h3>{t.patternsTitle}</h3><ul>{patterns[lang].map((item) => <li key={item.name}><strong>{item.name}:</strong> {item.description}</li>)}</ul></div></div>
+            <ul className="portfolio-filters isotope-filters">
+              {(['all', 'methodologies', 'architectures', 'patterns', 'languages'] as const).map((filter) => (
+                <li key={filter} className={activeKnowledgeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveKnowledgeFilter(filter)}>
+                  {t.knowledgeFilters[filter]}
+                </li>
+              ))}
+            </ul>
+            <div className="row gy-4 isotope-container">
+              {filteredKnowledge.map((item, index) => (
+                <motion.div key={item.id} className={`col-lg-4 col-md-6 portfolio-item isotope-item filter-${item.category}`} initial={reduceMotion ? {} : { opacity: 0, y: 12 }} whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.03 }}>
+                  <div className="portfolio-content h-100 knowledge-card">
+                    <img src={item.image} className="img-fluid" alt={item.title} />
+                    <div className="portfolio-info">
+                      <h4><i className={`bi ${item.icon} me-2`} />{item.title}</h4>
+                      <p>{item.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </motion.section>

@@ -63,3 +63,31 @@
 .knowledge-section .service-item {
   height: 100%;
 }
+
+.social-spaced a {
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 999px;
+}
+
+.knowledge-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.knowledge-card::after {
+  content: '';
+  position: absolute;
+  inset: auto -20% -50% -20%;
+  height: 70px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color), transparent 72%) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.portfolio-content {
+  transition: transform 0.25s ease;
+}
+
+.portfolio-content:hover {
+  transform: translateY(-4px);
+}
