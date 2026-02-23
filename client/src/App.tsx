@@ -106,20 +106,20 @@ const frontendSkills = ['HTML5, CSS3, SCSS, Tailwind CSS, Bootstrap', 'AngularJS
 
 const projects = {
   es: [
-    { id: 1, category: 'mobile', title: 'App B2B de operaciones', description: 'Aplicación móvil en .NET MAUI (.NET 9) con flujos empresariales, consumo de API ASP.NET 9 y seguridad por arquitectura Onion.', image: '/img/portfolio/portfolio-1.webp' },
-    { id: 2, category: 'mobile', title: 'Modernización app Xamarin', description: 'Mejora funcional de aplicación existente: PDFs, impresión portable, XML automático y automatizaciones operativas.', image: '/img/portfolio/portfolio-2.webp' },
-    { id: 3, category: 'api', title: 'API ASP.NET 9 para ecosistema móvil', description: 'Servicios backend para apps móviles con enfoque en Clean/Onion Architecture, validaciones y buenas prácticas de seguridad.', image: '/img/portfolio/portfolio-3.webp' },
-    { id: 4, category: 'web', title: 'Módulos web Full Stack en IB Systems', description: 'Implementación y optimización de funcionalidades frontend/backend con Angular, TypeScript, ASP.NET y SQL Server.', image: '/img/portfolio/portfolio-4.webp' },
-    { id: 5, category: 'api', title: 'Integraciones de datos y SQL Server', description: 'Diseño y optimización de estructuras, vistas y stored procedures para soportar procesos críticos de negocio.', image: '/img/portfolio/portfolio-5.webp' },
-    { id: 6, category: 'web', title: 'Refactor y mejora UX de módulos internos', description: 'Refactor técnico y ajustes UI/UX de módulos corporativos para aumentar mantenibilidad y experiencia de uso.', image: '/img/portfolio/portfolio-6.webp' }
+    { id: 1, category: 'mobile', title: 'App B2B de operaciones', description: 'Aplicación móvil en .NET MAUI (.NET 9) con flujos empresariales, consumo de API ASP.NET 9 y seguridad por arquitectura Onion.', image: '/img/portfolio/project-mobile-b2b.svg' },
+    { id: 2, category: 'mobile', title: 'Modernización app Xamarin', description: 'Mejora funcional de aplicación existente: PDFs, impresión portable, XML automático y automatizaciones operativas.', image: '/img/portfolio/project-xamarin-modernization.svg' },
+    { id: 3, category: 'api', title: 'API ASP.NET 9 para ecosistema móvil', description: 'Servicios backend para apps móviles con enfoque en Clean/Onion Architecture, validaciones y buenas prácticas de seguridad.', image: '/img/portfolio/project-api-aspnet.svg' },
+    { id: 4, category: 'web', title: 'Módulos web Full Stack en IB Systems', description: 'Implementación y optimización de funcionalidades frontend/backend con Angular, TypeScript, ASP.NET y SQL Server.', image: '/img/portfolio/project-web-fullstack.svg' },
+    { id: 5, category: 'api', title: 'Integraciones de datos y SQL Server', description: 'Diseño y optimización de estructuras, vistas y stored procedures para soportar procesos críticos de negocio.', image: '/img/portfolio/project-sql-integrations.svg' },
+    { id: 6, category: 'web', title: 'Refactor y mejora UX de módulos internos', description: 'Refactor técnico y ajustes UI/UX de módulos corporativos para aumentar mantenibilidad y experiencia de uso.', image: '/img/portfolio/project-ux-refactor.svg' }
   ],
   en: [
-    { id: 1, category: 'mobile', title: 'B2B operations app', description: '.NET MAUI (.NET 9) mobile application with enterprise flows, ASP.NET 9 API integration, and Onion-based security.', image: '/img/portfolio/portfolio-1.webp' },
-    { id: 2, category: 'mobile', title: 'Xamarin app modernization', description: 'Feature upgrades in an existing app: PDFs, portable printing, automatic XML generation, and process automation.', image: '/img/portfolio/portfolio-2.webp' },
-    { id: 3, category: 'api', title: 'ASP.NET 9 API for mobile ecosystem', description: 'Backend services for mobile apps with Clean/Onion Architecture, robust validation, and security best practices.', image: '/img/portfolio/portfolio-3.webp' },
-    { id: 4, category: 'web', title: 'Full Stack web modules at IB Systems', description: 'Implemented and optimized frontend/backend features with Angular, TypeScript, ASP.NET, and SQL Server.', image: '/img/portfolio/portfolio-4.webp' },
-    { id: 5, category: 'api', title: 'Data integrations and SQL Server', description: 'Designed and optimized structures, views, and stored procedures for business-critical workflows.', image: '/img/portfolio/portfolio-5.webp' },
-    { id: 6, category: 'web', title: 'Refactor and UX improvements', description: 'Technical refactoring and UI/UX adjustments in internal modules to improve maintainability and user experience.', image: '/img/portfolio/portfolio-6.webp' }
+    { id: 1, category: 'mobile', title: 'B2B operations app', description: '.NET MAUI (.NET 9) mobile application with enterprise flows, ASP.NET 9 API integration, and Onion-based security.', image: '/img/portfolio/project-mobile-b2b.svg' },
+    { id: 2, category: 'mobile', title: 'Xamarin app modernization', description: 'Feature upgrades in an existing app: PDFs, portable printing, automatic XML generation, and process automation.', image: '/img/portfolio/project-xamarin-modernization.svg' },
+    { id: 3, category: 'api', title: 'ASP.NET 9 API for mobile ecosystem', description: 'Backend services for mobile apps with Clean/Onion Architecture, robust validation, and security best practices.', image: '/img/portfolio/project-api-aspnet.svg' },
+    { id: 4, category: 'web', title: 'Full Stack web modules at IB Systems', description: 'Implemented and optimized frontend/backend features with Angular, TypeScript, ASP.NET, and SQL Server.', image: '/img/portfolio/project-web-fullstack.svg' },
+    { id: 5, category: 'api', title: 'Data integrations and SQL Server', description: 'Designed and optimized structures, views, and stored procedures for business-critical workflows.', image: '/img/portfolio/project-sql-integrations.svg' },
+    { id: 6, category: 'web', title: 'Refactor and UX improvements', description: 'Technical refactoring and UI/UX adjustments in internal modules to improve maintainability and user experience.', image: '/img/portfolio/project-ux-refactor.svg' }
   ]
 } as const;
 
