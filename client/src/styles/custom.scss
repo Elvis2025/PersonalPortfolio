@@ -91,3 +91,14 @@
 .portfolio-content:hover {
   transform: translateY(-4px);
 }
+
+.portfolio-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.portfolio-filters li {
+  padding: 6px 12px;
+  border-radius: 999px;
+}

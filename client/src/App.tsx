@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 
 type Lang = 'es' | 'en';
 type ProjectCategory = 'all' | 'mobile' | 'web' | 'api';
-type KnowledgeCategory = 'all' | 'methodologies' | 'architectures' | 'patterns' | 'languages';
+type KnowledgeCategory = 'all' | 'methodologies' | 'architectures' | 'patterns' | 'languages' | 'practices';
 
 type Translation = {
   nav: readonly string[];
@@ -70,7 +70,8 @@ const content: Record<Lang, Translation> = {
       methodologies: 'Metodologías de trabajo',
       architectures: 'Arquitecturas de software',
       patterns: 'Patrones de Diseño',
-      languages: 'Lenguajes y Tecnologías'
+      languages: 'Lenguajes y Tecnologías',
+      practices: 'Buenas prácticas'
     },
     filters: { all: 'Todo', mobile: 'Mobile', web: 'Web', api: 'APIs' },
     placeholders: { name: 'Nombre', email: 'Email', subject: 'Asunto', message: 'Mensaje' },
@@ -119,7 +120,8 @@ const content: Record<Lang, Translation> = {
       methodologies: 'Work Methodologies',
       architectures: 'Software Architectures',
       patterns: 'Design Patterns',
-      languages: 'Languages & Technologies'
+      languages: 'Languages & Technologies',
+      practices: 'Best Practices'
     },
     filters: { all: 'All', mobile: 'Mobile', web: 'Web', api: 'APIs' },
     placeholders: { name: 'Name', email: 'Email', subject: 'Subject', message: 'Message' },
@@ -149,32 +151,62 @@ const frontendSkills = ['HTML5, CSS3, SCSS, Tailwind CSS, Bootstrap', 'AngularJS
 
 const knowledgeData: Record<Lang, KnowledgeItem[]> = {
   es: [
-    { id: 1, category: 'methodologies', title: 'Agile', description: 'Marco de trabajo iterativo para entregar valor continuo y adaptarse rápido a cambios.', icon: 'bi-lightning-charge', image: '/img/portfolio/project-web-fullstack.svg' },
-    { id: 2, category: 'methodologies', title: 'Scrum', description: 'Organización por sprints, ceremonias y backlog para planificar y ejecutar con foco en valor.', icon: 'bi-kanban', image: '/img/portfolio/project-xamarin-modernization.svg' },
-    { id: 3, category: 'methodologies', title: 'Kanban', description: 'Gestión visual del flujo de trabajo, control de WIP y optimización continua del delivery.', icon: 'bi-columns-gap', image: '/img/portfolio/project-sql-integrations.svg' },
-    { id: 4, category: 'architectures', title: 'Clean Architecture', description: 'Separa dominio, aplicación e infraestructura para lograr escalabilidad y mantenibilidad.', icon: 'bi-diagram-3', image: '/img/portfolio/project-api-aspnet.svg' },
-    { id: 5, category: 'architectures', title: 'Onion Architecture', description: 'Dependencias orientadas al núcleo del dominio, con infraestructura desacoplada.', icon: 'bi-bullseye', image: '/img/portfolio/project-mobile-b2b.svg' },
-    { id: 6, category: 'architectures', title: 'Vertical Slice + Modular', description: 'Organiza por funcionalidades y módulos para acelerar evolución del sistema.', icon: 'bi-grid-1x2', image: '/img/portfolio/project-ux-refactor.svg' },
-    { id: 7, category: 'patterns', title: 'Repository & Unit of Work', description: 'Abstracción de acceso a datos y consistencia transaccional en operaciones complejas.', icon: 'bi-database', image: '/img/portfolio/project-sql-integrations.svg' },
-    { id: 8, category: 'patterns', title: 'Strategy + Factory', description: 'Selección dinámica de comportamientos y construcción encapsulada de objetos.', icon: 'bi-gear-wide-connected', image: '/img/portfolio/project-api-aspnet.svg' },
-    { id: 9, category: 'patterns', title: 'DI + Mediator', description: 'Reducción de acoplamiento entre componentes y orquestación clara de casos de uso.', icon: 'bi-shuffle', image: '/img/portfolio/project-web-fullstack.svg' },
-    { id: 10, category: 'languages', title: 'C# / .NET (ASP.NET, MAUI)', description: 'Desarrollo de APIs, sistemas empresariales y apps móviles multiplataforma modernas.', icon: 'bi-code-slash', image: '/img/portfolio/project-mobile-b2b.svg' },
-    { id: 11, category: 'languages', title: 'TypeScript / JavaScript / Angular / React', description: 'Construcción de frontends robustos, mantenibles y escalables para productos web.', icon: 'bi-window-stack', image: '/img/portfolio/project-web-fullstack.svg' },
-    { id: 12, category: 'languages', title: 'SQL Server / SQLite / MySQL / MongoDB', description: 'Modelado de datos, optimización de consultas, procedimientos y almacenamiento local/remoto.', icon: 'bi-hdd-network', image: '/img/portfolio/project-sql-integrations.svg' }
+    { id: 1, category: 'methodologies', title: 'Agile', description: 'Trabajo iterativo para entregar valor continuo y responder al cambio con velocidad.', icon: 'bi-lightning-charge', image: '/img/knowledge/agile.svg' },
+    { id: 2, category: 'methodologies', title: 'Scrum', description: 'Sprints, backlog y ceremonias para ejecutar objetivos claros y medibles por iteración.', icon: 'bi-kanban', image: '/img/knowledge/scrum.svg' },
+    { id: 3, category: 'methodologies', title: 'Kanban', description: 'Gestión visual del flujo para optimizar tiempos, limitar WIP y mejorar el throughput.', icon: 'bi-columns-gap', image: '/img/knowledge/kanban.svg' },
+
+    { id: 4, category: 'architectures', title: 'Clean Architecture', description: 'Separa capas y dependencias para tener soluciones escalables, testeables y mantenibles.', icon: 'bi-diagram-3', image: '/img/knowledge/clean-architecture.svg' },
+    { id: 5, category: 'architectures', title: 'Onion Architecture', description: 'Ubica el dominio en el núcleo y desacopla infraestructura para proteger reglas de negocio.', icon: 'bi-bullseye', image: '/img/knowledge/onion-architecture.svg' },
+    { id: 6, category: 'architectures', title: 'Vertical Slice Architecture', description: 'Organiza por features/casos de uso, reduciendo fricción al evolucionar funcionalidades.', icon: 'bi-grid-1x2', image: '/img/knowledge/vertical-slice.svg' },
+    { id: 7, category: 'architectures', title: 'Modular Architecture', description: 'Divide el sistema en módulos cohesivos para escalar equipos y despliegues con menor riesgo.', icon: 'bi-boxes', image: '/img/knowledge/modular-architecture.svg' },
+
+    { id: 8, category: 'patterns', title: 'Repository', description: 'Abstrae el acceso a datos para desacoplar dominio y persistencia.', icon: 'bi-database', image: '/img/knowledge/repository-pattern.svg' },
+    { id: 9, category: 'patterns', title: 'Unit of Work', description: 'Coordina transacciones y asegura consistencia al confirmar múltiples cambios.', icon: 'bi-arrow-repeat', image: '/img/knowledge/unit-of-work.svg' },
+    { id: 10, category: 'patterns', title: 'Factory', description: 'Centraliza la creación de objetos complejos según contexto de negocio.', icon: 'bi-tools', image: '/img/knowledge/factory-pattern.svg' },
+    { id: 11, category: 'patterns', title: 'Strategy', description: 'Permite variar algoritmos o reglas sin cambiar el cliente que los consume.', icon: 'bi-gear-wide-connected', image: '/img/knowledge/strategy-pattern.svg' },
+    { id: 12, category: 'patterns', title: 'Mediator', description: 'Reduce acoplamiento coordinando la comunicación entre componentes.', icon: 'bi-shuffle', image: '/img/knowledge/mediator-pattern.svg' },
+    { id: 13, category: 'patterns', title: 'Result Pattern', description: 'Estandariza respuestas exitosas/errores sin depender de excepciones en flujo normal.', icon: 'bi-check2-square', image: '/img/knowledge/result-pattern.svg' },
+    { id: 14, category: 'patterns', title: 'CQRS', description: 'Separa comandos y consultas para optimizar rendimiento, claridad y escalabilidad.', icon: 'bi-distribute-vertical', image: '/img/knowledge/cqrs-pattern.svg' },
+
+    { id: 15, category: 'languages', title: 'C# / .NET (ASP.NET, MAUI)', description: 'Desarrollo de APIs, sistemas empresariales y apps móviles multiplataforma.', icon: 'bi-code-slash', image: '/img/knowledge/csharp-dotnet.svg' },
+    { id: 16, category: 'languages', title: 'TypeScript / JavaScript', description: 'Base para frontend moderno y aplicaciones robustas en ecosistemas web.', icon: 'bi-filetype-tsx', image: '/img/knowledge/typescript-javascript.svg' },
+    { id: 17, category: 'languages', title: 'Angular / React', description: 'Frameworks UI para construir interfaces escalables y experiencias de usuario modernas.', icon: 'bi-window-stack', image: '/img/knowledge/angular-react.svg' },
+    { id: 18, category: 'languages', title: 'SQL Server / SQLite / MySQL / MongoDB', description: 'Diseño y optimización de datos relacionales y no relacionales.', icon: 'bi-hdd-network', image: '/img/knowledge/databases.svg' },
+
+    { id: 19, category: 'practices', title: 'SOLID', description: 'Principios para código orientado a objetos flexible, mantenible y extensible.', icon: 'bi-bricks', image: '/img/knowledge/solid.svg' },
+    { id: 20, category: 'practices', title: 'KISS', description: 'Resolver con simplicidad para reducir complejidad accidental y errores.', icon: 'bi-emoji-smile', image: '/img/knowledge/kiss.svg' },
+    { id: 21, category: 'practices', title: 'DRY', description: 'Evita duplicidad de lógica para facilitar mantenimiento y consistencia.', icon: 'bi-files', image: '/img/knowledge/dry.svg' },
+    { id: 22, category: 'practices', title: 'YAGNI', description: 'Implementar solo lo necesario hoy para evitar sobreingeniería.', icon: 'bi-scissors', image: '/img/knowledge/yagni.svg' },
+    { id: 23, category: 'practices', title: 'SoC', description: 'Separación de responsabilidades para sistemas más claros y testeables.', icon: 'bi-layers', image: '/img/knowledge/soc.svg' }
   ],
   en: [
-    { id: 1, category: 'methodologies', title: 'Agile', description: 'Iterative framework to deliver continuous value and quickly adapt to change.', icon: 'bi-lightning-charge', image: '/img/portfolio/project-web-fullstack.svg' },
-    { id: 2, category: 'methodologies', title: 'Scrum', description: 'Sprint-based execution with ceremonies and backlog prioritization focused on value.', icon: 'bi-kanban', image: '/img/portfolio/project-xamarin-modernization.svg' },
-    { id: 3, category: 'methodologies', title: 'Kanban', description: 'Visual flow management, WIP control, and continuous delivery optimization.', icon: 'bi-columns-gap', image: '/img/portfolio/project-sql-integrations.svg' },
-    { id: 4, category: 'architectures', title: 'Clean Architecture', description: 'Separates domain, application, and infrastructure for scalability and maintainability.', icon: 'bi-diagram-3', image: '/img/portfolio/project-api-aspnet.svg' },
-    { id: 5, category: 'architectures', title: 'Onion Architecture', description: 'Dependencies point to the domain core, keeping infrastructure decoupled.', icon: 'bi-bullseye', image: '/img/portfolio/project-mobile-b2b.svg' },
-    { id: 6, category: 'architectures', title: 'Vertical Slice + Modular', description: 'Feature- and module-oriented structure for faster system evolution.', icon: 'bi-grid-1x2', image: '/img/portfolio/project-ux-refactor.svg' },
-    { id: 7, category: 'patterns', title: 'Repository & Unit of Work', description: 'Data access abstraction with transactional consistency for complex operations.', icon: 'bi-database', image: '/img/portfolio/project-sql-integrations.svg' },
-    { id: 8, category: 'patterns', title: 'Strategy + Factory', description: 'Dynamic behavior selection and encapsulated object creation.', icon: 'bi-gear-wide-connected', image: '/img/portfolio/project-api-aspnet.svg' },
-    { id: 9, category: 'patterns', title: 'DI + Mediator', description: 'Lower coupling between components and clearer use-case orchestration.', icon: 'bi-shuffle', image: '/img/portfolio/project-web-fullstack.svg' },
-    { id: 10, category: 'languages', title: 'C# / .NET (ASP.NET, MAUI)', description: 'Development of APIs, enterprise systems, and modern cross-platform mobile apps.', icon: 'bi-code-slash', image: '/img/portfolio/project-mobile-b2b.svg' },
-    { id: 11, category: 'languages', title: 'TypeScript / JavaScript / Angular / React', description: 'Building robust, maintainable, and scalable frontends for web products.', icon: 'bi-window-stack', image: '/img/portfolio/project-web-fullstack.svg' },
-    { id: 12, category: 'languages', title: 'SQL Server / SQLite / MySQL / MongoDB', description: 'Data modeling, query optimization, stored procedures, and local/remote storage.', icon: 'bi-hdd-network', image: '/img/portfolio/project-sql-integrations.svg' }
+    { id: 1, category: 'methodologies', title: 'Agile', description: 'Iterative way of working to deliver continuous value and adapt quickly to change.', icon: 'bi-lightning-charge', image: '/img/knowledge/agile.svg' },
+    { id: 2, category: 'methodologies', title: 'Scrum', description: 'Sprints, backlog, and ceremonies to execute clear and measurable iteration goals.', icon: 'bi-kanban', image: '/img/knowledge/scrum.svg' },
+    { id: 3, category: 'methodologies', title: 'Kanban', description: 'Visual flow management to optimize lead time, limit WIP, and improve throughput.', icon: 'bi-columns-gap', image: '/img/knowledge/kanban.svg' },
+
+    { id: 4, category: 'architectures', title: 'Clean Architecture', description: 'Layered separation for scalable, testable, and maintainable solutions.', icon: 'bi-diagram-3', image: '/img/knowledge/clean-architecture.svg' },
+    { id: 5, category: 'architectures', title: 'Onion Architecture', description: 'Keeps domain in the core and decouples infrastructure from business rules.', icon: 'bi-bullseye', image: '/img/knowledge/onion-architecture.svg' },
+    { id: 6, category: 'architectures', title: 'Vertical Slice Architecture', description: 'Feature/use-case organization to evolve functionality with less friction.', icon: 'bi-grid-1x2', image: '/img/knowledge/vertical-slice.svg' },
+    { id: 7, category: 'architectures', title: 'Modular Architecture', description: 'Divides the system into cohesive modules for safer scaling and deployments.', icon: 'bi-boxes', image: '/img/knowledge/modular-architecture.svg' },
+
+    { id: 8, category: 'patterns', title: 'Repository', description: 'Abstracts data access to decouple business logic from persistence.', icon: 'bi-database', image: '/img/knowledge/repository-pattern.svg' },
+    { id: 9, category: 'patterns', title: 'Unit of Work', description: 'Coordinates transactions and ensures consistency across multiple changes.', icon: 'bi-arrow-repeat', image: '/img/knowledge/unit-of-work.svg' },
+    { id: 10, category: 'patterns', title: 'Factory', description: 'Centralizes creation of complex objects according to business context.', icon: 'bi-tools', image: '/img/knowledge/factory-pattern.svg' },
+    { id: 11, category: 'patterns', title: 'Strategy', description: 'Allows switching algorithms/rules without changing consuming clients.', icon: 'bi-gear-wide-connected', image: '/img/knowledge/strategy-pattern.svg' },
+    { id: 12, category: 'patterns', title: 'Mediator', description: 'Reduces coupling by coordinating communication between components.', icon: 'bi-shuffle', image: '/img/knowledge/mediator-pattern.svg' },
+    { id: 13, category: 'patterns', title: 'Result Pattern', description: 'Standardizes success/error responses without relying on exceptions for regular flow.', icon: 'bi-check2-square', image: '/img/knowledge/result-pattern.svg' },
+    { id: 14, category: 'patterns', title: 'CQRS', description: 'Separates commands and queries to optimize performance and scalability.', icon: 'bi-distribute-vertical', image: '/img/knowledge/cqrs-pattern.svg' },
+
+    { id: 15, category: 'languages', title: 'C# / .NET (ASP.NET, MAUI)', description: 'API, enterprise system, and cross-platform mobile app development.', icon: 'bi-code-slash', image: '/img/knowledge/csharp-dotnet.svg' },
+    { id: 16, category: 'languages', title: 'TypeScript / JavaScript', description: 'Core stack for modern web applications and reliable frontend architecture.', icon: 'bi-filetype-tsx', image: '/img/knowledge/typescript-javascript.svg' },
+    { id: 17, category: 'languages', title: 'Angular / React', description: 'UI frameworks for scalable interfaces and modern user experience.', icon: 'bi-window-stack', image: '/img/knowledge/angular-react.svg' },
+    { id: 18, category: 'languages', title: 'SQL Server / SQLite / MySQL / MongoDB', description: 'Relational and non-relational data modeling and optimization.', icon: 'bi-hdd-network', image: '/img/knowledge/databases.svg' },
+
+    { id: 19, category: 'practices', title: 'SOLID', description: 'Principles for flexible, maintainable, and extensible object-oriented code.', icon: 'bi-bricks', image: '/img/knowledge/solid.svg' },
+    { id: 20, category: 'practices', title: 'KISS', description: 'Keep solutions simple to reduce accidental complexity and bugs.', icon: 'bi-emoji-smile', image: '/img/knowledge/kiss.svg' },
+    { id: 21, category: 'practices', title: 'DRY', description: 'Avoid duplicated logic to improve consistency and maintainability.', icon: 'bi-files', image: '/img/knowledge/dry.svg' },
+    { id: 22, category: 'practices', title: 'YAGNI', description: 'Build only what is needed today to avoid overengineering.', icon: 'bi-scissors', image: '/img/knowledge/yagni.svg' },
+    { id: 23, category: 'practices', title: 'SoC', description: 'Separation of concerns for clearer and more testable systems.', icon: 'bi-layers', image: '/img/knowledge/soc.svg' }
   ]
 };
 
@@ -327,7 +359,7 @@ export function App() {
           <div className="container section-title"><h2>{t.knowledgeTitle}</h2><p>{t.knowledgeSubtitle}</p></div>
           <div className="container">
             <ul className="portfolio-filters isotope-filters">
-              {(['all', 'methodologies', 'architectures', 'patterns', 'languages'] as const).map((filter) => (
+              {(['all', 'methodologies', 'architectures', 'patterns', 'languages', 'practices'] as const).map((filter) => (
                 <li key={filter} className={activeKnowledgeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveKnowledgeFilter(filter)}>
                   {t.knowledgeFilters[filter]}
                 </li>
