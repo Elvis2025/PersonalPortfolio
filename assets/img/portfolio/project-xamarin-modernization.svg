@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <rect width="1200" height="900" fill="#101a20"/>
+  <rect x="80" y="80" width="1040" height="740" rx="34" fill="#141f26" stroke="#1387c1" stroke-width="5"/>
+  <text x="140" y="180" fill="#e7f2f7" font-size="52" font-family="Raleway">Xamarin Modernization</text>
+  <text x="140" y="250" fill="#b8d4e2" font-size="32" font-family="Roboto">PDFs · Portable Printing · XML Automation</text>
+  <circle cx="280" cy="520" r="120" fill="#213642" stroke="#1387c1" stroke-width="4"/>
+  <circle cx="600" cy="520" r="120" fill="#213642" stroke="#1387c1" stroke-width="4"/>
+  <circle cx="920" cy="520" r="120" fill="#213642" stroke="#1387c1" stroke-width="4"/>
+</svg>

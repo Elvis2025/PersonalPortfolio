@@ -1,0 +1,104 @@
+.lang-toggle {
+  margin-left: 10px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 70%);
+  color: var(--default-color);
+  background: transparent;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.professional-status {
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-color), transparent 85%);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 35%);
+  color: var(--default-color);
+}
+
+.professional-status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-color);
+}
+
+.service-item ul {
+  padding-left: 1rem;
+}
+
+.experience-item + .experience-item {
+  margin-top: 1.5rem;
+}
+
+.portfolio-filters li {
+  cursor: pointer;
+}
+
+.portfolio-info p {
+  margin-bottom: 0;
+}
+
+.typed-name {
+  min-width: 12ch;
+  display: inline-block;
+}
+
+.typed-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--accent-color);
+  animation: typed-blink 1s steps(1) infinite;
+}
+
+@keyframes typed-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.knowledge-section .service-item {
+  height: 100%;
+}
+
+.social-spaced a {
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 999px;
+}
+
+.knowledge-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.knowledge-card::after {
+  content: '';
+  position: absolute;
+  inset: auto -20% -50% -20%;
+  height: 70px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color), transparent 72%) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.portfolio-content {
+  transition: transform 0.25s ease;
+}
+
+.portfolio-content:hover {
+  transform: translateY(-4px);
+}
+
+.portfolio-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.portfolio-filters li {
+  padding: 6px 12px;
+  border-radius: 999px;
+}
