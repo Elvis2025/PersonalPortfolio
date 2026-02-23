@@ -1,6 +1,6 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
 
 dotenv.config();
@@ -13,7 +13,19 @@ app.use(express.json());
 
 const requests = new Map<string, number[]>();
 
-app.post('/api/contact', async (req, res) => {
+
+const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:5173';
+
+app.get('/', (_req: Request, res: Response) => {
+  return res.redirect(frontendUrl);
+});
+
+app.get('/health', (_req: Request, res: Response) => {
+  return res.json({ ok: true, service: 'portfolio-server' });
+});
+
+
+app.post('/api/contact', async (req: Request, res: Response) => {
   const { name, email, subject, message, company } = req.body as Record<string, string>;
 
   if (company) {
