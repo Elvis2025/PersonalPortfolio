@@ -1,7 +1,5 @@
 import { FormEvent, useMemo, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import profileImage from '../../assets/img/profile/MyProfile01.webp';
-
 type Lang = 'es' | 'en';
 
 const content: Record<Lang, {
@@ -164,7 +162,7 @@ export function App() {
                   </motion.div>
                 </div>
               </div>
-              <div className="col-lg-6 order-1 order-lg-2"><div className="hero-image"><div className="image-wrapper"><img src={profileImage} alt="Elvis Hernandez" className="img-fluid" /></div></div></div>
+              <div className="col-lg-6 order-1 order-lg-2"><div className="hero-image"><div className="image-wrapper"><img src="/img/profile/MyProfile01.webp" alt="Elvis Hernandez" className="img-fluid" /></div></div></div>
             </div>
           </div>
         </section>
