@@ -11,6 +11,8 @@
     "concurrently": "^9.0.1"
   },
   "dependencies": {
+    "express": "^5.2.1",
+    "nodemailer": "^8.0.1",
     "prefix": "^1.0.0",
     "server": "^1.0.42"
   }
