@@ -69,14 +69,40 @@ function Header({ pathname }: { pathname: string }) {
 
 function HomePage() {
   const [roleIndex, setRoleIndex] = useState(0);
+  const [typedRole, setTypedRole] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setRoleIndex((current) => (current + 1) % roles.length);
-    }, 2200);
+    const currentRole = roles[roleIndex];
+    const isWordComplete = typedRole === currentRole;
+    const isWordDeleted = typedRole.length === 0;
 
-    return () => window.clearInterval(timer);
-  }, []);
+    const nextTick = () => {
+      if (!isDeleting && !isWordComplete) {
+        setTypedRole(currentRole.slice(0, typedRole.length + 1));
+        return;
+      }
+
+      if (!isDeleting && isWordComplete) {
+        setIsDeleting(true);
+        return;
+      }
+
+      if (isDeleting && !isWordDeleted) {
+        setTypedRole(currentRole.slice(0, typedRole.length - 1));
+        return;
+      }
+
+      setIsDeleting(false);
+      setRoleIndex((current) => (current + 1) % roles.length);
+    };
+
+    const typingDelay = isDeleting ? 45 : 95;
+    const holdDelay = !isDeleting && isWordComplete ? 1100 : 0;
+    const timer = window.setTimeout(nextTick, holdDelay || typingDelay);
+
+    return () => window.clearTimeout(timer);
+  }, [isDeleting, roleIndex, typedRole]);
 
   return (
     <section id="hero" className="hero section">
@@ -88,7 +114,10 @@ function HomePage() {
                 Hello, I&apos;m <span className="highlight">Elvis Hernandez</span>
               </h1>
               <h2>
-                Creative <span className="typed-role">{roles[roleIndex]}</span>
+                Creative <span className="typed-role">{typedRole}</span>
+                <span className="typed-cursor" aria-hidden="true">
+                  |
+                </span>
               </h2>
               <p>
                 Full Stack Developer enfocado en construir productos web y mobile con experiencia sólida en UX/UI,
