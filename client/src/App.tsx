@@ -328,12 +328,10 @@ export function App() {
               <li><a href="#contact" className={currentPage === 'contact' ? 'active' : ''}>{t.nav[6]}</a></li>
             </ul>
           </nav>
-          <div className="header-social-links social-spaced">
+          <div className="header-social-links social-spaced top-socials">
             <a href="https://x.com/elvish24?s=21" aria-label="X"><i className="bi bi-twitter-x" /></a>
             <a href="https://www.facebook.com/share/1AzuN7NYMz/?mibextid=wwXIfr" aria-label="Facebook"><i className="bi bi-facebook" /></a>
             <a href="https://www.instagram.com/elvis_h24" aria-label="Instagram"><i className="bi bi-instagram" /></a>
-            <a href="https://www.threads.com/@elvis_h24?igshid=NTc4MTIwNjQ2YQ==" aria-label="Threads"><i className="bi bi-threads" /></a>
-            <a href="https://github.com/Elvis2025" aria-label="GitHub"><i className="bi bi-github" /></a>
             <a href="https://linkedin.com/in/elvis-hernandez075496285" aria-label="LinkedIn"><i className="bi bi-linkedin" /></a>
             <button type="button" className="lang-toggle" onClick={() => setLang(lang === 'es' ? 'en' : 'es')}>{lang.toUpperCase()}</button>
           </div>
@@ -345,7 +343,7 @@ export function App() {
           <div className="container">
             <div className="row gy-4 align-items-center">
               <div className="col-lg-6 order-2 order-lg-1">
-                <div className="hero-content">
+                <div className="hero-content modern-hero-copy">
                   <h1>{t.heroTitle} <span className="highlight typed-name">{typedName}<span className="typed-cursor">|</span></span></h1>
                   <h2>{t.role}</h2>
                   <p>{t.location} · inelvis16031124@gmail.com · +1 849-869-8664</p>
@@ -358,7 +356,6 @@ export function App() {
                   </motion.div>
                 </div>
               </div>
-              <div className="col-lg-6 order-1 order-lg-2"><div className="hero-image"><div className="image-wrapper"><img src="/img/profile/MyProfile01.webp" alt="Elvis Hernandez" className="img-fluid" /></div></div></div>
             </div>
           </div>
         </section>
