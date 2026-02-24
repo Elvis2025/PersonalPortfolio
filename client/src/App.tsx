@@ -132,9 +132,12 @@ function HomePage() {
                 Hello, I&apos;m <span className="highlight">Elvis Hernandez</span>
               </h1>
               <h2 data-aos="fade-up" data-aos-delay="300">
-                Creative <span className="typed-role">{typedRole}</span>
-                <span className="typed-cursor" aria-hidden="true">
-                  |
+                Creative{' '}
+                <span className="typed-role">
+                  {typedRole}
+                  <span className="typed-cursor" aria-hidden="true">
+                    |
+                  </span>
                 </span>
               </h2>
               <p data-aos="fade-up" data-aos-delay="400">
