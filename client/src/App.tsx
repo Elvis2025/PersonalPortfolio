@@ -345,15 +345,28 @@ export function App() {
               <div className="col-lg-6 order-2 order-lg-1">
                 <div className="hero-content modern-hero-copy">
                   <h1>{t.heroTitle} <span className="highlight typed-name">{typedName}<span className="typed-cursor">|</span></span></h1>
-                  <h2>{t.role}</h2>
-                  <p>{t.location} · inelvis16031124@gmail.com · +1 849-869-8664</p>
+                  <h2>{lang === 'es' ? 'Creative ' : 'Creative '}<span className="highlight">{lang === 'es' ? 'Full Stack Developer' : 'Full Stack Developer'}</span></h2>
+                  <p>{lang === 'es' ? 'Desarrollo experiencias web y móviles modernas con enfoque en rendimiento, diseño limpio y resultados de negocio.' : 'I build modern web and mobile experiences focused on performance, clean design, and business impact.'}</p>
                   <div className="hero-actions">
-                    <a href="#portfolio" className="btn btn-primary">{lang === 'es' ? 'Ver mis proyectos' : 'View my work'}</a>
-                    <a href="#contact" className="btn btn-outline-primary">{lang === 'es' ? 'Contactarme' : 'Get in touch'}</a>
+                    <a href="#portfolio" className="btn btn-primary">{lang === 'es' ? 'Ver mis proyectos' : 'View My Work'}</a>
+                    <a href="#contact" className="btn btn-outline-primary">{lang === 'es' ? 'Contactarme' : 'Get In Touch'}</a>
                   </div>
-                  <motion.div className="professional-status" aria-label={t.status} animate={reduceMotion ? {} : { opacity: [0.95, 1, 0.95] }} transition={{ duration: 3, repeat: Infinity }}>
-                    <span className="dot" /> {t.status}
-                  </motion.div>
+                  <div className="hero-socials">
+                    <a href="https://x.com/elvish24?s=21" aria-label="X"><i className="bi bi-twitter-x" /></a>
+                    <a href="https://linkedin.com/in/elvis-hernandez075496285" aria-label="LinkedIn"><i className="bi bi-linkedin" /></a>
+                    <a href="https://github.com/Elvis2025" aria-label="GitHub"><i className="bi bi-github" /></a>
+                    <a href="https://www.threads.com/@elvis_h24?igshid=NTc4MTIwNjQ2YQ==" aria-label="Threads"><i className="bi bi-dribbble" /></a>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-6 order-1 order-lg-2">
+                <div className="hero-image modern-hero-image">
+                  <div className="image-wrapper">
+                    <img src="/img/profile/MyProfile01.webp" alt="Elvis Hernandez" className="img-fluid" />
+                    <div className="hero-float hero-float-top"><i className="bi bi-palette2" /> Design</div>
+                    <div className="hero-float hero-float-left"><i className="bi bi-code-slash" /> Code</div>
+                    <div className="hero-float hero-float-bottom"><i className="bi bi-lightbulb" /> Ideas</div>
+                  </div>
                 </div>
               </div>
             </div>
