@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 type Lang = 'es' | 'en';
 type ProjectCategory = 'all' | 'mobile' | 'web' | 'api';
 type KnowledgeCategory = 'all' | 'methodologies' | 'architectures' | 'patterns' | 'languages' | 'practices';
+type Page = 'home' | 'summary' | 'experience' | 'skills' | 'portfolio' | 'knowledge' | 'contact';
 
 type Translation = {
   nav: readonly string[];
@@ -237,6 +238,7 @@ const nameVariants = ['Elvis Jesús Hernández Suárez', 'Elvis Hernandez'];
 
 export function App() {
   const [lang, setLang] = useState<Lang>('es');
+  const [currentPage, setCurrentPage] = useState<Page>('home');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [activeFilter, setActiveFilter] = useState<ProjectCategory>('all');
   const [activeKnowledgeFilter, setActiveKnowledgeFilter] = useState<KnowledgeCategory>('all');
@@ -267,6 +269,18 @@ export function App() {
 
     return () => clearTimeout(timeout);
   }, [typedName, isDeleting, nameIndex, reduceMotion]);
+
+  useEffect(() => {
+    const syncFromHash = () => {
+      const hash = (window.location.hash.replace('#', '') || 'home') as Page;
+      const allowed: Page[] = ['home', 'summary', 'experience', 'skills', 'portfolio', 'knowledge', 'contact'];
+      setCurrentPage(allowed.includes(hash) ? hash : 'home');
+    };
+
+    syncFromHash();
+    window.addEventListener('hashchange', syncFromHash);
+    return () => window.removeEventListener('hashchange', syncFromHash);
+  }, []);
 
   const anim = useMemo(
     () =>
@@ -305,21 +319,19 @@ export function App() {
         <div className="container position-relative d-flex align-items-center justify-content-between">
           <nav id="navmenu" className="navmenu">
             <ul>
-              <li><a href="#hero" className="active">{t.nav[0]}</a></li>
-              <li><a href="#summary">{t.nav[1]}</a></li>
-              <li><a href="#experience">{t.nav[2]}</a></li>
-              <li><a href="#skills">{t.nav[3]}</a></li>
-              <li><a href="#portfolio">{t.nav[4]}</a></li>
-              <li><a href="#knowledge">{t.nav[5]}</a></li>
-              <li><a href="#contact">{t.nav[6]}</a></li>
+              <li><a href="#home" className={currentPage === 'home' ? 'active' : ''}>{t.nav[0]}</a></li>
+              <li><a href="#summary" className={currentPage === 'summary' ? 'active' : ''}>{t.nav[1]}</a></li>
+              <li><a href="#experience" className={currentPage === 'experience' ? 'active' : ''}>{t.nav[2]}</a></li>
+              <li><a href="#skills" className={currentPage === 'skills' ? 'active' : ''}>{t.nav[3]}</a></li>
+              <li><a href="#portfolio" className={currentPage === 'portfolio' ? 'active' : ''}>{t.nav[4]}</a></li>
+              <li><a href="#knowledge" className={currentPage === 'knowledge' ? 'active' : ''}>{t.nav[5]}</a></li>
+              <li><a href="#contact" className={currentPage === 'contact' ? 'active' : ''}>{t.nav[6]}</a></li>
             </ul>
           </nav>
-          <div className="header-social-links social-spaced">
+          <div className="header-social-links social-spaced top-socials">
             <a href="https://x.com/elvish24?s=21" aria-label="X"><i className="bi bi-twitter-x" /></a>
             <a href="https://www.facebook.com/share/1AzuN7NYMz/?mibextid=wwXIfr" aria-label="Facebook"><i className="bi bi-facebook" /></a>
             <a href="https://www.instagram.com/elvis_h24" aria-label="Instagram"><i className="bi bi-instagram" /></a>
-            <a href="https://www.threads.com/@elvis_h24?igshid=NTc4MTIwNjQ2YQ==" aria-label="Threads"><i className="bi bi-threads" /></a>
-            <a href="https://github.com/Elvis2025" aria-label="GitHub"><i className="bi bi-github" /></a>
             <a href="https://linkedin.com/in/elvis-hernandez075496285" aria-label="LinkedIn"><i className="bi bi-linkedin" /></a>
             <button type="button" className="lang-toggle" onClick={() => setLang(lang === 'es' ? 'en' : 'es')}>{lang.toUpperCase()}</button>
           </div>
@@ -327,27 +339,43 @@ export function App() {
       </header>
 
       <main className="main">
-        <section id="hero" className="hero section">
+        <section id="home" className="hero section page-view" hidden={currentPage !== 'home'}>
           <div className="container">
             <div className="row gy-4 align-items-center">
               <div className="col-lg-6 order-2 order-lg-1">
-                <div className="hero-content">
+                <div className="hero-content modern-hero-copy">
                   <h1>{t.heroTitle} <span className="highlight typed-name">{typedName}<span className="typed-cursor">|</span></span></h1>
-                  <h2>{t.role}</h2>
-                  <p>{t.location} · inelvis16031124@gmail.com · +1 849-869-8664</p>
-                  <motion.div className="professional-status" aria-label={t.status} animate={reduceMotion ? {} : { opacity: [0.95, 1, 0.95] }} transition={{ duration: 3, repeat: Infinity }}>
-                    <span className="dot" /> {t.status}
-                  </motion.div>
+                  <h2>{lang === 'es' ? 'Creative ' : 'Creative '}<span className="highlight">{lang === 'es' ? 'Full Stack Developer' : 'Full Stack Developer'}</span></h2>
+                  <p>{lang === 'es' ? 'Desarrollo experiencias web y móviles modernas con enfoque en rendimiento, diseño limpio y resultados de negocio.' : 'I build modern web and mobile experiences focused on performance, clean design, and business impact.'}</p>
+                  <div className="hero-actions">
+                    <a href="#portfolio" className="btn btn-primary">{lang === 'es' ? 'Ver mis proyectos' : 'View My Work'}</a>
+                    <a href="#contact" className="btn btn-outline-primary">{lang === 'es' ? 'Contactarme' : 'Get In Touch'}</a>
+                  </div>
+                  <div className="hero-socials">
+                    <a href="https://x.com/elvish24?s=21" aria-label="X"><i className="bi bi-twitter-x" /></a>
+                    <a href="https://linkedin.com/in/elvis-hernandez075496285" aria-label="LinkedIn"><i className="bi bi-linkedin" /></a>
+                    <a href="https://github.com/Elvis2025" aria-label="GitHub"><i className="bi bi-github" /></a>
+                    <a href="https://www.threads.com/@elvis_h24?igshid=NTc4MTIwNjQ2YQ==" aria-label="Threads"><i className="bi bi-dribbble" /></a>
+                  </div>
                 </div>
               </div>
-              <div className="col-lg-6 order-1 order-lg-2"><div className="hero-image"><div className="image-wrapper"><img src="/img/profile/MyProfile01.webp" alt="Elvis Hernandez" className="img-fluid" /></div></div></div>
+              <div className="col-lg-6 order-1 order-lg-2">
+                <div className="hero-image modern-hero-image">
+                  <div className="image-wrapper">
+                    <img src="/img/profile/MyProfile01.webp" alt="Elvis Hernandez" className="img-fluid" />
+                    <div className="hero-float hero-float-top"><i className="bi bi-palette2" /> Design</div>
+                    <div className="hero-float hero-float-left"><i className="bi bi-code-slash" /> Code</div>
+                    <div className="hero-float hero-float-bottom"><i className="bi bi-lightbulb" /> Ideas</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        <motion.section id="summary" className="section" {...anim}><div className="container section-title"><h2>{t.summaryTitle}</h2><p>{t.summary}</p></div></motion.section>
+        <motion.section id="summary" className="section page-view" hidden={currentPage !== 'summary'} {...anim}><div className="container section-title"><h2>{t.summaryTitle}</h2><p>{t.summary}</p></div></motion.section>
 
-        <motion.section id="experience" className="resume section" {...anim}>
+        <motion.section id="experience" className="resume section page-view" hidden={currentPage !== 'experience'} {...anim}>
           <div className="container">
             <div className="section-title">
               <h2>{t.experience}</h2>
@@ -375,7 +403,7 @@ export function App() {
           </div>
         </motion.section>
 
-        <motion.section id="skills" className="services section" {...anim}>
+        <motion.section id="skills" className="services section page-view" hidden={currentPage !== 'skills'} {...anim}>
           <div className="container section-title">
             <h2>Skills Stack</h2>
             <p>{lang === 'es' ? 'Tecnologías, frameworks y herramientas aplicadas en soluciones reales de alto impacto.' : 'Technologies, frameworks, and tools applied in real high-impact solutions.'}</p>
@@ -398,7 +426,7 @@ export function App() {
           </div>
         </motion.section>
 
-        <motion.section id="portfolio" className="portfolio section" {...anim}>
+        <motion.section id="portfolio" className="portfolio section page-view" hidden={currentPage !== 'portfolio'} {...anim}>
           <div className="container section-title"><h2>{t.portfolioTitle}</h2><p>{t.portfolioSubtitle}</p></div>
           <div className="container">
             <ul className="portfolio-filters isotope-filters">
@@ -421,7 +449,7 @@ export function App() {
           </div>
         </motion.section>
 
-        <motion.section id="knowledge" className="portfolio section" {...anim}>
+        <motion.section id="knowledge" className="portfolio section page-view" hidden={currentPage !== 'knowledge'} {...anim}>
           <div className="container section-title"><h2>{t.knowledgeTitle}</h2><p>{t.knowledgeSubtitle}</p></div>
           <div className="container">
             <div className="knowledge-filter-wrap">
@@ -450,7 +478,7 @@ export function App() {
           </div>
         </motion.section>
 
-        <motion.section id="contact" className="contact section" {...anim}><div className="container"><div className="contact-form"><h3>{t.contact}</h3>
+        <motion.section id="contact" className="contact section page-view" hidden={currentPage !== 'contact'} {...anim}><div className="container"><div className="contact-form"><h3>{t.contact}</h3>
           <form className="php-email-form" onSubmit={onSubmit}><div className="row gy-4">
             <div className="col-md-6"><input type="text" name="name" className="form-control" placeholder={t.placeholders.name} required /></div>
             <div className="col-md-6"><input type="email" name="email" className="form-control" placeholder={t.placeholders.email} required /></div>
@@ -461,6 +489,11 @@ export function App() {
           </div></form>
         </div></div></motion.section>
       </main>
+      <footer className="site-footer">
+        <div className="container text-center">
+          <p>© Copyright FolioOne All Rights Reserved</p>
+        </div>
+      </footer>
     </>
   );
 }
