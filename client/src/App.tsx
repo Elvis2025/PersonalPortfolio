@@ -363,7 +363,7 @@ export function App() {
               <div className="col-lg-6 order-1 order-lg-2">
                 <div className="hero-image">
                   <div className="image-wrapper">
-                    <img src="/img/profile/MyProfile01.webp" alt="Elvis Hernandez" className="img-fluid" />
+                    <img src="/img/profile/EH-IMG.webp" alt="Elvis Hernandez" className="img-fluid" />
                     <div className="floating-elements">
                       <motion.div className="floating-card design" animate={reduceMotion ? {} : { y: [0, -8, 0] }} transition={{ duration: 3.1, repeat: Infinity }}>
                         <i className="bi bi-palette" />
