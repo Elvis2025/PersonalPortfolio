@@ -7,6 +7,21 @@ type NavItem = {
   to: string;
 };
 
+type AboutContent = {
+  title: string;
+  subtitle: string;
+  eyebrow: string;
+  headline: string;
+  lead: string;
+  paragraph: string;
+  ctaWork: string;
+  ctaResume: string;
+  skills: Array<{ title: string; description: string; icon: string }>;
+  timeline: Array<{ year: string; title: string; text: string }>;
+  quote: string;
+  facts: Array<{ icon: string; label: string }>;
+};
+
 type Dictionary = {
   nav: string[];
   heroGreeting: string;
@@ -15,7 +30,8 @@ type Dictionary = {
   ctaWork: string;
   ctaContact: string;
   floating: { design: string; code: string; ideas: string };
-  pages: Record<'about' | 'resume' | 'services' | 'portfolio' | 'contact', { title: string; text: string }>;
+  pages: Record<'resume' | 'services' | 'portfolio' | 'contact', { title: string; text: string }>;
+  about: AboutContent;
   copyright: string;
   allRights: string;
   langToggle: string;
@@ -32,11 +48,43 @@ const copy: Record<Lang, Dictionary> = {
     ctaContact: 'Get In Touch',
     floating: { design: 'Design', code: 'Code', ideas: 'Ideas' },
     pages: {
-      about: { title: 'About', text: 'Professional profile, working approach, and value proposition.' },
       resume: { title: 'Resume', text: 'Experience, education, technical stack, and key achievements.' },
       services: { title: 'Services', text: 'Full Stack development, UX/UI, and product optimization services.' },
       portfolio: { title: 'Portfolio', text: 'Web, mobile, and API projects delivered with real impact.' },
       contact: { title: 'Contact', text: 'Contact channels to collaborate on new projects.' }
+    },
+    about: {
+      title: 'About',
+      subtitle:
+        'Software Developer with +2 years building mobile, web and API solutions with clean architecture, UX focus and measurable business outcomes.',
+      eyebrow: 'Hello there',
+      headline:
+        "Hi, I’m Elvis — a Full Stack developer blending clean engineering and thoughtful UX to build reliable digital products.",
+      lead:
+        'I started in mobile development with Xamarin and later built apps and APIs with .NET MAUI and ASP.NET. I focus on high-quality software using SOLID principles, design patterns, and security best practices.',
+      paragraph:
+        'Today I work as a Full Stack Developer improving frontend and backend with Angular, TypeScript/JavaScript, ASP.NET and SQL Server. I also participated in key migrations from Java to .NET MAUI and legacy ERP modernization toward modular Clean Architecture.',
+      ctaWork: 'View My Work',
+      ctaResume: 'Download Resume',
+      skills: [
+        { title: 'UI/UX', description: 'Interfaces focused on clarity, usability and conversion.', icon: 'bi-layout-text-window' },
+        { title: '.NET / ASP.NET', description: 'Robust backend APIs with clean architecture.', icon: 'bi-code-slash' },
+        { title: 'Mobile-first', description: 'Responsive experiences and mobile app workflows.', icon: 'bi-phone' },
+        { title: 'SQL / Data', description: 'SQL Server, SQLite and structured data modeling.', icon: 'bi-database' }
+      ],
+      timeline: [
+        { year: '2022', title: 'Started as Mobile Developer', text: 'Implemented features and fixes in Xamarin projects.' },
+        { year: '2023', title: '.NET MAUI + ASP.NET APIs', text: 'Delivered mobile and backend solutions for client operations.' },
+        { year: '2024', title: 'Full Stack at IB Systems', text: 'Improved frontend/backend flows using agile delivery.' },
+        { year: '2025', title: 'Lead migrations', text: 'Java to MAUI and legacy ERP modernization initiatives.' }
+      ],
+      quote: '“Building clean and meaningful experiences through thoughtful code and practical product decisions.”',
+      facts: [
+        { icon: 'bi-bricks', label: 'SOLID' },
+        { icon: 'bi-diagram-3', label: 'Clean Architecture' },
+        { icon: 'bi-kanban', label: 'Agile/Scrum' },
+        { icon: 'bi-lightbulb', label: 'Problem Solving' }
+      ]
     },
     copyright: 'Copyright',
     allRights: 'All Rights Reserved',
@@ -52,11 +100,43 @@ const copy: Record<Lang, Dictionary> = {
     ctaContact: 'Contáctame',
     floating: { design: 'Diseño', code: 'Código', ideas: 'Ideas' },
     pages: {
-      about: { title: 'Sobre mí', text: 'Perfil profesional, enfoque de trabajo y propuesta de valor.' },
       resume: { title: 'Resumen', text: 'Experiencia, educación, stack técnico y logros relevantes.' },
       services: { title: 'Servicios', text: 'Servicios de desarrollo Full Stack, UX/UI y optimización de producto.' },
       portfolio: { title: 'Portafolio', text: 'Proyectos web, mobile y APIs entregados con impacto real.' },
       contact: { title: 'Contacto', text: 'Canales de contacto para colaborar en nuevos proyectos.' }
+    },
+    about: {
+      title: 'Sobre mí',
+      subtitle:
+        'Desarrollador de Software con más de 2 años creando soluciones mobile, web y APIs con arquitectura limpia, enfoque UX y resultados medibles.',
+      eyebrow: 'Hola',
+      headline:
+        'Soy Elvis — desarrollador Full Stack que combina ingeniería limpia y UX bien pensada para construir productos digitales confiables.',
+      lead:
+        'Inicié en desarrollo móvil con Xamarin y luego construí aplicaciones y APIs con .NET MAUI y ASP.NET. Me enfoco en software de alta calidad aplicando SOLID, patrones de diseño y buenas prácticas de seguridad.',
+      paragraph:
+        'Actualmente trabajo como Full Stack Developer mejorando frontend y backend con Angular, TypeScript/JavaScript, ASP.NET y SQL Server. También participé en migraciones clave desde Java a .NET MAUI y modernización de ERP legacy hacia Clean Architecture modular.',
+      ctaWork: 'Ver mi trabajo',
+      ctaResume: 'Descargar CV',
+      skills: [
+        { title: 'UI/UX', description: 'Interfaces enfocadas en claridad, usabilidad y conversión.', icon: 'bi-layout-text-window' },
+        { title: '.NET / ASP.NET', description: 'APIs backend robustas con arquitectura limpia.', icon: 'bi-code-slash' },
+        { title: 'Mobile-first', description: 'Experiencias responsivas y flujos móviles.', icon: 'bi-phone' },
+        { title: 'SQL / Datos', description: 'SQL Server, SQLite y modelado de datos estructurados.', icon: 'bi-database' }
+      ],
+      timeline: [
+        { year: '2022', title: 'Inicio como Mobile Developer', text: 'Implementación de funcionalidades y fixes en proyectos Xamarin.' },
+        { year: '2023', title: '.NET MAUI + APIs ASP.NET', text: 'Entrega de soluciones móviles y backend para operaciones de negocio.' },
+        { year: '2024', title: 'Full Stack en IB Systems', text: 'Mejora de flujos frontend/backend bajo metodología ágil.' },
+        { year: '2025', title: 'Liderazgo en migraciones', text: 'Migraciones de Java a MAUI y modernización de ERP legacy.' }
+      ],
+      quote: '“Construyo experiencias limpias y con sentido, a través de código bien pensado y decisiones prácticas de producto.”',
+      facts: [
+        { icon: 'bi-bricks', label: 'SOLID' },
+        { icon: 'bi-diagram-3', label: 'Clean Architecture' },
+        { icon: 'bi-kanban', label: 'Agile/Scrum' },
+        { icon: 'bi-lightbulb', label: 'Resolución de problemas' }
+      ]
     },
     copyright: 'Copyright',
     allRights: 'Todos los derechos reservados',
@@ -134,24 +214,6 @@ function HomePage({ lang }: { lang: Lang }) {
     setRoleIndex(0);
     setTypedRole('');
     setIsDeleting(false);
-  }, [lang]);
-
-  useEffect(() => {
-    const animatedElements = Array.from(document.querySelectorAll<HTMLElement>('[data-aos]'));
-    const timers: number[] = [];
-
-    animatedElements.forEach((element) => {
-      const delay = Number(element.dataset.aosDelay ?? '0');
-      const timer = window.setTimeout(() => {
-        element.classList.add('aos-animate');
-      }, delay);
-      timers.push(timer);
-    });
-
-    return () => {
-      timers.forEach((timer) => window.clearTimeout(timer));
-      animatedElements.forEach((element) => element.classList.remove('aos-animate'));
-    };
   }, [lang]);
 
   useEffect(() => {
@@ -257,6 +319,91 @@ function HomePage({ lang }: { lang: Lang }) {
   );
 }
 
+function AboutPage({ lang }: { lang: Lang }) {
+  const about = copy[lang].about;
+
+  return (
+    <section id="about" className="about section">
+      <div className="container section-title" data-aos="fade-up">
+        <h2>{about.title}</h2>
+        <p>{about.subtitle}</p>
+      </div>
+
+      <div className="container" data-aos="fade-up" data-aos-delay="100">
+        <div className="row align-items-center justify-content-between gy-5 mb-5">
+          <div className="col-lg-7" data-aos="fade-right" data-aos-delay="150">
+            <div className="intro-content">
+              <span className="eyebrow">{about.eyebrow}</span>
+              <h2 className="headline">{about.headline}</h2>
+              <p className="lead">{about.lead}</p>
+              <p>{about.paragraph}</p>
+
+              <div className="cta-group">
+                <Link to="/portfolio" className="btn-ghost">
+                  {about.ctaWork} <i className="bi bi-arrow-up-right" />
+                </Link>
+                <a href="#" className="link-underline">
+                  {about.ctaResume} <i className="bi bi-download" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-5" data-aos="zoom-in" data-aos-delay="250">
+            <figure className="profile-figure text-center text-lg-end">
+              <img src="/img/profile/EH-IMG.webp" alt="Elvis Hernandez" className="img-fluid profile-photo" />
+            </figure>
+          </div>
+        </div>
+
+        <div className="mb-5">
+          <div className="row g-4">
+            {about.skills.map((skill, index) => (
+              <div key={skill.title} className="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay={120 + index * 60}>
+                <div className="skill-item">
+                  <i className={`bi ${skill.icon}`} />
+                  <h3>{skill.title}</h3>
+                  <p>{skill.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-5">
+          <div className="row g-4">
+            {about.timeline.map((item, index) => (
+              <div key={item.year + item.title} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={120 + index * 60}>
+                <article className="timeline-item">
+                  <span className="dot" />
+                  <time>{item.year}</time>
+                  <h4>{item.title}</h4>
+                  <p>{item.text}</p>
+                </article>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <blockquote className="personal-quote text-center mb-5" data-aos="fade-down" data-aos-delay="200">
+          <p>{about.quote}</p>
+        </blockquote>
+
+        <div className="row g-3 justify-content-center">
+          {about.facts.map((fact, index) => (
+            <div key={fact.label} className="col-6 col-md-3 col-lg-2" data-aos="zoom-in" data-aos-delay={120 + index * 40}>
+              <div className="fact-pill">
+                <i className={`bi ${fact.icon}`} />
+                <span>{fact.label}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function InnerPage({ title, text }: { title: string; text: string }) {
   return (
     <section className="section">
@@ -290,7 +437,7 @@ function renderPage(pathname: string, lang: Lang) {
     case '/':
       return <HomePage lang={lang} />;
     case '/about':
-      return <InnerPage title={pages.about.title} text={pages.about.text} />;
+      return <AboutPage lang={lang} />;
     case '/resume':
       return <InnerPage title={pages.resume.title} text={pages.resume.text} />;
     case '/services':
@@ -331,6 +478,25 @@ export function App() {
     const timer = window.setTimeout(() => setIsBootLoading(false), 420);
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const animatedElements = Array.from(document.querySelectorAll<HTMLElement>('[data-aos]'));
+    const timers: number[] = [];
+
+    animatedElements.forEach((element) => {
+      const delay = Number(element.dataset.aosDelay ?? '0');
+      element.classList.remove('aos-animate');
+      const timer = window.setTimeout(() => {
+        element.classList.add('aos-animate');
+      }, delay);
+      timers.push(timer);
+    });
+
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      animatedElements.forEach((element) => element.classList.remove('aos-animate'));
+    };
+  }, [pathname, lang]);
 
   return (
     <>
