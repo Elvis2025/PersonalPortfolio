@@ -316,3 +316,17 @@
     transition: none;
   }
 }
+
+
+#preloader.preloader-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+#preloader.preloader-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+}

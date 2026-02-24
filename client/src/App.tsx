@@ -240,6 +240,7 @@ function renderPage(pathname: string) {
 
 export function App() {
   const [pathname, setPathname] = useState(window.location.pathname);
+  const [isBootLoading, setIsBootLoading] = useState(true);
 
   useEffect(() => {
     const onPopState = () => setPathname(window.location.pathname);
@@ -247,8 +248,14 @@ export function App() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIsBootLoading(false), 420);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
     <>
+      <div id="preloader" className={isBootLoading ? 'preloader-visible' : 'preloader-hidden'} aria-hidden="true" />
       <Header pathname={pathname} />
       <main className="main">{renderPage(pathname)}</main>
       <Footer />
