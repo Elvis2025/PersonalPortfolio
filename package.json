@@ -1,0 +1,16 @@
+{
+  "name": "personal-portfolio-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "build": "npm run build --prefix server && npm run build --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "@types/express": "^5.0.3",
+    "@types/nodemailer": "^6.4.17",
+    "@types/node": "^24.3.0"
+  }
+}
