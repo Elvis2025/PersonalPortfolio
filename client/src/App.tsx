@@ -362,7 +362,7 @@ export function App() {
               <div className="col-lg-6 order-1 order-lg-2">
                 <div className="hero-image modern-hero-image">
                   <div className="image-wrapper">
-                    <img src="/img/profile/MyProfile01.webp" alt="Elvis Hernandez" className="img-fluid" />
+                    <img src="/img/profile/EH-IMG.webp" alt="Elvis Hernandez" className="img-fluid" />
                     <div className="hero-float hero-float-top"><i className="bi bi-palette2" /> Design</div>
                     <div className="hero-float hero-float-left"><i className="bi bi-code-slash" /> Code</div>
                     <div className="hero-float hero-float-bottom"><i className="bi bi-lightbulb" /> Ideas</div>
