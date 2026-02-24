@@ -345,11 +345,29 @@ export function App() {
 
         <motion.section id="experience" className="resume section" {...anim}>
           <div className="container">
-            <h3 className="resume-title">{t.experience}</h3>
-            <article className="experience-item"><h4>MDSOFT — Mobile Developer</h4><ul>{t.mdsoft.map((item) => <li key={item}>{item}</li>)}</ul></article>
-            <article className="experience-item"><h4>IB Systems — Full Stack Developer</h4><ul>{t.ib.map((item) => <li key={item}>{item}</li>)}</ul></article>
-            <article className="experience-item"><h4>{t.migrationTitle}</h4><ul>{t.migrationHighlights.map((item) => <li key={item}>{item}</li>)}</ul></article>
-            <h3 className="resume-title mt-4">{t.education}</h3><p>{t.educationText}</p>
+            <div className="section-title">
+              <h2>{t.experience}</h2>
+            </div>
+            <div className="row g-4 experience-grid">
+              <div className="col-lg-6">
+                <motion.article className="experience-card" whileHover={reduceMotion ? {} : { y: -4 }} transition={{ duration: 0.2 }}>
+                  <div className="experience-head"><span className="experience-pill">MDSOFT</span><h4>Mobile Developer</h4></div>
+                  <ul>{t.mdsoft.map((item) => <li key={item}>{item}</li>)}</ul>
+                </motion.article>
+              </div>
+              <div className="col-lg-6">
+                <motion.article className="experience-card" whileHover={reduceMotion ? {} : { y: -4 }} transition={{ duration: 0.2 }}>
+                  <div className="experience-head"><span className="experience-pill">IB Systems</span><h4>Full Stack Developer</h4></div>
+                  <ul>{t.ib.map((item) => <li key={item}>{item}</li>)}</ul>
+                </motion.article>
+              </div>
+              <div className="col-12">
+                <motion.article className="experience-card migration-card" whileHover={reduceMotion ? {} : { y: -4 }} transition={{ duration: 0.2 }}>
+                  <div className="experience-head"><span className="experience-pill accent">Migration</span><h4>{t.migrationTitle}</h4></div>
+                  <ul>{t.migrationHighlights.map((item) => <li key={item}>{item}</li>)}</ul>
+                </motion.article>
+              </div>
+            </div>
           </div>
         </motion.section>
 
@@ -358,19 +376,22 @@ export function App() {
         <motion.section id="knowledge" className="portfolio section" {...anim}>
           <div className="container section-title"><h2>{t.knowledgeTitle}</h2><p>{t.knowledgeSubtitle}</p></div>
           <div className="container">
-            <ul className="portfolio-filters isotope-filters">
-              {(['all', 'methodologies', 'architectures', 'patterns', 'languages', 'practices'] as const).map((filter) => (
-                <li key={filter} className={activeKnowledgeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveKnowledgeFilter(filter)}>
-                  {t.knowledgeFilters[filter]}
-                </li>
-              ))}
-            </ul>
+            <div className="knowledge-filter-wrap">
+              <ul className="portfolio-filters isotope-filters knowledge-filters">
+                {(['all', 'methodologies', 'architectures', 'patterns', 'languages', 'practices'] as const).map((filter) => (
+                  <li key={filter} className={activeKnowledgeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveKnowledgeFilter(filter)}>
+                    {t.knowledgeFilters[filter]}
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className="row gy-4 isotope-container">
               {filteredKnowledge.map((item, index) => (
-                <motion.div key={item.id} className={`col-lg-4 col-md-6 portfolio-item isotope-item filter-${item.category}`} initial={reduceMotion ? {} : { opacity: 0, y: 12 }} whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.03 }}>
+                <motion.div key={item.id} className={`col-lg-4 col-md-6 portfolio-item isotope-item filter-${item.category}`} initial={reduceMotion ? {} : { opacity: 0, scale: 0.97, y: 14 }} whileInView={reduceMotion ? {} : { opacity: 1, scale: 1, y: 0 }} whileHover={reduceMotion ? {} : { y: -5 }} viewport={{ once: true }} transition={{ duration: 0.26, delay: index * 0.02 }}>
                   <div className="portfolio-content h-100 knowledge-card">
                     <img src={item.image} className="img-fluid" alt={item.title} />
                     <div className="portfolio-info">
+                      <span className="knowledge-tag">{t.knowledgeFilters[item.category]}</span>
                       <h4><i className={`bi ${item.icon} me-2`} />{item.title}</h4>
                       <p>{item.description}</p>
                     </div>

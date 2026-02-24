@@ -102,3 +102,66 @@
   padding: 6px 12px;
   border-radius: 999px;
 }
+
+.experience-grid {
+  margin-top: 8px;
+}
+
+.experience-card {
+  background: color-mix(in srgb, var(--surface-color), transparent 18%);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 70%);
+  border-radius: 16px;
+  padding: 24px;
+  height: 100%;
+  box-shadow: 0 12px 30px color-mix(in srgb, #000, transparent 82%);
+}
+
+.experience-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.experience-pill {
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 55%);
+  padding: 4px 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.experience-pill.accent {
+  background: color-mix(in srgb, var(--accent-color), transparent 83%);
+}
+
+.experience-card ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.migration-card {
+  background: linear-gradient(140deg, color-mix(in srgb, var(--surface-color), transparent 10%), color-mix(in srgb, var(--accent-color), transparent 92%));
+}
+
+.knowledge-filter-wrap {
+  margin-bottom: 18px;
+}
+
+.knowledge-filters li {
+  font-size: 13px;
+}
+
+.knowledge-tag {
+  display: inline-flex;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 60%);
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+}
