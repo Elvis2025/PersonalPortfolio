@@ -1,6 +1,7 @@
 import { MouseEvent, ReactNode, useEffect, useMemo, useState } from 'react';
 
 type Lang = 'en' | 'es';
+type SkillCategory = 'all' | 'frontend' | 'backend' | 'architectures' | 'patterns' | 'methodologies' | 'practices';
 
 type NavItem = {
   label: string;
@@ -22,6 +23,13 @@ type AboutContent = {
   facts: Array<{ icon: string; label: string }>;
 };
 
+type SkillCard = {
+  title: string;
+  description: string;
+  percent: number;
+  category: SkillCategory;
+};
+
 type Dictionary = {
   nav: string[];
   heroGreeting: string;
@@ -32,6 +40,11 @@ type Dictionary = {
   floating: { design: string; code: string; ideas: string };
   pages: Record<'resume' | 'services' | 'portfolio' | 'contact', { title: string; text: string }>;
   about: AboutContent;
+  skillsSection: {
+    title: string;
+    subtitle: string;
+    filters: Record<SkillCategory, string>;
+  };
   copyright: string;
   allRights: string;
   langToggle: string;
@@ -86,6 +99,19 @@ const copy: Record<Lang, Dictionary> = {
         { icon: 'bi-lightbulb', label: 'Problem Solving' }
       ]
     },
+    skillsSection: {
+      title: 'Skills',
+      subtitle: 'Backend-focused profile with strong architecture, pattern-driven design, and solid frontend execution.',
+      filters: {
+        all: 'All',
+        frontend: 'Front-end',
+        backend: 'Back-end',
+        architectures: 'Architectures',
+        patterns: 'Design Patterns',
+        methodologies: 'Work Methodologies',
+        practices: 'Best Practices'
+      }
+    },
     copyright: 'Copyright',
     allRights: 'All Rights Reserved',
     langToggle: 'ES'
@@ -138,6 +164,19 @@ const copy: Record<Lang, Dictionary> = {
         { icon: 'bi-lightbulb', label: 'Resolución de problemas' }
       ]
     },
+    skillsSection: {
+      title: 'Skills',
+      subtitle: 'Perfil orientado más a Back-end, con dominio en arquitectura, patrones y ejecución sólida en Front-end.',
+      filters: {
+        all: 'Todos',
+        frontend: 'Front-end',
+        backend: 'Back-end',
+        architectures: 'Arquitecturas',
+        patterns: 'Patrones de diseños',
+        methodologies: 'Metodologías de trabajo',
+        practices: 'Buenas prácticas'
+      }
+    },
     copyright: 'Copyright',
     allRights: 'Todos los derechos reservados',
     langToggle: 'EN'
@@ -147,6 +186,41 @@ const copy: Record<Lang, Dictionary> = {
 const rolesByLang: Record<Lang, string[]> = {
   en: ['UI/UX Designer', 'Web Developer', 'Digital Artist', 'Brand Strategist'],
   es: ['Diseñador UI/UX', 'Desarrollador Web', 'Artista Digital', 'Estratega de Marca']
+};
+
+const skillsCatalog: Record<Lang, SkillCard[]> = {
+  es: [
+    { title: 'ASP.NET Core / .NET APIs', description: 'Diseño de APIs robustas con seguridad, validaciones y buenas prácticas.', percent: 95, category: 'backend' },
+    { title: 'SQL Server / SQLite', description: 'Stored procedures, vistas, estructuras de datos y optimización.', percent: 92, category: 'backend' },
+    { title: 'C# y .NET', description: 'Desarrollo empresarial y mobile con enfoque escalable.', percent: 93, category: 'backend' },
+    { title: 'Angular', description: 'Construcción de interfaces modernas y mantenibles.', percent: 82, category: 'frontend' },
+    { title: 'React + TypeScript', description: 'UI modular con componentes reutilizables y tipado fuerte.', percent: 80, category: 'frontend' },
+    { title: 'JavaScript / TypeScript', description: 'Base del stack frontend moderno y tooling.', percent: 84, category: 'frontend' },
+    { title: 'Clean Architecture', description: 'Separación de capas para escalabilidad y testabilidad.', percent: 94, category: 'architectures' },
+    { title: 'Onion Architecture', description: 'Dominio en el centro y desacople de infraestructura.', percent: 90, category: 'architectures' },
+    { title: 'Arquitectura Modular', description: 'Sistemas desacoplados por módulos y vertical slices.', percent: 88, category: 'architectures' },
+    { title: 'Repository + Unit of Work', description: 'Consistencia transaccional y abstracción de persistencia.', percent: 92, category: 'patterns' },
+    { title: 'Factory / Strategy / Mediator', description: 'Patrones para flexibilidad, desacople y evolución.', percent: 86, category: 'patterns' },
+    { title: 'Result Pattern + CQRS', description: 'Manejo claro de flujos y separación comando/consulta.', percent: 87, category: 'patterns' },
+    { title: 'Agile / Scrum / Kanban', description: 'Entrega iterativa, visibilidad y mejora continua.', percent: 90, category: 'methodologies' },
+    { title: 'SOLID / KISS / DRY / YAGNI', description: 'Código limpio, mantenible y sin sobreingeniería.', percent: 94, category: 'practices' }
+  ],
+  en: [
+    { title: 'ASP.NET Core / .NET APIs', description: 'Robust API design with security, validation and best practices.', percent: 95, category: 'backend' },
+    { title: 'SQL Server / SQLite', description: 'Stored procedures, views, structured data and optimization.', percent: 92, category: 'backend' },
+    { title: 'C# and .NET', description: 'Enterprise and mobile development with scalable approach.', percent: 93, category: 'backend' },
+    { title: 'Angular', description: 'Modern and maintainable interface delivery.', percent: 82, category: 'frontend' },
+    { title: 'React + TypeScript', description: 'Modular UI with reusable components and strong typing.', percent: 80, category: 'frontend' },
+    { title: 'JavaScript / TypeScript', description: 'Core foundation for modern frontend stack and tooling.', percent: 84, category: 'frontend' },
+    { title: 'Clean Architecture', description: 'Layered separation for scalable, testable systems.', percent: 94, category: 'architectures' },
+    { title: 'Onion Architecture', description: 'Domain-centered design with infrastructure decoupling.', percent: 90, category: 'architectures' },
+    { title: 'Modular Architecture', description: 'Decoupled systems organized by modules and vertical slices.', percent: 88, category: 'architectures' },
+    { title: 'Repository + Unit of Work', description: 'Transactional consistency and data-access abstraction.', percent: 92, category: 'patterns' },
+    { title: 'Factory / Strategy / Mediator', description: 'Patterns for flexibility, decoupling and evolution.', percent: 86, category: 'patterns' },
+    { title: 'Result Pattern + CQRS', description: 'Clear flow handling and command/query separation.', percent: 87, category: 'patterns' },
+    { title: 'Agile / Scrum / Kanban', description: 'Iterative delivery, visibility and continuous improvement.', percent: 90, category: 'methodologies' },
+    { title: 'SOLID / KISS / DRY / YAGNI', description: 'Clean, maintainable code and less overengineering.', percent: 94, category: 'practices' }
+  ]
 };
 
 function navigateTo(path: string) {
@@ -319,88 +393,144 @@ function HomePage({ lang }: { lang: Lang }) {
   );
 }
 
-function AboutPage({ lang }: { lang: Lang }) {
-  const about = copy[lang].about;
+function SkillsSection({ lang }: { lang: Lang }) {
+  const [activeFilter, setActiveFilter] = useState<SkillCategory>('all');
+  const sectionText = copy[lang].skillsSection;
+  const skills = skillsCatalog[lang];
+
+  useEffect(() => {
+    setActiveFilter('all');
+  }, [lang]);
+
+  const filteredSkills = skills.filter((skill) => activeFilter === 'all' || skill.category === activeFilter);
+
+  const filterOrder: SkillCategory[] = ['all', 'frontend', 'backend', 'architectures', 'patterns', 'methodologies', 'practices'];
 
   return (
-    <section id="about" className="about section">
+    <section id="skills" className="skills section">
       <div className="container section-title" data-aos="fade-up">
-        <h2>{about.title}</h2>
-        <p>{about.subtitle}</p>
+        <h2>{sectionText.title}</h2>
+        <p>{sectionText.subtitle}</p>
       </div>
 
       <div className="container" data-aos="fade-up" data-aos-delay="100">
-        <div className="row align-items-center justify-content-between gy-5 mb-5">
-          <div className="col-lg-7" data-aos="fade-right" data-aos-delay="150">
-            <div className="intro-content">
-              <span className="eyebrow">{about.eyebrow}</span>
-              <h2 className="headline">{about.headline}</h2>
-              <p className="lead">{about.lead}</p>
-              <p>{about.paragraph}</p>
+        <ul className="skills-filters" data-aos="fade-up" data-aos-delay="120">
+          {filterOrder.map((filter) => (
+            <li
+              key={filter}
+              className={activeFilter === filter ? 'filter-active' : ''}
+              onClick={() => setActiveFilter(filter)}
+            >
+              {sectionText.filters[filter]}
+            </li>
+          ))}
+        </ul>
 
-              <div className="cta-group">
-                <Link to="/portfolio" className="btn-ghost">
-                  {about.ctaWork} <i className="bi bi-arrow-up-right" />
-                </Link>
-                <a href="#" className="link-underline">
-                  {about.ctaResume} <i className="bi bi-download" />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-lg-5" data-aos="zoom-in" data-aos-delay="250">
-            <figure className="profile-figure text-center text-lg-end">
-              <img src="/img/profile/EH-IMG.webp" alt="Elvis Hernandez" className="img-fluid profile-photo" />
-            </figure>
-          </div>
-        </div>
-
-        <div className="mb-5">
-          <div className="row g-4">
-            {about.skills.map((skill, index) => (
-              <div key={skill.title} className="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay={120 + index * 60}>
-                <div className="skill-item">
-                  <i className={`bi ${skill.icon}`} />
-                  <h3>{skill.title}</h3>
-                  <p>{skill.description}</p>
+        <div className="row g-4 skills-animation">
+          {filteredSkills.map((skill, index) => (
+            <div key={skill.title} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={100 + (index % 4) * 100}>
+              <div className="skill-box">
+                <h3>{skill.title}</h3>
+                <p>{skill.description}</p>
+                <span className="text-end d-block">{skill.percent}%</span>
+                <div className="progress">
+                  <div className="progress-bar" role="progressbar" aria-valuenow={skill.percent} aria-valuemin={0} aria-valuemax={100} style={{ width: `${skill.percent}%` }} />
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mb-5">
-          <div className="row g-4">
-            {about.timeline.map((item, index) => (
-              <div key={item.year + item.title} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={120 + index * 60}>
-                <article className="timeline-item">
-                  <span className="dot" />
-                  <time>{item.year}</time>
-                  <h4>{item.title}</h4>
-                  <p>{item.text}</p>
-                </article>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <blockquote className="personal-quote text-center mb-5" data-aos="fade-down" data-aos-delay="200">
-          <p>{about.quote}</p>
-        </blockquote>
-
-        <div className="row g-3 justify-content-center">
-          {about.facts.map((fact, index) => (
-            <div key={fact.label} className="col-6 col-md-3 col-lg-2" data-aos="zoom-in" data-aos-delay={120 + index * 40}>
-              <div className="fact-pill">
-                <i className={`bi ${fact.icon}`} />
-                <span>{fact.label}</span>
               </div>
             </div>
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function AboutPage({ lang }: { lang: Lang }) {
+  const about = copy[lang].about;
+
+  return (
+    <>
+      <section id="about" className="about section">
+        <div className="container section-title" data-aos="fade-up">
+          <h2>{about.title}</h2>
+          <p>{about.subtitle}</p>
+        </div>
+
+        <div className="container" data-aos="fade-up" data-aos-delay="100">
+          <div className="row align-items-center justify-content-between gy-5 mb-5">
+            <div className="col-lg-7" data-aos="fade-right" data-aos-delay="150">
+              <div className="intro-content">
+                <span className="eyebrow">{about.eyebrow}</span>
+                <h2 className="headline">{about.headline}</h2>
+                <p className="lead">{about.lead}</p>
+                <p>{about.paragraph}</p>
+
+                <div className="cta-group">
+                  <Link to="/portfolio" className="btn-ghost">
+                    {about.ctaWork} <i className="bi bi-arrow-up-right" />
+                  </Link>
+                  <a href="#" className="link-underline">
+                    {about.ctaResume} <i className="bi bi-download" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-lg-5" data-aos="zoom-in" data-aos-delay="250">
+              <figure className="profile-figure text-center text-lg-end">
+                <img src="/img/profile/EH-IMG.webp" alt="Elvis Hernandez" className="img-fluid profile-photo" />
+              </figure>
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <div className="row g-4">
+              {about.skills.map((skill, index) => (
+                <div key={skill.title} className="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay={120 + index * 60}>
+                  <div className="skill-item">
+                    <i className={`bi ${skill.icon}`} />
+                    <h3>{skill.title}</h3>
+                    <p>{skill.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <div className="row g-4">
+              {about.timeline.map((item, index) => (
+                <div key={item.year + item.title} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={120 + index * 60}>
+                  <article className="timeline-item">
+                    <span className="dot" />
+                    <time>{item.year}</time>
+                    <h4>{item.title}</h4>
+                    <p>{item.text}</p>
+                  </article>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <blockquote className="personal-quote text-center mb-5" data-aos="fade-down" data-aos-delay="200">
+            <p>{about.quote}</p>
+          </blockquote>
+
+          <div className="row g-3 justify-content-center">
+            {about.facts.map((fact, index) => (
+              <div key={fact.label} className="col-6 col-md-3 col-lg-2" data-aos="zoom-in" data-aos-delay={120 + index * 40}>
+                <div className="fact-pill">
+                  <i className={`bi ${fact.icon}`} />
+                  <span>{fact.label}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <SkillsSection lang={lang} />
+    </>
   );
 }
 
@@ -475,27 +605,34 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsBootLoading(false), 420);
+    const timer = window.setTimeout(() => setIsBootLoading(false), 1800);
     return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    const animatedElements = Array.from(document.querySelectorAll<HTMLElement>('[data-aos]'));
-    const timers: number[] = [];
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-aos]'));
 
-    animatedElements.forEach((element) => {
-      const delay = Number(element.dataset.aosDelay ?? '0');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const element = entry.target as HTMLElement;
+          const delay = Number(element.dataset.aosDelay ?? '0');
+          window.setTimeout(() => {
+            element.classList.add('aos-animate');
+          }, delay);
+          observer.unobserve(element);
+        });
+      },
+      { threshold: 0.16, rootMargin: '0px 0px -8% 0px' }
+    );
+
+    elements.forEach((element) => {
       element.classList.remove('aos-animate');
-      const timer = window.setTimeout(() => {
-        element.classList.add('aos-animate');
-      }, delay);
-      timers.push(timer);
+      observer.observe(element);
     });
 
-    return () => {
-      timers.forEach((timer) => window.clearTimeout(timer));
-      animatedElements.forEach((element) => element.classList.remove('aos-animate'));
-    };
+    return () => observer.disconnect();
   }, [pathname, lang]);
 
   return (
