@@ -45,7 +45,7 @@ type KnowledgeItem = {
 
 const content: Record<Lang, Translation> = {
   es: {
-    nav: ['Inicio', 'Resumen', 'Experiencia', 'Skills', 'Conocimiento', 'Proyectos', 'Contacto'],
+    nav: ['Inicio', 'Resumen', 'Experiencia', 'Skills', 'Proyectos', 'Conocimiento', 'Contacto'],
     heroTitle: 'Hola, soy',
     role: 'Desarrollador Full Stack',
     summaryTitle: 'Resumen Profesional',
@@ -95,7 +95,7 @@ const content: Record<Lang, Translation> = {
     educationText: 'Instituto Tecnológico de las Américas (ITLA) — Desarrollo de Software (En curso)'
   },
   en: {
-    nav: ['Home', 'Summary', 'Experience', 'Skills', 'Knowledge', 'Projects', 'Contact'],
+    nav: ['Home', 'Summary', 'Experience', 'Skills', 'Projects', 'Knowledge', 'Contact'],
     heroTitle: "Hello, I'm",
     role: 'Full Stack Developer',
     summaryTitle: 'Professional Summary',
@@ -305,8 +305,8 @@ export function App() {
               <li><a href="#summary">{t.nav[1]}</a></li>
               <li><a href="#experience">{t.nav[2]}</a></li>
               <li><a href="#skills">{t.nav[3]}</a></li>
-              <li><a href="#knowledge">{t.nav[4]}</a></li>
-              <li><a href="#portfolio">{t.nav[5]}</a></li>
+              <li><a href="#portfolio">{t.nav[4]}</a></li>
+              <li><a href="#knowledge">{t.nav[5]}</a></li>
               <li><a href="#contact">{t.nav[6]}</a></li>
             </ul>
           </nav>
@@ -351,14 +351,14 @@ export function App() {
             <div className="row g-4 experience-grid">
               <div className="col-lg-6">
                 <motion.article className="experience-card" whileHover={reduceMotion ? {} : { y: -4 }} transition={{ duration: 0.2 }}>
-                  <div className="experience-head"><span className="experience-pill">MDSOFT</span><h4>Mobile Developer</h4></div>
-                  <ul>{t.mdsoft.map((item) => <li key={item}>{item}</li>)}</ul>
+                  <div className="experience-head"><span className="experience-pill current">IB Systems</span><h4>Full Stack Developer</h4></div>
+                  <ul>{t.ib.map((item) => <li key={item}>{item}</li>)}</ul>
                 </motion.article>
               </div>
               <div className="col-lg-6">
                 <motion.article className="experience-card" whileHover={reduceMotion ? {} : { y: -4 }} transition={{ duration: 0.2 }}>
-                  <div className="experience-head"><span className="experience-pill">IB Systems</span><h4>Full Stack Developer</h4></div>
-                  <ul>{t.ib.map((item) => <li key={item}>{item}</li>)}</ul>
+                  <div className="experience-head"><span className="experience-pill">MDSOFT</span><h4>Mobile Developer</h4></div>
+                  <ul>{t.mdsoft.map((item) => <li key={item}>{item}</li>)}</ul>
                 </motion.article>
               </div>
               <div className="col-12">
@@ -371,7 +371,51 @@ export function App() {
           </div>
         </motion.section>
 
-        <motion.section id="skills" className="services section" {...anim}><div className="container"><div className="row g-4"><div className="col-lg-6"><div className="service-item"><h3>Backend</h3><ul>{backendSkills.map((s) => <li key={s}>{s}</li>)}</ul></div></div><div className="col-lg-6"><div className="service-item"><h3>Frontend</h3><ul>{frontendSkills.map((s) => <li key={s}>{s}</li>)}</ul></div></div></div></div></motion.section>
+        <motion.section id="skills" className="services section" {...anim}>
+          <div className="container section-title">
+            <h2>Skills Stack</h2>
+            <p>{lang === 'es' ? 'Tecnologías, frameworks y herramientas aplicadas en soluciones reales de alto impacto.' : 'Technologies, frameworks, and tools applied in real high-impact solutions.'}</p>
+          </div>
+          <div className="container">
+            <div className="row g-4">
+              <div className="col-lg-6">
+                <motion.div className="service-item skill-card" whileHover={reduceMotion ? {} : { y: -6 }} transition={{ duration: 0.2 }}>
+                  <h3><i className="bi bi-server me-2" />Backend</h3>
+                  <div className="skill-chip-wrap">{backendSkills.map((item) => <span key={item} className="skill-chip">{item}</span>)}</div>
+                </motion.div>
+              </div>
+              <div className="col-lg-6">
+                <motion.div className="service-item skill-card" whileHover={reduceMotion ? {} : { y: -6 }} transition={{ duration: 0.2 }}>
+                  <h3><i className="bi bi-window-sidebar me-2" />Frontend</h3>
+                  <div className="skill-chip-wrap">{frontendSkills.map((item) => <span key={item} className="skill-chip">{item}</span>)}</div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section id="portfolio" className="portfolio section" {...anim}>
+          <div className="container section-title"><h2>{t.portfolioTitle}</h2><p>{t.portfolioSubtitle}</p></div>
+          <div className="container">
+            <ul className="portfolio-filters isotope-filters">
+              {(['all', 'mobile', 'web', 'api'] as const).map((filter) => (
+                <li key={filter} className={activeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveFilter(filter)}>
+                  {t.filters[filter]}
+                </li>
+              ))}
+            </ul>
+            <div className="row gy-4 isotope-container">
+              {filteredProjects.map((project, index) => (
+                <motion.div key={project.id} className={`col-lg-4 col-md-6 portfolio-item isotope-item filter-${project.category}`} initial={reduceMotion ? {} : { opacity: 0, y: 12 }} whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.04 }}>
+                  <div className="portfolio-content h-100">
+                    <img src={project.image} className="img-fluid" alt={project.title} />
+                    <div className="portfolio-info"><h4>{project.title}</h4><p>{project.description}</p></div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.section>
 
         <motion.section id="knowledge" className="portfolio section" {...anim}>
           <div className="container section-title"><h2>{t.knowledgeTitle}</h2><p>{t.knowledgeSubtitle}</p></div>
@@ -395,29 +439,6 @@ export function App() {
                       <h4><i className={`bi ${item.icon} me-2`} />{item.title}</h4>
                       <p>{item.description}</p>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
-
-        <motion.section id="portfolio" className="portfolio section" {...anim}>
-          <div className="container section-title"><h2>{t.portfolioTitle}</h2><p>{t.portfolioSubtitle}</p></div>
-          <div className="container">
-            <ul className="portfolio-filters isotope-filters">
-              {(['all', 'mobile', 'web', 'api'] as const).map((filter) => (
-                <li key={filter} className={activeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveFilter(filter)}>
-                  {t.filters[filter]}
-                </li>
-              ))}
-            </ul>
-            <div className="row gy-4 isotope-container">
-              {filteredProjects.map((project, index) => (
-                <motion.div key={project.id} className={`col-lg-4 col-md-6 portfolio-item isotope-item filter-${project.category}`} initial={reduceMotion ? {} : { opacity: 0, y: 12 }} whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.04 }}>
-                  <div className="portfolio-content h-100">
-                    <img src={project.image} className="img-fluid" alt={project.title} />
-                    <div className="portfolio-info"><h4>{project.title}</h4><p>{project.description}</p></div>
                   </div>
                 </motion.div>
               ))}
