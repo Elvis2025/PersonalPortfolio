@@ -73,6 +73,24 @@ function HomePage() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    const animatedElements = Array.from(document.querySelectorAll<HTMLElement>('[data-aos]'));
+    const timers: number[] = [];
+
+    animatedElements.forEach((element) => {
+      const delay = Number(element.dataset.aosDelay ?? '0');
+      const timer = window.setTimeout(() => {
+        element.classList.add('aos-animate');
+      }, delay);
+      timers.push(timer);
+    });
+
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      animatedElements.forEach((element) => element.classList.remove('aos-animate'));
+    };
+  }, []);
+
+  useEffect(() => {
     const currentRole = roles[roleIndex];
     const isWordComplete = typedRole === currentRole;
     const isWordDeleted = typedRole.length === 0;
@@ -106,24 +124,24 @@ function HomePage() {
 
   return (
     <section id="hero" className="hero section">
-      <div className="container">
+      <div className="container" data-aos="fade-up" data-aos-delay="100">
         <div className="row gy-4 align-items-center">
           <div className="col-lg-6 order-2 order-lg-1">
             <div className="hero-content">
-              <h1>
+              <h1 data-aos="fade-up" data-aos-delay="200">
                 Hello, I&apos;m <span className="highlight">Elvis Hernandez</span>
               </h1>
-              <h2>
+              <h2 data-aos="fade-up" data-aos-delay="300">
                 Creative <span className="typed-role">{typedRole}</span>
                 <span className="typed-cursor" aria-hidden="true">
                   |
                 </span>
               </h2>
-              <p>
+              <p data-aos="fade-up" data-aos-delay="400">
                 Full Stack Developer enfocado en construir productos web y mobile con experiencia sólida en UX/UI,
                 arquitectura limpia y resultados de negocio.
               </p>
-              <div className="hero-actions">
+              <div className="hero-actions" data-aos="fade-up" data-aos-delay="500">
                 <Link to="/portfolio" className="btn btn-primary">
                   View My Work
                 </Link>
@@ -131,7 +149,7 @@ function HomePage() {
                   Get In Touch
                 </Link>
               </div>
-              <div className="social-links">
+              <div className="social-links" data-aos="fade-up" data-aos-delay="600">
                 <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
                   <i className="bi bi-twitter" />
                 </a>
@@ -149,19 +167,19 @@ function HomePage() {
           </div>
 
           <div className="col-lg-6 order-1 order-lg-2">
-            <div className="hero-image">
+            <div className="hero-image" data-aos="zoom-in" data-aos-delay="300">
               <div className="image-wrapper">
                 <img src="/img/profile/EH-IMG.webp" alt="Elvis Hernandez" className="img-fluid" />
                 <div className="floating-elements">
-                  <div className="floating-card design">
+                  <div className="floating-card design" data-aos="fade-left" data-aos-delay="700">
                     <i className="bi bi-palette" />
                     <span>Design</span>
                   </div>
-                  <div className="floating-card code">
+                  <div className="floating-card code" data-aos="fade-right" data-aos-delay="800">
                     <i className="bi bi-code-slash" />
                     <span>Code</span>
                   </div>
-                  <div className="floating-card creativity">
+                  <div className="floating-card creativity" data-aos="fade-up" data-aos-delay="900">
                     <i className="bi bi-lightbulb" />
                     <span>Ideas</span>
                   </div>
@@ -179,7 +197,7 @@ function InnerPage({ title, text }: { title: string; text: string }) {
   return (
     <section className="section">
       <div className="container section-title text-center">
-        <h2>{title}</h2>
+        <h2 data-aos="fade-up" data-aos-delay="300">{title}</h2>
         <p>{text}</p>
       </div>
     </section>
@@ -189,7 +207,7 @@ function InnerPage({ title, text }: { title: string; text: string }) {
 function Footer() {
   return (
     <footer id="footer" className="footer">
-      <div className="container">
+      <div className="container" data-aos="fade-up" data-aos-delay="100">
         <div className="copyright text-center ">
           <p>
             © <span>Copyright</span> <strong className="px-1 sitename">Elvis Portfolio</strong>
