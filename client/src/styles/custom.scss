@@ -199,3 +199,197 @@
   max-width: 900px;
   margin: 0 auto;
 }
+
+.main {
+  background:
+    radial-gradient(circle at 10% -10%, color-mix(in srgb, var(--accent-color), transparent 82%) 0%, transparent 38%),
+    radial-gradient(circle at 85% 0%, color-mix(in srgb, #43d3ff, transparent 88%) 0%, transparent 35%),
+    var(--background-color);
+}
+
+.section {
+  position: relative;
+}
+
+.section-title h2 {
+  letter-spacing: 0.01em;
+  text-shadow: 0 6px 30px color-mix(in srgb, #000, transparent 80%);
+}
+
+.section-title p {
+  line-height: 1.8;
+  color: color-mix(in srgb, var(--default-color), #ffffff 10%);
+}
+
+.hero-content h1 {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  line-height: 1.05;
+}
+
+.hero-content h2 {
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  color: color-mix(in srgb, var(--default-color), #fff 15%);
+}
+
+.hero-content p {
+  line-height: 1.7;
+  max-width: 620px;
+}
+
+.image-wrapper {
+  border-radius: 26px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 68%);
+  box-shadow: 0 30px 60px color-mix(in srgb, #000, transparent 70%);
+}
+
+.image-wrapper img {
+  transition: transform 0.35s ease;
+}
+
+.image-wrapper:hover img {
+  transform: scale(1.03);
+}
+
+.portfolio-content,
+.experience-card,
+.skill-card,
+.contact-form {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--surface-color), transparent 8%), color-mix(in srgb, #112333, transparent 10%));
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 72%);
+  box-shadow: 0 14px 40px color-mix(in srgb, #000, transparent 78%);
+}
+
+.portfolio-content {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.portfolio-content img {
+  transition: transform 0.35s ease;
+}
+
+.portfolio-content:hover img {
+  transform: scale(1.04);
+}
+
+.portfolio-info {
+  padding: 18px;
+}
+
+.portfolio-info h4 {
+  margin-bottom: 10px;
+}
+
+.portfolio-filters li {
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 65%);
+  background: color-mix(in srgb, var(--surface-color), transparent 14%);
+  transition: all 0.25s ease;
+}
+
+.portfolio-filters li:hover,
+.portfolio-filters .filter-active {
+  background: color-mix(in srgb, var(--accent-color), transparent 76%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color), transparent 86%);
+}
+
+.experience-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.experience-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 42px color-mix(in srgb, #000, transparent 72%);
+}
+
+.experience-card li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.experience-pill.current {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color), transparent 88%);
+}
+
+.skill-chip {
+  transition: transform 0.2s ease, background 0.25s ease;
+}
+
+.skill-chip:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--accent-color), transparent 82%);
+}
+
+.contact-form {
+  border-radius: 22px;
+  padding: clamp(20px, 3vw, 40px);
+}
+
+.form-control {
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 68%);
+  background: color-mix(in srgb, var(--surface-color), transparent 12%);
+  color: var(--default-color);
+}
+
+.form-control:focus {
+  border-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+  box-shadow: 0 0 0 0.18rem color-mix(in srgb, var(--accent-color), transparent 85%);
+}
+
+@media (max-width: 992px) {
+  .hero-content {
+    text-align: center;
+  }
+
+  .professional-status {
+    justify-content: center;
+  }
+}
+
+.main {
+  min-height: calc(100vh - 170px);
+}
+
+.page-view {
+  min-height: calc(100vh - 190px);
+  display: flex;
+  align-items: center;
+}
+
+.hero {
+  padding-top: 60px;
+}
+
+.hero-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.hero-actions .btn {
+  border-radius: 999px;
+  padding: 12px 28px;
+  font-weight: 700;
+}
+
+.header {
+  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--background-color), transparent 18%);
+}
+
+.site-footer {
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  padding: 24px 0;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+}
+
+@media (max-width: 992px) {
+  .page-view {
+    min-height: auto;
+    align-items: flex-start;
+    padding-top: 24px;
+  }
+}
