@@ -1,0 +1,201 @@
+.lang-toggle {
+  margin-left: 10px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 70%);
+  color: var(--default-color);
+  background: transparent;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.professional-status {
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-color), transparent 85%);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 35%);
+  color: var(--default-color);
+}
+
+.professional-status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-color);
+}
+
+.service-item ul {
+  padding-left: 1rem;
+}
+
+.experience-item + .experience-item {
+  margin-top: 1.5rem;
+}
+
+.portfolio-filters li {
+  cursor: pointer;
+}
+
+.portfolio-info p {
+  margin-bottom: 0;
+}
+
+.typed-name {
+  min-width: 12ch;
+  display: inline-block;
+}
+
+.typed-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--accent-color);
+  animation: typed-blink 1s steps(1) infinite;
+}
+
+@keyframes typed-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.knowledge-section .service-item {
+  height: 100%;
+}
+
+.social-spaced a {
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 999px;
+}
+
+.knowledge-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.knowledge-card::after {
+  content: '';
+  position: absolute;
+  inset: auto -20% -50% -20%;
+  height: 70px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color), transparent 72%) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.portfolio-content {
+  transition: transform 0.25s ease;
+}
+
+.portfolio-content:hover {
+  transform: translateY(-4px);
+}
+
+.portfolio-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.portfolio-filters li {
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.experience-grid {
+  margin-top: 8px;
+}
+
+.experience-card {
+  background: color-mix(in srgb, var(--surface-color), transparent 18%);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 70%);
+  border-radius: 16px;
+  padding: 24px;
+  height: 100%;
+  box-shadow: 0 12px 30px color-mix(in srgb, #000, transparent 82%);
+}
+
+.experience-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.experience-pill {
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 55%);
+  padding: 4px 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.experience-pill.accent {
+  background: color-mix(in srgb, var(--accent-color), transparent 83%);
+}
+
+.experience-card ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.migration-card {
+  background: linear-gradient(140deg, color-mix(in srgb, var(--surface-color), transparent 10%), color-mix(in srgb, var(--accent-color), transparent 92%));
+}
+
+.knowledge-filter-wrap {
+  margin-bottom: 18px;
+}
+
+.knowledge-filters li {
+  font-size: 13px;
+}
+
+.knowledge-tag {
+  display: inline-flex;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 60%);
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+}
+
+.skill-card {
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 70%);
+  border-radius: 18px;
+  box-shadow: 0 14px 30px color-mix(in srgb, #000, transparent 80%);
+}
+
+.skill-chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 62%);
+  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.experience-pill.current {
+  border-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+  background: color-mix(in srgb, var(--accent-color), transparent 82%);
+}
+
+.section-title p {
+  max-width: 900px;
+  margin: 0 auto;
+}
