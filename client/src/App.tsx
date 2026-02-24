@@ -399,6 +399,20 @@ function SkillsSection({ lang }: { lang: Lang }) {
   const skills = skillsCatalog[lang];
 
   useEffect(() => {
+    const skillElements = Array.from(document.querySelectorAll<HTMLElement>('#skills [data-aos]'));
+    const timers: number[] = [];
+
+    skillElements.forEach((element) => {
+      element.classList.remove('aos-animate');
+      const delay = Number(element.dataset.aosDelay ?? '0');
+      const timer = window.setTimeout(() => element.classList.add('aos-animate'), delay);
+      timers.push(timer);
+    });
+
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, [activeFilter, lang]);
+
+  useEffect(() => {
     setActiveFilter('all');
   }, [lang]);
 
