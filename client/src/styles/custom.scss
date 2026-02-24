@@ -44,7 +44,6 @@
 }
 
 .typed-role {
-  min-width: 23ch;
   display: inline-block;
   color: var(--accent-color);
   font-weight: 600;
@@ -274,5 +273,163 @@
 @media (max-width: 992px) {
   .hero .hero-image .floating-elements .floating-card {
     display: none;
+  }
+}
+
+
+/* Lightweight AOS-like entrance animations for Hero */
+[data-aos] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition-property: opacity, transform;
+  transition-duration: 0.7s;
+  transition-timing-function: cubic-bezier(0.2, 0.65, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+[data-aos="fade-up"] {
+  transform: translate3d(0, 22px, 0);
+}
+
+[data-aos="fade-left"] {
+  transform: translate3d(20px, 0, 0);
+}
+
+[data-aos="fade-right"] {
+  transform: translate3d(-20px, 0, 0);
+}
+
+[data-aos="zoom-in"] {
+  transform: scale(0.94);
+}
+
+[data-aos].aos-animate {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+
+#preloader.preloader-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+#preloader.preloader-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+}
+
+.skills-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+  padding: 0;
+  list-style: none;
+}
+
+.skills-filters li {
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
+  color: var(--accent-color);
+}
+
+.skills-filters li:hover {
+  background-color: color-mix(in srgb, var(--accent-color), transparent 80%);
+}
+
+.skills-filters li.filter-active {
+  background-color: var(--accent-color);
+  color: var(--contrast-color);
+}
+
+/* Skills emphasis section */
+.skills-summary-title {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+}
+
+.skills-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0 auto 28px;
+  max-width: 980px;
+}
+
+.skills-summary-card {
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 55%);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--surface-color), transparent 0%), color-mix(in srgb, var(--accent-color), transparent 88%));
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 16px 30px color-mix(in srgb, #000, transparent 78%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skills-summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 38px color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+.skills-summary-card span {
+  display: block;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--default-color), transparent 18%);
+}
+
+.skills-summary-card strong {
+  font-size: 2rem;
+  color: var(--accent-color);
+  letter-spacing: 0.02em;
+}
+
+.skills .skill-box {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 238px;
+}
+
+.skill-percent {
+  margin-top: auto;
+  margin-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--default-color), transparent 8%);
+}
+
+.skill-percent i {
+  color: var(--accent-color);
+}
+
+/* Slower reveal pacing */
+[data-aos] {
+  transition-duration: 1.05s;
+}
+
+@media (max-width: 991px) {
+  .skills-summary-grid {
+    grid-template-columns: 1fr;
   }
 }
