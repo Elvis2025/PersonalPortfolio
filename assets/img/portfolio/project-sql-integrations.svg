@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <rect width="1200" height="900" fill="#101a20"/>
+  <ellipse cx="600" cy="220" rx="260" ry="90" fill="#1387c1"/>
+  <rect x="340" y="220" width="520" height="360" fill="#1387c1"/>
+  <ellipse cx="600" cy="580" rx="260" ry="90" fill="#1387c1"/>
+  <text x="150" y="760" fill="#e7f2f7" font-size="52" font-family="Raleway">SQL Server Integrations</text>
+  <text x="150" y="820" fill="#b8d4e2" font-size="30" font-family="Roboto">Views · Stored Procedures · Data Structures</text>
+</svg>
