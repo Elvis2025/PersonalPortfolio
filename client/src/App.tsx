@@ -9,6 +9,7 @@ type Translation = {
   nav: readonly string[];
   heroTitle: string;
   role: string;
+  heroRolePrefix: string;
   summaryTitle: string;
   summary: string;
   status: string;
@@ -48,6 +49,7 @@ const content: Record<Lang, Translation> = {
     nav: ['Inicio', 'Resumen', 'Experiencia', 'Skills', 'Proyectos', 'Conocimiento', 'Contacto'],
     heroTitle: 'Hola, soy',
     role: 'Desarrollador Full Stack',
+    heroRolePrefix: 'Creativo',
     summaryTitle: 'Resumen Profesional',
     summary:
       'Desarrollador de Software con más de 2 años de experiencia. Inicié como desarrollador móvil, implementando nuevas funcionalidades y corrigiendo errores en aplicaciones con Xamarin, y creando nuevas aplicaciones móviles y APIs con .NET MAUI y ASP.NET 9. Me enfoco en excelente UX aplicando Clean Architecture, código limpio, patrones de diseño y buenas prácticas de seguridad. He trabajado con SQL Server (vistas, stored procedures, estructuras de datos), y SQLite para almacenamiento local. Actualmente soy Full Stack Developer, mejorando frontend y backend con Angular, Bootstrap, JavaScript/TypeScript, ASP.NET, SQL Server y Boilerplate, destacando por análisis crítico y enfoque en software de alta calidad.',
@@ -98,6 +100,7 @@ const content: Record<Lang, Translation> = {
     nav: ['Home', 'Summary', 'Experience', 'Skills', 'Projects', 'Knowledge', 'Contact'],
     heroTitle: "Hello, I'm",
     role: 'Full Stack Developer',
+    heroRolePrefix: 'Creative',
     summaryTitle: 'Professional Summary',
     summary:
       'Software Developer with over 2 years of experience. I began as a mobile developer implementing features and fixing bugs in Xamarin apps, and building new mobile apps and APIs using .NET MAUI and ASP.NET 9 tailored to client needs. I focus on great UX applying Clean Architecture, clean code, design patterns, and security best practices. I worked with SQL Server (views, stored procedures, structured models) and SQLite for local mobile storage. Currently, I work as a Full Stack Developer improving backend and frontend with Angular, Bootstrap, JavaScript/TypeScript, ASP.NET, SQL Server, and Boilerplate, relying on critical thinking and analytical skills to deliver high-quality software.',
@@ -350,7 +353,7 @@ export function App() {
               <div className="col-lg-6 order-2 order-lg-1">
                 <div className="hero-content">
                   <h1>{t.heroTitle} <span className="highlight">{displayName}</span></h1>
-                  <h2 className="hero-role-line"><span className="role-prefix">Creative</span> <span className="highlight typed-role">{typedRole}<span className="typed-cursor">|</span></span></h2>
+                  <h2 className="hero-role-line"><span className="role-prefix">{t.heroRolePrefix}</span> <span className="typed-role">{typedRole}<span className="typed-cursor">|</span></span></h2>
                   <p>{t.location} · inelvis16031124@gmail.com · +1 849-869-8664</p>
                   <motion.div className="professional-status" aria-label={t.status} animate={reduceMotion ? {} : { opacity: [0.95, 1, 0.95] }} transition={{ duration: 3, repeat: Infinity }}>
                     <span className="dot" /> {t.status}
@@ -361,16 +364,21 @@ export function App() {
                 <div className="hero-image">
                   <div className="image-wrapper">
                     <img src="/img/profile/MyProfile01.webp" alt="Elvis Hernandez" className="img-fluid" />
+                    <div className="floating-elements">
+                      <motion.div className="floating-card design" animate={reduceMotion ? {} : { y: [0, -8, 0] }} transition={{ duration: 3.1, repeat: Infinity }}>
+                        <i className="bi bi-palette" />
+                        <span>Design</span>
+                      </motion.div>
+                      <motion.div className="floating-card code" animate={reduceMotion ? {} : { y: [0, -8, 0] }} transition={{ duration: 3.1, repeat: Infinity, delay: 1 }}>
+                        <i className="bi bi-code-slash" />
+                        <span>Code</span>
+                      </motion.div>
+                      <motion.div className="floating-card creativity" animate={reduceMotion ? {} : { y: [0, -8, 0] }} transition={{ duration: 3.1, repeat: Infinity, delay: 2 }}>
+                        <i className="bi bi-lightbulb" />
+                        <span>Ideas</span>
+                      </motion.div>
+                    </div>
                   </div>
-                  <motion.div className="hero-floating-widget widget-code" animate={reduceMotion ? {} : { y: [0, -6, 0] }} transition={{ duration: 3.2, repeat: Infinity }}>
-                    <i className="bi bi-code-slash" /> Code
-                  </motion.div>
-                  <motion.div className="hero-floating-widget widget-design" animate={reduceMotion ? {} : { y: [0, 5, 0] }} transition={{ duration: 3.6, repeat: Infinity }}>
-                    <i className="bi bi-palette2" /> UI/UX
-                  </motion.div>
-                  <motion.div className="hero-floating-widget widget-api" animate={reduceMotion ? {} : { y: [0, -5, 0] }} transition={{ duration: 3.4, repeat: Infinity }}>
-                    <i className="bi bi-diagram-3" /> APIs
-                  </motion.div>
                 </div>
               </div>
             </div>

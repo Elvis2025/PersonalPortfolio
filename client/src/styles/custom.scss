@@ -46,6 +46,8 @@
 .typed-role {
   min-width: 23ch;
   display: inline-block;
+  color: var(--accent-color);
+  font-weight: 600;
 }
 
 .hero-role-line {
@@ -214,64 +216,63 @@
 }
 
 
-.hero-image {
+
+
+/* Hero refinements to match FolioOne reference */
+.hero .hero-content h1 .highlight::after {
+  display: none;
+}
+
+.hero .hero-image .image-wrapper {
   position: relative;
+  max-width: 450px;
+  margin: 0 auto;
 }
 
-.hero-floating-widget {
+.hero .hero-image .floating-elements {
   position: absolute;
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  border-radius: 14px;
-  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 55%);
-  background: color-mix(in srgb, #0a1f34, transparent 10%);
-  color: var(--default-color);
-  font-weight: 600;
-  box-shadow: 0 14px 35px color-mix(in srgb, #000, transparent 75%);
-  backdrop-filter: blur(5px);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
 }
 
-.hero-floating-widget i {
+.hero .hero-image .floating-elements .floating-card {
+  position: absolute;
+  background: #141f26;
+  padding: 15px 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--default-color), transparent 90%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+}
+
+.hero .hero-image .floating-elements .floating-card i {
+  font-size: 1.2rem;
   color: var(--accent-color);
 }
 
-.widget-code {
-  left: -20px;
-  top: 55%;
+.hero .hero-image .floating-elements .floating-card.design {
+  top: 10%;
+  right: -10%;
 }
 
-.widget-design {
-  right: -8px;
-  top: 14%;
+.hero .hero-image .floating-elements .floating-card.code {
+  bottom: 30%;
+  left: -15%;
 }
 
-.widget-api {
-  right: -14px;
-  bottom: 18%;
+.hero .hero-image .floating-elements .floating-card.creativity {
+  top: 60%;
+  right: -5%;
 }
 
-@media (max-width: 991.98px) {
-  .hero-floating-widget {
-    font-size: 13px;
-    padding: 10px 12px;
-  }
-
-  .widget-code {
-    left: 8px;
-    top: auto;
-    bottom: -10px;
-  }
-
-  .widget-design {
-    right: 8px;
-    top: 10px;
-  }
-
-  .widget-api {
-    right: 10px;
-    bottom: 24px;
+@media (max-width: 992px) {
+  .hero .hero-image .floating-elements .floating-card {
+    display: none;
   }
 }
