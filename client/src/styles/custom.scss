@@ -359,3 +359,77 @@
   background-color: var(--accent-color);
   color: var(--contrast-color);
 }
+
+/* Skills emphasis section */
+.skills-summary-title {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+}
+
+.skills-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0 auto 28px;
+  max-width: 980px;
+}
+
+.skills-summary-card {
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 55%);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--surface-color), transparent 0%), color-mix(in srgb, var(--accent-color), transparent 88%));
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 16px 30px color-mix(in srgb, #000, transparent 78%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skills-summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 38px color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+.skills-summary-card span {
+  display: block;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--default-color), transparent 18%);
+}
+
+.skills-summary-card strong {
+  font-size: 2rem;
+  color: var(--accent-color);
+  letter-spacing: 0.02em;
+}
+
+.skills .skill-box {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 238px;
+}
+
+.skill-percent {
+  margin-top: auto;
+  margin-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--default-color), transparent 8%);
+}
+
+.skill-percent i {
+  color: var(--accent-color);
+}
+
+/* Slower reveal pacing */
+[data-aos] {
+  transition-duration: 1.05s;
+}
+
+@media (max-width: 991px) {
+  .skills-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

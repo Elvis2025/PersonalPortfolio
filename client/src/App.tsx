@@ -1,7 +1,18 @@
 import { MouseEvent, ReactNode, useEffect, useMemo, useState } from 'react';
 
 type Lang = 'en' | 'es';
-type SkillCategory = 'all' | 'frontend' | 'backend' | 'architectures' | 'patterns' | 'methodologies' | 'practices';
+type SkillCategory =
+  | 'all'
+  | 'frontend'
+  | 'backend'
+  | 'architectures'
+  | 'patterns'
+  | 'methodologies'
+  | 'practices'
+  | 'mobile'
+  | 'tools'
+  | 'desktop'
+  | 'windows';
 
 type NavItem = {
   label: string;
@@ -28,6 +39,7 @@ type SkillCard = {
   description: string;
   percent: number;
   category: SkillCategory;
+  icon: string;
 };
 
 type Dictionary = {
@@ -44,6 +56,8 @@ type Dictionary = {
     title: string;
     subtitle: string;
     filters: Record<SkillCategory, string>;
+    summaryTitle: string;
+    summary: { frontend: string; backend: string; mobile: string };
   };
   copyright: string;
   allRights: string;
@@ -101,7 +115,8 @@ const copy: Record<Lang, Dictionary> = {
     },
     skillsSection: {
       title: 'Skills',
-      subtitle: 'Backend-focused profile with strong architecture, pattern-driven design, and solid frontend execution.',
+      subtitle:
+        'Results-driven software professional focused on solving real business problems with scalable, secure and maintainable solutions across backend, frontend, mobile and architecture.',
       filters: {
         all: 'All',
         frontend: 'Front-end',
@@ -109,7 +124,17 @@ const copy: Record<Lang, Dictionary> = {
         architectures: 'Architectures',
         patterns: 'Design Patterns',
         methodologies: 'Work Methodologies',
-        practices: 'Best Practices'
+        practices: 'Best Practices',
+        mobile: 'Mobile',
+        tools: 'Tools',
+        desktop: 'Desktop',
+        windows: 'Windows Services'
+      },
+      summaryTitle: 'Professional Focus',
+      summary: {
+        frontend: 'Front-End Developer',
+        backend: 'Back-End Developer',
+        mobile: 'Mobile Developer'
       }
     },
     copyright: 'Copyright',
@@ -166,7 +191,8 @@ const copy: Record<Lang, Dictionary> = {
     },
     skillsSection: {
       title: 'Skills',
-      subtitle: 'Perfil orientado más a Back-end, con dominio en arquitectura, patrones y ejecución sólida en Front-end.',
+      subtitle:
+        'Profesional del software orientado a resultados, enfocado en resolver problemas reales con soluciones escalables, seguras y mantenibles en backend, frontend, mobile y arquitectura.',
       filters: {
         all: 'Todos',
         frontend: 'Front-end',
@@ -174,7 +200,17 @@ const copy: Record<Lang, Dictionary> = {
         architectures: 'Arquitecturas',
         patterns: 'Patrones de diseños',
         methodologies: 'Metodologías de trabajo',
-        practices: 'Buenas prácticas'
+        practices: 'Buenas prácticas',
+        mobile: 'Mobile',
+        tools: 'Herramientas/Tools',
+        desktop: 'Desktop',
+        windows: 'Servicios de Windows'
+      },
+      summaryTitle: 'Enfoque Profesional',
+      summary: {
+        frontend: 'Front-End Developer',
+        backend: 'Back-End Developer',
+        mobile: 'Mobile Developer'
       }
     },
     copyright: 'Copyright',
@@ -190,54 +226,156 @@ const rolesByLang: Record<Lang, string[]> = {
 
 const skillsCatalog: Record<Lang, SkillCard[]> = {
   es: [
-    { title: 'ASP.NET Core / .NET APIs', description: 'Diseño de APIs robustas con seguridad, validaciones y buenas prácticas.', percent: 95, category: 'backend' },
-    { title: 'SQL Server / SQLite', description: 'Stored procedures, vistas, estructuras de datos y optimización.', percent: 92, category: 'backend' },
-    { title: 'C# y .NET', description: 'Desarrollo empresarial y mobile con enfoque escalable.', percent: 93, category: 'backend' },
-    { title: 'Angular', description: 'Construcción de interfaces modernas y mantenibles.', percent: 82, category: 'frontend' },
-    { title: 'React + TypeScript', description: 'UI modular con componentes reutilizables y tipado fuerte.', percent: 80, category: 'frontend' },
-    { title: 'JavaScript', description: 'Lenguaje base para comportamiento frontend moderno en navegador.', percent: 84, category: 'frontend' },
-    { title: 'TypeScript', description: 'Tipado estático sobre JavaScript para aplicaciones más seguras.', percent: 86, category: 'frontend' },
-    { title: 'Clean Architecture', description: 'Separación de capas para escalabilidad y testabilidad.', percent: 94, category: 'architectures' },
-    { title: 'Onion Architecture', description: 'Dominio en el centro y desacople de infraestructura.', percent: 90, category: 'architectures' },
-    { title: 'Arquitectura Modular', description: 'Sistemas desacoplados por módulos y vertical slices.', percent: 88, category: 'architectures' },
-    { title: 'Repository + Unit of Work', description: 'Consistencia transaccional y abstracción de persistencia.', percent: 92, category: 'patterns' },
-    { title: 'Factory Pattern', description: 'Creación estandarizada de objetos según contexto de negocio.', percent: 85, category: 'patterns' },
-    { title: 'Strategy Pattern', description: 'Intercambio de algoritmos/reglas sin cambiar clientes.', percent: 87, category: 'patterns' },
-    { title: 'Mediator Pattern', description: 'Comunicación desacoplada entre componentes con coordinador.', percent: 86, category: 'patterns' },
-    { title: 'Result Pattern', description: 'Respuesta consistente de éxito/error sin abuso de excepciones.', percent: 88, category: 'patterns' },
-    { title: 'CQRS', description: 'Separación comando/consulta para escalabilidad y claridad.', percent: 86, category: 'patterns' },
-    { title: 'Agile', description: 'Entrega iterativa enfocada en valor continuo y adaptación.', percent: 90, category: 'methodologies' },
-    { title: 'Scrum', description: 'Framework por sprints con roles y ceremonias claras.', percent: 89, category: 'methodologies' },
-    { title: 'Kanban', description: 'Flujo visual con límites WIP y visibilidad de entrega.', percent: 88, category: 'methodologies' },
-    { title: 'SOLID', description: 'Principios orientados a objetos para código flexible y mantenible.', percent: 94, category: 'practices' },
-    { title: 'KISS', description: 'Soluciones simples para reducir complejidad y errores.', percent: 92, category: 'practices' },
-    { title: 'DRY', description: 'Evitar lógica duplicada para mantener consistencia.', percent: 93, category: 'practices' },
-    { title: 'YAGNI', description: 'Construir solo lo necesario para evitar sobreingeniería.', percent: 91, category: 'practices' }
+    { title: 'ASP.NET Core', description: 'APIs robustas con seguridad, validaciones y arquitectura limpia.', percent: 95, category: 'backend', icon: 'bi-server' },
+    { title: 'C#', description: 'Lenguaje principal para backend, desktop y servicios empresariales.', percent: 94, category: 'backend', icon: 'bi-filetype-cs' },
+    { title: 'Java', description: 'Desarrollo backend y desktop con enfoque enterprise.', percent: 82, category: 'backend', icon: 'bi-cup-hot' },
+    { title: 'Spring Boot', description: 'Microservicios y APIs Java listas para producción.', percent: 79, category: 'backend', icon: 'bi-boxes' },
+    { title: 'Node.js', description: 'Runtime para servicios web y APIs orientadas a eventos.', percent: 80, category: 'backend', icon: 'bi-node-plus' },
+    { title: 'Express', description: 'Framework minimalista para construir APIs en Node.js.', percent: 78, category: 'backend', icon: 'bi-diagram-2' },
+    { title: 'SQL Server', description: 'Diseño de BD, SPs, vistas y optimización de consultas.', percent: 93, category: 'backend', icon: 'bi-database-fill' },
+    { title: 'SQLite', description: 'Persistencia local eficiente para apps móviles.', percent: 88, category: 'backend', icon: 'bi-device-hdd' },
+    { title: 'MongoDB', description: 'Modelado NoSQL para documentos y escenarios flexibles.', percent: 77, category: 'backend', icon: 'bi-hdd-network' },
+    { title: 'PostgreSQL', description: 'Base de datos relacional avanzada para sistemas robustos.', percent: 80, category: 'backend', icon: 'bi-database-gear' },
+    { title: 'MySQL', description: 'Gestión de datos relacionales en soluciones web.', percent: 82, category: 'backend', icon: 'bi-database-check' },
+
+    { title: 'Angular', description: 'Interfaces modernas y escalables para aplicaciones empresariales.', percent: 82, category: 'frontend', icon: 'bi-window-sidebar' },
+    { title: 'React', description: 'UI modular basada en componentes y estado reactivo.', percent: 80, category: 'frontend', icon: 'bi-bounding-box-circles' },
+    { title: 'JavaScript', description: 'Lenguaje base para interactividad frontend en navegador.', percent: 84, category: 'frontend', icon: 'bi-filetype-js' },
+    { title: 'TypeScript', description: 'Tipado estático para frontend más mantenible y seguro.', percent: 86, category: 'frontend', icon: 'bi-filetype-tsx' },
+    { title: 'HTML5', description: 'Estructura semántica para experiencias web accesibles.', percent: 90, category: 'frontend', icon: 'bi-filetype-html' },
+    { title: 'CSS3', description: 'Estilado moderno, responsive y consistente.', percent: 88, category: 'frontend', icon: 'bi-filetype-css' },
+    { title: 'SCSS', description: 'Estilos escalables con variables, nesting y reutilización.', percent: 86, category: 'frontend', icon: 'bi-palette2' },
+    { title: 'Blazor', description: 'Desarrollo web interactivo con C# en el frontend.', percent: 72, category: 'frontend', icon: 'bi-browser-edge' },
+    { title: 'Razor', description: 'Vistas dinámicas .NET para server rendering.', percent: 78, category: 'frontend', icon: 'bi-file-earmark-code' },
+    { title: 'XAML', description: 'Markup para interfaces ricas en aplicaciones .NET.', percent: 85, category: 'frontend', icon: 'bi-columns-gap' },
+
+    { title: 'Clean Architecture', description: 'Separación de capas para escalabilidad y testabilidad.', percent: 94, category: 'architectures', icon: 'bi-diagram-3' },
+    { title: 'Onion Architecture', description: 'Dominio en el centro y desacople de infraestructura.', percent: 90, category: 'architectures', icon: 'bi-bullseye' },
+    { title: 'Arquitectura Modular', description: 'Sistemas desacoplados por módulos.', percent: 88, category: 'architectures', icon: 'bi-boxes' },
+    { title: 'Arquitectura Monolítica', description: 'Diseño coherente para soluciones centralizadas.', percent: 85, category: 'architectures', icon: 'bi-square' },
+    { title: 'Vertical Slice', description: 'Organización por caso de uso orientada a features.', percent: 89, category: 'architectures', icon: 'bi-grid-1x2' },
+    { title: 'Horizontal Slice', description: 'Separación por capas funcionales transversales.', percent: 84, category: 'architectures', icon: 'bi-layout-three-columns' },
+
+    { title: 'Repository Pattern', description: 'Abstracción de acceso a datos limpia y mantenible.', percent: 92, category: 'patterns', icon: 'bi-archive' },
+    { title: 'Unit of Work', description: 'Control transaccional y coordinación de persistencia.', percent: 91, category: 'patterns', icon: 'bi-arrow-repeat' },
+    { title: 'Factory Pattern', description: 'Creación estandarizada de objetos por contexto.', percent: 85, category: 'patterns', icon: 'bi-tools' },
+    { title: 'Strategy Pattern', description: 'Intercambio de algoritmos sin cambiar clientes.', percent: 87, category: 'patterns', icon: 'bi-shuffle' },
+    { title: 'Mediator Pattern', description: 'Comunicación desacoplada entre componentes.', percent: 86, category: 'patterns', icon: 'bi-diagram-2-fill' },
+    { title: 'Result Pattern', description: 'Respuesta consistente de éxito/error.', percent: 88, category: 'patterns', icon: 'bi-check2-square' },
+    { title: 'CQRS', description: 'Separación comando/consulta para claridad y escala.', percent: 86, category: 'patterns', icon: 'bi-distribute-vertical' },
+    { title: 'Singleton Pattern', description: 'Instancia única controlada para recursos compartidos.', percent: 83, category: 'patterns', icon: 'bi-1-circle' },
+
+    { title: 'Agile', description: 'Entrega iterativa enfocada en valor continuo.', percent: 90, category: 'methodologies', icon: 'bi-lightning-charge' },
+    { title: 'Scrum', description: 'Framework por sprints con roles y ceremonias claras.', percent: 89, category: 'methodologies', icon: 'bi-kanban' },
+    { title: 'Kanban', description: 'Flujo visual con límites WIP y visibilidad de entrega.', percent: 88, category: 'methodologies', icon: 'bi-columns-gap' },
+
+    { title: 'SOLID', description: 'Principios para código flexible y mantenible.', percent: 94, category: 'practices', icon: 'bi-bricks' },
+    { title: 'KISS', description: 'Soluciones simples para reducir complejidad.', percent: 92, category: 'practices', icon: 'bi-emoji-smile' },
+    { title: 'DRY', description: 'Evitar lógica duplicada para mantener consistencia.', percent: 93, category: 'practices', icon: 'bi-files' },
+    { title: 'YAGNI', description: 'Construir lo necesario sin sobreingeniería.', percent: 91, category: 'practices', icon: 'bi-scissors' },
+
+    { title: 'Flutter', description: 'Desarrollo cross-platform con alto rendimiento UI.', percent: 72, category: 'mobile', icon: 'bi-phone' },
+    { title: '.NET MAUI', description: 'Apps móviles/desktop con stack .NET unificado.', percent: 93, category: 'mobile', icon: 'bi-phone-fill' },
+    { title: 'Xamarin', description: 'Mantenimiento y evolución de apps móviles enterprise.', percent: 92, category: 'mobile', icon: 'bi-phone-vibrate' },
+
+    { title: 'WinForms', description: 'Aplicaciones desktop clásicas para operación interna.', percent: 80, category: 'desktop', icon: 'bi-window' },
+    { title: 'WinUI', description: 'Interfaz moderna nativa en ecosistema Windows.', percent: 74, category: 'desktop', icon: 'bi-windows' },
+    { title: 'WPF', description: 'Desktop .NET con UI avanzada y data binding.', percent: 81, category: 'desktop', icon: 'bi-display' },
+    { title: 'JavaFX', description: 'Framework de interfaz desktop en Java.', percent: 68, category: 'desktop', icon: 'bi-cpu' },
+
+    { title: 'Servicio Windows con C#', description: 'Servicios .NET en segundo plano para procesos automáticos.', percent: 88, category: 'windows', icon: 'bi-gear-wide-connected' },
+    { title: 'Servicio Windows con VB', description: 'Servicios en Visual Basic para tareas de background legacy.', percent: 73, category: 'windows', icon: 'bi-gear-fill' },
+
+    { title: 'Visual Studio Code', description: 'Editor principal para frontend, backend y automatizaciones.', percent: 95, category: 'tools', icon: 'bi-code-square' },
+    { title: 'Visual Studio', description: 'IDE principal para soluciones .NET complejas.', percent: 94, category: 'tools', icon: 'bi-terminal' },
+    { title: 'SQL Server Management Studio', description: 'Gestión, tuning y administración de SQL Server.', percent: 93, category: 'tools', icon: 'bi-database-fill-gear' },
+    { title: 'MySQL Workbench', description: 'Diseño y administración de bases MySQL.', percent: 86, category: 'tools', icon: 'bi-diagram-3-fill' },
+    { title: 'pgAdmin / gestor PostgreSQL', description: 'Administración y monitoreo de PostgreSQL.', percent: 84, category: 'tools', icon: 'bi-hdd-stack' },
+    { title: 'Android Studio', description: 'Pruebas, emulación y soporte para entorno móvil.', percent: 78, category: 'tools', icon: 'bi-android2' },
+    { title: 'NetBeans', description: 'IDE usado en proyectos Java y mantenimiento.', percent: 72, category: 'tools', icon: 'bi-cup' },
+    { title: 'Eclipse', description: 'IDE para ecosistema Java en entornos enterprise.', percent: 70, category: 'tools', icon: 'bi-easel' },
+    { title: 'Postman', description: 'Pruebas, colecciones y validación de APIs.', percent: 94, category: 'tools', icon: 'bi-send' },
+    { title: 'Git', description: 'Control de versiones y flujo colaborativo.', percent: 95, category: 'tools', icon: 'bi-git' },
+    { title: 'Azure DevOps', description: 'Boards, repos y CI/CD para entrega continua.', percent: 88, category: 'tools', icon: 'bi-cloud-check' },
+    { title: 'GitHub', description: 'Repositorios, PRs y colaboración técnica.', percent: 92, category: 'tools', icon: 'bi-github' },
+    { title: 'GitLab', description: 'Gestión de repositorios y pipelines CI/CD.', percent: 82, category: 'tools', icon: 'bi-gitlab' },
+    { title: 'Bitbucket', description: 'Versionamiento y trabajo en equipos enterprise.', percent: 80, category: 'tools', icon: 'bi-diagram-2' }
   ],
   en: [
-    { title: 'ASP.NET Core / .NET APIs', description: 'Robust API design with security, validation and best practices.', percent: 95, category: 'backend' },
-    { title: 'SQL Server / SQLite', description: 'Stored procedures, views, structured data and optimization.', percent: 92, category: 'backend' },
-    { title: 'C# and .NET', description: 'Enterprise and mobile development with scalable approach.', percent: 93, category: 'backend' },
-    { title: 'Angular', description: 'Modern and maintainable interface delivery.', percent: 82, category: 'frontend' },
-    { title: 'React + TypeScript', description: 'Modular UI with reusable components and strong typing.', percent: 80, category: 'frontend' },
-    { title: 'JavaScript', description: 'Core language for modern frontend behavior and browser interactions.', percent: 84, category: 'frontend' },
-    { title: 'TypeScript', description: 'Static typing on top of JavaScript for safer and scalable apps.', percent: 86, category: 'frontend' },
-    { title: 'Clean Architecture', description: 'Layered separation for scalable, testable systems.', percent: 94, category: 'architectures' },
-    { title: 'Onion Architecture', description: 'Domain-centered design with infrastructure decoupling.', percent: 90, category: 'architectures' },
-    { title: 'Modular Architecture', description: 'Decoupled systems organized by modules and vertical slices.', percent: 88, category: 'architectures' },
-    { title: 'Repository + Unit of Work', description: 'Transactional consistency and data-access abstraction.', percent: 92, category: 'patterns' },
-    { title: 'Factory Pattern', description: 'Standardized object creation flow according to context.', percent: 85, category: 'patterns' },
-    { title: 'Strategy Pattern', description: 'Swappable algorithms and business rules without changing clients.', percent: 87, category: 'patterns' },
-    { title: 'Mediator Pattern', description: 'Decoupled component communication through a single coordinator.', percent: 86, category: 'patterns' },
-    { title: 'Result Pattern', description: 'Consistent success/error responses without exception-heavy flow.', percent: 88, category: 'patterns' },
-    { title: 'CQRS', description: 'Command/query separation for scalable and clear use-case design.', percent: 86, category: 'patterns' },
-    { title: 'Agile', description: 'Iterative delivery focused on continuous value and adaptability.', percent: 90, category: 'methodologies' },
-    { title: 'Scrum', description: 'Sprint-based framework with clear roles, ceremonies and goals.', percent: 89, category: 'methodologies' },
-    { title: 'Kanban', description: 'Flow-based execution with WIP limits and delivery visibility.', percent: 88, category: 'methodologies' },
-    { title: 'SOLID', description: 'Object-oriented principles for flexible and maintainable systems.', percent: 94, category: 'practices' },
-    { title: 'KISS', description: 'Prioritize simple solutions to reduce complexity and defects.', percent: 92, category: 'practices' },
-    { title: 'DRY', description: 'Avoid duplicated logic to improve consistency and maintenance.', percent: 93, category: 'practices' },
-    { title: 'YAGNI', description: 'Implement only what is needed now to avoid overengineering.', percent: 91, category: 'practices' }
+    { title: 'ASP.NET Core', description: 'Robust APIs with security, validation and clean architecture.', percent: 95, category: 'backend', icon: 'bi-server' },
+    { title: 'C#', description: 'Primary language for backend, desktop and enterprise services.', percent: 94, category: 'backend', icon: 'bi-filetype-cs' },
+    { title: 'Java', description: 'Backend and desktop development with enterprise approach.', percent: 82, category: 'backend', icon: 'bi-cup-hot' },
+    { title: 'Spring Boot', description: 'Production-ready Java microservices and APIs.', percent: 79, category: 'backend', icon: 'bi-boxes' },
+    { title: 'Node.js', description: 'Runtime for event-driven web services and APIs.', percent: 80, category: 'backend', icon: 'bi-node-plus' },
+    { title: 'Express', description: 'Minimal framework for building Node.js APIs.', percent: 78, category: 'backend', icon: 'bi-diagram-2' },
+    { title: 'SQL Server', description: 'DB design, stored procedures, views and query optimization.', percent: 93, category: 'backend', icon: 'bi-database-fill' },
+    { title: 'SQLite', description: 'Efficient local persistence for mobile workflows.', percent: 88, category: 'backend', icon: 'bi-device-hdd' },
+    { title: 'MongoDB', description: 'NoSQL modeling for document-based flexible systems.', percent: 77, category: 'backend', icon: 'bi-hdd-network' },
+    { title: 'PostgreSQL', description: 'Advanced relational database for robust systems.', percent: 80, category: 'backend', icon: 'bi-database-gear' },
+    { title: 'MySQL', description: 'Relational data management for web solutions.', percent: 82, category: 'backend', icon: 'bi-database-check' },
+
+    { title: 'Angular', description: 'Modern, scalable UI delivery for enterprise apps.', percent: 82, category: 'frontend', icon: 'bi-window-sidebar' },
+    { title: 'React', description: 'Modular UI through component-driven architecture.', percent: 80, category: 'frontend', icon: 'bi-bounding-box-circles' },
+    { title: 'JavaScript', description: 'Core browser language for modern frontend interactivity.', percent: 84, category: 'frontend', icon: 'bi-filetype-js' },
+    { title: 'TypeScript', description: 'Static typing for safer and scalable frontend code.', percent: 86, category: 'frontend', icon: 'bi-filetype-tsx' },
+    { title: 'HTML5', description: 'Semantic structure for accessible web experiences.', percent: 90, category: 'frontend', icon: 'bi-filetype-html' },
+    { title: 'CSS3', description: 'Modern responsive styling and visual consistency.', percent: 88, category: 'frontend', icon: 'bi-filetype-css' },
+    { title: 'SCSS', description: 'Scalable styles with variables and composition.', percent: 86, category: 'frontend', icon: 'bi-palette2' },
+    { title: 'Blazor', description: 'Interactive web UI built with C#.', percent: 72, category: 'frontend', icon: 'bi-browser-edge' },
+    { title: 'Razor', description: 'Server-rendered .NET dynamic views.', percent: 78, category: 'frontend', icon: 'bi-file-earmark-code' },
+    { title: 'XAML', description: '.NET markup for rich UI composition.', percent: 85, category: 'frontend', icon: 'bi-columns-gap' },
+
+    { title: 'Clean Architecture', description: 'Layered separation for scalable and testable solutions.', percent: 94, category: 'architectures', icon: 'bi-diagram-3' },
+    { title: 'Onion Architecture', description: 'Domain-centered architecture with infra decoupling.', percent: 90, category: 'architectures', icon: 'bi-bullseye' },
+    { title: 'Modular Architecture', description: 'Decoupled systems structured by modules.', percent: 88, category: 'architectures', icon: 'bi-boxes' },
+    { title: 'Monolithic Architecture', description: 'Coherent centralized architecture when context requires.', percent: 85, category: 'architectures', icon: 'bi-square' },
+    { title: 'Vertical Slice', description: 'Feature/use-case oriented system organization.', percent: 89, category: 'architectures', icon: 'bi-grid-1x2' },
+    { title: 'Horizontal Slice', description: 'Layered cross-cutting organization by responsibility.', percent: 84, category: 'architectures', icon: 'bi-layout-three-columns' },
+
+    { title: 'Repository Pattern', description: 'Clean and maintainable data-access abstraction.', percent: 92, category: 'patterns', icon: 'bi-archive' },
+    { title: 'Unit of Work', description: 'Transactional consistency and persistence orchestration.', percent: 91, category: 'patterns', icon: 'bi-arrow-repeat' },
+    { title: 'Factory Pattern', description: 'Standardized object creation per business context.', percent: 85, category: 'patterns', icon: 'bi-tools' },
+    { title: 'Strategy Pattern', description: 'Swappable algorithms without changing clients.', percent: 87, category: 'patterns', icon: 'bi-shuffle' },
+    { title: 'Mediator Pattern', description: 'Decoupled communication through a coordinator.', percent: 86, category: 'patterns', icon: 'bi-diagram-2-fill' },
+    { title: 'Result Pattern', description: 'Consistent success/error handling flow.', percent: 88, category: 'patterns', icon: 'bi-check2-square' },
+    { title: 'CQRS', description: 'Command/query separation for clarity and scale.', percent: 86, category: 'patterns', icon: 'bi-distribute-vertical' },
+    { title: 'Singleton Pattern', description: 'Single controlled instance for shared resources.', percent: 83, category: 'patterns', icon: 'bi-1-circle' },
+
+    { title: 'Agile', description: 'Iterative delivery focused on continuous value.', percent: 90, category: 'methodologies', icon: 'bi-lightning-charge' },
+    { title: 'Scrum', description: 'Sprint framework with clear roles and ceremonies.', percent: 89, category: 'methodologies', icon: 'bi-kanban' },
+    { title: 'Kanban', description: 'Flow-based delivery with WIP limits and visibility.', percent: 88, category: 'methodologies', icon: 'bi-columns-gap' },
+
+    { title: 'SOLID', description: 'Principles for flexible and maintainable codebases.', percent: 94, category: 'practices', icon: 'bi-bricks' },
+    { title: 'KISS', description: 'Simple solutions to reduce accidental complexity.', percent: 92, category: 'practices', icon: 'bi-emoji-smile' },
+    { title: 'DRY', description: 'Avoid duplicate logic for consistency.', percent: 93, category: 'practices', icon: 'bi-files' },
+    { title: 'YAGNI', description: 'Build only what is needed today.', percent: 91, category: 'practices', icon: 'bi-scissors' },
+
+    { title: 'Flutter', description: 'Cross-platform mobile development with rich UI.', percent: 72, category: 'mobile', icon: 'bi-phone' },
+    { title: '.NET MAUI', description: 'Unified .NET stack for mobile and desktop apps.', percent: 93, category: 'mobile', icon: 'bi-phone-fill' },
+    { title: 'Xamarin', description: 'Enterprise mobile app maintenance and enhancement.', percent: 92, category: 'mobile', icon: 'bi-phone-vibrate' },
+
+    { title: 'WinForms', description: 'Classic desktop apps for internal operation workflows.', percent: 80, category: 'desktop', icon: 'bi-window' },
+    { title: 'WinUI', description: 'Modern native interface layer for Windows apps.', percent: 74, category: 'desktop', icon: 'bi-windows' },
+    { title: 'WPF', description: '.NET desktop UI with rich binding capabilities.', percent: 81, category: 'desktop', icon: 'bi-display' },
+    { title: 'JavaFX', description: 'Java desktop UI framework for cross-platform apps.', percent: 68, category: 'desktop', icon: 'bi-cpu' },
+
+    { title: 'Windows Service with C#', description: '.NET background services running as Windows services.', percent: 88, category: 'windows', icon: 'bi-gear-wide-connected' },
+    { title: 'Windows Service with VB', description: 'Visual Basic background services for legacy integrations.', percent: 73, category: 'windows', icon: 'bi-gear-fill' },
+
+    { title: 'Visual Studio Code', description: 'Main editor for frontend, backend and automation tasks.', percent: 95, category: 'tools', icon: 'bi-code-square' },
+    { title: 'Visual Studio', description: 'Main IDE for complex .NET solutions.', percent: 94, category: 'tools', icon: 'bi-terminal' },
+    { title: 'SQL Server Management Studio', description: 'Management, tuning and SQL Server administration.', percent: 93, category: 'tools', icon: 'bi-database-fill-gear' },
+    { title: 'MySQL Workbench', description: 'MySQL data modeling and administration.', percent: 86, category: 'tools', icon: 'bi-diagram-3-fill' },
+    { title: 'pgAdmin / PostgreSQL manager', description: 'PostgreSQL administration and monitoring.', percent: 84, category: 'tools', icon: 'bi-hdd-stack' },
+    { title: 'Android Studio', description: 'Mobile emulation, debugging and Android support.', percent: 78, category: 'tools', icon: 'bi-android2' },
+    { title: 'NetBeans', description: 'IDE used in Java projects and maintenance.', percent: 72, category: 'tools', icon: 'bi-cup' },
+    { title: 'Eclipse', description: 'Java ecosystem IDE for enterprise projects.', percent: 70, category: 'tools', icon: 'bi-easel' },
+    { title: 'Postman', description: 'API testing, collections and endpoint validation.', percent: 94, category: 'tools', icon: 'bi-send' },
+    { title: 'Git', description: 'Version control and collaboration workflows.', percent: 95, category: 'tools', icon: 'bi-git' },
+    { title: 'Azure DevOps', description: 'Boards, repos and CI/CD for continuous delivery.', percent: 88, category: 'tools', icon: 'bi-cloud-check' },
+    { title: 'GitHub', description: 'Repositories, PR reviews and technical collaboration.', percent: 92, category: 'tools', icon: 'bi-github' },
+    { title: 'GitLab', description: 'Repository management and CI/CD pipelines.', percent: 82, category: 'tools', icon: 'bi-gitlab' },
+    { title: 'Bitbucket', description: 'Source control workflows for enterprise teams.', percent: 80, category: 'tools', icon: 'bi-diagram-2' }
   ]
 };
 
@@ -413,8 +551,57 @@ function HomePage({ lang }: { lang: Lang }) {
 
 function SkillsSection({ lang }: { lang: Lang }) {
   const [activeFilter, setActiveFilter] = useState<SkillCategory>('all');
+  const [counts, setCounts] = useState({ frontend: 0, backend: 0, mobile: 0 });
+  const [summaryStarted, setSummaryStarted] = useState(false);
   const sectionText = copy[lang].skillsSection;
   const skills = skillsCatalog[lang];
+
+  const targets = { frontend: 82, backend: 93, mobile: 88 };
+
+  useEffect(() => {
+    setActiveFilter('all');
+  }, [lang]);
+
+  useEffect(() => {
+    const summaryElement = document.getElementById('skills-summary');
+    if (!summaryElement) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setSummaryStarted(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(summaryElement);
+    return () => observer.disconnect();
+  }, [lang]);
+
+  useEffect(() => {
+    if (!summaryStarted) return;
+    const timers: number[] = [];
+
+    const animateCounter = (key: 'frontend' | 'backend' | 'mobile', target: number) => {
+      let value = 0;
+      const timer = window.setInterval(() => {
+        value += 1;
+        setCounts((current) => ({ ...current, [key]: Math.min(value, target) }));
+        if (value >= target) window.clearInterval(timer);
+      }, 18);
+      timers.push(timer);
+    };
+
+    animateCounter('frontend', targets.frontend);
+    animateCounter('backend', targets.backend);
+    animateCounter('mobile', targets.mobile);
+
+    return () => timers.forEach((timer) => window.clearInterval(timer));
+  }, [summaryStarted]);
 
   useEffect(() => {
     const skillElements = Array.from(document.querySelectorAll<HTMLElement>('#skills [data-aos]'));
@@ -430,13 +617,8 @@ function SkillsSection({ lang }: { lang: Lang }) {
     return () => timers.forEach((timer) => window.clearTimeout(timer));
   }, [activeFilter, lang]);
 
-  useEffect(() => {
-    setActiveFilter('all');
-  }, [lang]);
-
   const filteredSkills = skills.filter((skill) => activeFilter === 'all' || skill.category === activeFilter);
-
-  const filterOrder: SkillCategory[] = ['all', 'frontend', 'backend', 'architectures', 'patterns', 'methodologies', 'practices'];
+  const filterOrder: SkillCategory[] = ['all', 'frontend', 'backend', 'mobile', 'desktop', 'windows', 'architectures', 'patterns', 'methodologies', 'practices', 'tools'];
 
   return (
     <section id="skills" className="skills section">
@@ -445,14 +627,28 @@ function SkillsSection({ lang }: { lang: Lang }) {
         <p>{sectionText.subtitle}</p>
       </div>
 
-      <div className="container" data-aos="fade-up" data-aos-delay="100">
-        <ul className="skills-filters" data-aos="fade-up" data-aos-delay="120">
+      <div className="container" id="skills-summary" data-aos="fade-up" data-aos-delay="100">
+        <h3 className="skills-summary-title">{sectionText.summaryTitle}</h3>
+        <div className="skills-summary-grid">
+          <div className="skills-summary-card" data-aos="zoom-in" data-aos-delay="140">
+            <span>{sectionText.summary.frontend}</span>
+            <strong>{counts.frontend}%</strong>
+          </div>
+          <div className="skills-summary-card" data-aos="zoom-in" data-aos-delay="220">
+            <span>{sectionText.summary.backend}</span>
+            <strong>{counts.backend}%</strong>
+          </div>
+          <div className="skills-summary-card" data-aos="zoom-in" data-aos-delay="300">
+            <span>{sectionText.summary.mobile}</span>
+            <strong>{counts.mobile}%</strong>
+          </div>
+        </div>
+      </div>
+
+      <div className="container" data-aos="fade-up" data-aos-delay="160">
+        <ul className="skills-filters" data-aos="fade-up" data-aos-delay="180">
           {filterOrder.map((filter) => (
-            <li
-              key={filter}
-              className={activeFilter === filter ? 'filter-active' : ''}
-              onClick={() => setActiveFilter(filter)}
-            >
+            <li key={filter} className={activeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveFilter(filter)}>
               {sectionText.filters[filter]}
             </li>
           ))}
@@ -460,13 +656,20 @@ function SkillsSection({ lang }: { lang: Lang }) {
 
         <div className="row g-4 skills-animation">
           {filteredSkills.map((skill, index) => (
-            <div key={skill.title} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={100 + (index % 4) * 100}>
+            <div key={`${skill.category}-${skill.title}`} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={160 + (index % 4) * 140}>
               <div className="skill-box">
                 <h3>{skill.title}</h3>
                 <p>{skill.description}</p>
-                <span className="text-end d-block">{skill.percent}%</span>
+                <span className="skill-percent"><i className={`bi ${skill.icon}`} /> {skill.percent}%</span>
                 <div className="progress">
-                  <div className="progress-bar" role="progressbar" aria-valuenow={skill.percent} aria-valuemin={0} aria-valuemax={100} style={{ width: `${skill.percent}%` }} />
+                  <div
+                    className="progress-bar"
+                    role="progressbar"
+                    aria-valuenow={skill.percent}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    style={{ width: `${skill.percent}%` }}
+                  />
                 </div>
               </div>
             </div>
@@ -518,7 +721,7 @@ function AboutPage({ lang }: { lang: Lang }) {
           <div className="mb-5">
             <div className="row g-4">
               {about.skills.map((skill, index) => (
-                <div key={skill.title} className="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay={120 + index * 60}>
+                <div key={skill.title} className="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay={160 + index * 80}>
                   <div className="skill-item">
                     <i className={`bi ${skill.icon}`} />
                     <h3>{skill.title}</h3>
@@ -532,7 +735,7 @@ function AboutPage({ lang }: { lang: Lang }) {
           <div className="mb-5">
             <div className="row g-4">
               {about.timeline.map((item, index) => (
-                <div key={item.year + item.title} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={120 + index * 60}>
+                <div key={item.year + item.title} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={160 + index * 80}>
                   <article className="timeline-item">
                     <span className="dot" />
                     <time>{item.year}</time>
@@ -544,13 +747,13 @@ function AboutPage({ lang }: { lang: Lang }) {
             </div>
           </div>
 
-          <blockquote className="personal-quote text-center mb-5" data-aos="fade-down" data-aos-delay="200">
+          <blockquote className="personal-quote text-center mb-5" data-aos="fade-down" data-aos-delay="220">
             <p>{about.quote}</p>
           </blockquote>
 
           <div className="row g-3 justify-content-center">
             {about.facts.map((fact, index) => (
-              <div key={fact.label} className="col-6 col-md-3 col-lg-2" data-aos="zoom-in" data-aos-delay={120 + index * 40}>
+              <div key={fact.label} className="col-6 col-md-3 col-lg-2" data-aos="zoom-in" data-aos-delay={180 + index * 80}>
                 <div className="fact-pill">
                   <i className={`bi ${fact.icon}`} />
                   <span>{fact.label}</span>
@@ -581,7 +784,7 @@ function Footer({ lang }: { lang: Lang }) {
   const text = copy[lang];
   return (
     <footer id="footer" className="footer">
-      <div className="container" data-aos="fade-up" data-aos-delay="100">
+      <div className="container" data-aos="fade-up" data-aos-delay="120">
         <div className="copyright text-center ">
           <p>
             © <span>{text.copyright}</span> <strong className="px-1 sitename">Elvis Portfolio</strong>
@@ -637,7 +840,7 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsBootLoading(false), 1800);
+    const timer = window.setTimeout(() => setIsBootLoading(false), 2000);
     return () => window.clearTimeout(timer);
   }, []);
 
@@ -656,7 +859,7 @@ export function App() {
           observer.unobserve(element);
         });
       },
-      { threshold: 0.16, rootMargin: '0px 0px -8% 0px' }
+      { threshold: 0.18, rootMargin: '0px 0px -5% 0px' }
     );
 
     elements.forEach((element) => {
