@@ -165,9 +165,9 @@ type ResumeContent = {
   profileTitle: string;
   profileSummary: string;
   location: string;
-  linkedin: string;
-  github: string;
-  email: string;
+  linkedin: { label: string; url: string; displayUrl: string };
+  github: { label: string; url: string; displayUrl: string };
+  email: { label: string; address: string };
   phone: string;
   experienceTitle: string;
   educationTitle: string;
@@ -358,9 +358,17 @@ const resumeContent: Record<Lang, ResumeContent> = {
     profileSummary:
       'Software Developer with over 2 years of experience. I started as a mobile developer working with Xamarin, then built mobile apps and APIs with .NET MAUI and ASP.NET 9. I focus on clean architecture, clean code, design patterns, and secure, high-performance solutions with strong UX impact.',
     location: 'Santo Domingo, Dominican Republic',
-    linkedin: 'linkedin.com/in/elvis-hernandez-075496285',
-    github: 'github.com/Elvis2025',
-    email: 'inelvis16031124@gmail.com',
+    linkedin: {
+      label: 'LinkedIn',
+      url: 'https://linkedin.com/in/elvis-hernandez-075496285',
+      displayUrl: 'linkedin.com/in/elvis-hernandez-075496285'
+    },
+    github: {
+      label: 'GitHub',
+      url: 'https://github.com/Elvis2025',
+      displayUrl: 'github.com/Elvis2025'
+    },
+    email: { label: 'Email', address: 'inelvis16031124@gmail.com' },
     phone: '+1 849-869-8664',
     experienceTitle: 'Professional Experience',
     educationTitle: 'Education',
@@ -400,10 +408,11 @@ const resumeContent: Record<Lang, ResumeContent> = {
       }
     ],
     highlightedSkills: [
-      { name: 'Angular / TypeScript', level: 90 },
-      { name: 'ASP.NET / .NET MAUI', level: 93 },
-      { name: 'SQL Server / Data Modeling', level: 90 },
-      { name: 'Clean & Onion Architecture', level: 92 }
+      { name: 'Software Architecture', level: 93 },
+      { name: 'Flutter', level: 84 },
+      { name: 'React / TypeScript', level: 90 },
+      { name: 'Blazor / C#', level: 88 },
+      { name: 'Spring Boot / Java', level: 86 }
     ]
   },
   es: {
@@ -413,9 +422,17 @@ const resumeContent: Record<Lang, ResumeContent> = {
     profileSummary:
       'Desarrollador de software con más de 2 años de experiencia. Inicié como desarrollador móvil trabajando con Xamarin, luego construí aplicaciones y APIs con .NET MAUI y ASP.NET 9. Me enfoco en arquitectura limpia, código limpio, patrones de diseño y soluciones seguras y de alto rendimiento con impacto en UX.',
     location: 'Santo Domingo, República Dominicana',
-    linkedin: 'linkedin.com/in/elvis-hernandez-075496285',
-    github: 'github.com/Elvis2025',
-    email: 'inelvis16031124@gmail.com',
+    linkedin: {
+      label: 'LinkedIn',
+      url: 'https://linkedin.com/in/elvis-hernandez-075496285',
+      displayUrl: 'linkedin.com/in/elvis-hernandez-075496285'
+    },
+    github: {
+      label: 'GitHub',
+      url: 'https://github.com/Elvis2025',
+      displayUrl: 'github.com/Elvis2025'
+    },
+    email: { label: 'Correo', address: 'inelvis16031124@gmail.com' },
     phone: '+1 849-869-8664',
     experienceTitle: 'Experiencia Profesional',
     educationTitle: 'Educación',
@@ -455,10 +472,11 @@ const resumeContent: Record<Lang, ResumeContent> = {
       }
     ],
     highlightedSkills: [
-      { name: 'Angular / TypeScript', level: 90 },
-      { name: 'ASP.NET / .NET MAUI', level: 93 },
-      { name: 'SQL Server / Modelado de Datos', level: 90 },
-      { name: 'Clean & Onion Architecture', level: 92 }
+      { name: 'Arquitectura de Software', level: 93 },
+      { name: 'Flutter', level: 84 },
+      { name: 'React / TypeScript', level: 90 },
+      { name: 'Blazor / C#', level: 88 },
+      { name: 'Spring Boot / Java', level: 86 }
     ]
   }
 };
@@ -737,14 +755,11 @@ function HomePage({ lang }: { lang: Lang }) {
               </h2>
               <p data-aos="fade-up" data-aos-delay="400">{text.heroDescription}</p>
               <div className="hero-actions" data-aos="fade-up" data-aos-delay="500">
-                <Link to="/portfolio" className="btn btn-primary">
-                  {text.ctaWork}
+                <Link to="/contact" className="btn btn-ghost">
+                  <i className="bi bi-chat-dots" /> {text.ctaContact} <i className="bi bi-arrow-up-right" />
                 </Link>
-                <Link to="/contact" className="btn btn-outline">
-                  {text.ctaContact}
-                </Link>
-                <a href="/api/cv/download" className="btn btn-outline">
-                  <i className="bi bi-file-earmark-pdf" /> {text.ctaDownloadCv}
+                <a href="/api/cv/download" className="link-underline cv-download-trigger">
+                  {text.ctaDownloadCv} <i className="bi bi-download" />
                 </a>
               </div>
               <div className="social-links" data-aos="fade-up" data-aos-delay="600">
@@ -1065,8 +1080,8 @@ function ResumePage({ lang }: { lang: Lang }) {
       </div>
 
       <div className="container" data-aos="fade-up" data-aos-delay="120">
-        <div className="row g-5">
-          <div className="col-lg-7">
+        <div className="row g-4">
+          <div className="col-12 col-lg-7">
             <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="150">
               <h3 className="resume-title"><i className="bi bi-person-badge" /> {data.profileTitle}</h3>
               <div className="resume-content">
@@ -1080,62 +1095,49 @@ function ResumePage({ lang }: { lang: Lang }) {
                     </li>
                     <li>
                       <i className="bi bi-linkedin" aria-hidden="true" />
-                      <a href={`https://${data.linkedin}`} target="_blank" rel="noreferrer">
-                        {data.linkedin}
-                      </a>
+                      <span className="contact-link-stack">
+                        <a href={data.linkedin.url} target="_blank" rel="noreferrer">
+                          {data.linkedin.label}
+                        </a>
+                        <small>{data.linkedin.displayUrl}</small>
+                      </span>
                     </li>
                     <li>
                       <i className="bi bi-envelope" aria-hidden="true" />
-                      <a href={`mailto:${data.email}`}>{data.email}</a>
+                      <span className="contact-link-stack">
+                        <a href={`mailto:${data.email.address}`}>{data.email.label}</a>
+                        <small>{data.email.address}</small>
+                      </span>
                     </li>
                     <li>
-                      <i className="bi bi-telephone" aria-hidden="true" />
+                      <i className="bi bi-whatsapp" aria-hidden="true" />
+                      <span className="flag-do" aria-label="República Dominicana">🇩🇴</span>
                       <span>{data.phone}</span>
                     </li>
                     <li>
                       <i className="bi bi-github" aria-hidden="true" />
-                      <a href={`https://${data.github}`} target="_blank" rel="noreferrer">
-                        {data.github}
-                      </a>
+                      <span className="contact-link-stack">
+                        <a href={data.github.url} target="_blank" rel="noreferrer">
+                          {data.github.label}
+                        </a>
+                        <small>{data.github.displayUrl}</small>
+                      </span>
                     </li>
                   </ul>
                 </article>
               </div>
-            </div>
-
-            <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="200">
-              <h3 className="resume-title"><i className="bi bi-briefcase" /> {data.experienceTitle}</h3>
-              <div className="resume-content">
-                {data.experience.map((job) => (
-                  <article key={`${job.company}-${job.role}`}>
-                    <h4><i className="bi bi-person-workspace" /> {job.role}</h4>
-                    <h5><i className="bi bi-calendar3" /> {job.period}</h5>
-                    <p className="company"><i className="bi bi-building" /> {job.company}</p>
-                    <ul>
-                      {job.bullets.map((bullet) => (
-                        <li key={bullet}>{bullet}</li>
-                      ))}
-                    </ul>
-                  </article>
-                ))}
-              </div>
-            </div>
-
-            <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="250">
-              <h3 className="resume-title"><i className="bi bi-mortarboard" /> {data.educationTitle}</h3>
-              <div className="resume-content">
-                {data.education.map((item) => (
-                  <article key={item.institution}>
-                    <h4><i className="bi bi-award" /> {item.degree}</h4>
-                    <h5><i className="bi bi-calendar3" /> {item.period}</h5>
-                    <p className="institution"><i className="bi bi-bank" /> {item.institution}</p>
-                  </article>
-                ))}
+              <div className="resume-actions">
+                <Link to="/contact" className="btn btn-ghost">
+                  <i className="bi bi-chat-dots" /> {data.contactCta} <i className="bi bi-arrow-up-right" />
+                </Link>
+                <a className="link-underline cv-download-trigger" href="/api/cv/download">
+                  {data.downloadCta} <i className="bi bi-download" />
+                </a>
               </div>
             </div>
           </div>
 
-          <div className="col-lg-5">
+          <div className="col-12 col-lg-5">
             <div className="resume-item resume-card" data-aos="fade-left" data-aos-delay="180">
               <h3 className="resume-title"><i className="bi bi-stars" /> {data.skillsTitle}</h3>
               {data.highlightedSkills.map((skill) => (
@@ -1153,13 +1155,40 @@ function ResumePage({ lang }: { lang: Lang }) {
                   </div>
                 </div>
               ))}
-              <div className="resume-actions">
-                <Link to="/contact" className="btn btn-primary">
-                  <i className="bi bi-chat-dots" /> {data.contactCta}
-                </Link>
-                <a className="btn btn-outline" href="/api/cv/download">
-                  <i className="bi bi-file-earmark-pdf" /> {data.downloadCta}
-                </a>
+            </div>
+          </div>
+
+          <div className="col-12">
+            <div className="resume-item resume-card" data-aos="fade-up" data-aos-delay="210">
+              <h3 className="resume-title"><i className="bi bi-briefcase" /> {data.experienceTitle}</h3>
+              <div className="resume-content">
+                {data.experience.map((job) => (
+                  <article key={`${job.company}-${job.role}`}>
+                    <h4><i className="bi bi-person-workspace" /> {job.role}</h4>
+                    <h5><i className="bi bi-calendar3" /> {job.period}</h5>
+                    <p className="company"><i className="bi bi-building" /> {job.company}</p>
+                    <ul>
+                      {job.bullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="col-12">
+            <div className="resume-item resume-card" data-aos="fade-up" data-aos-delay="250">
+              <h3 className="resume-title"><i className="bi bi-mortarboard" /> {data.educationTitle}</h3>
+              <div className="resume-content">
+                {data.education.map((item) => (
+                  <article key={item.institution}>
+                    <h4><i className="bi bi-award" /> {item.degree}</h4>
+                    <h5><i className="bi bi-calendar3" /> {item.period}</h5>
+                    <p className="institution"><i className="bi bi-bank" /> {item.institution}</p>
+                  </article>
+                ))}
               </div>
             </div>
           </div>
@@ -1220,6 +1249,7 @@ export function App() {
   const [pathname, setPathname] = useState(window.location.pathname);
   const [isBootLoading, setIsBootLoading] = useState(true);
   const [lang, setLang] = useState<Lang>('en');
+  const [showFloatingDownload, setShowFloatingDownload] = useState(true);
 
   const navItems = useMemo<NavItem[]>(() => {
     const labels = copy[lang].nav;
@@ -1270,6 +1300,44 @@ export function App() {
     return () => observer.disconnect();
   }, [pathname, lang]);
 
+  useEffect(() => {
+    const downloadTriggers = Array.from(document.querySelectorAll<HTMLElement>('.cv-download-trigger'));
+    if (downloadTriggers.length === 0) {
+      setShowFloatingDownload(true);
+      return;
+    }
+
+    const visibleIds = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const elementId = (entry.target as HTMLElement).dataset.cvObserverId;
+          if (!elementId) return;
+
+          if (entry.isIntersecting) {
+            visibleIds.add(elementId);
+          } else {
+            visibleIds.delete(elementId);
+          }
+        });
+        setShowFloatingDownload(visibleIds.size === 0);
+      },
+      { threshold: 0.25 }
+    );
+
+    downloadTriggers.forEach((item, index) => {
+      item.dataset.cvObserverId = `cv-trigger-${index}`;
+      observer.observe(item);
+    });
+
+    return () => {
+      downloadTriggers.forEach((item) => {
+        delete item.dataset.cvObserverId;
+      });
+      observer.disconnect();
+    };
+  }, [pathname, lang]);
+
   return (
     <>
       <div id="preloader" className={isBootLoading ? 'preloader-visible' : 'preloader-hidden'} aria-hidden="true" />
@@ -1280,6 +1348,13 @@ export function App() {
         onToggleLang={() => setLang((current) => (current === 'en' ? 'es' : 'en'))}
       />
       <main className="main">{renderPage(pathname, lang)}</main>
+      <a
+        href="/api/cv/download"
+        className={`floating-cv-download ${showFloatingDownload ? 'active' : ''}`}
+        aria-label="Download CV"
+      >
+        <i className="bi bi-file-earmark-arrow-down" />
+      </a>
       <Footer lang={lang} />
     </>
   );

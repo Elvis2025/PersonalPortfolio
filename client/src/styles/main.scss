@@ -783,6 +783,52 @@ section,
 .hero .hero-actions .btn i {
   margin-right: 0.4rem;
 }
+
+.hero .hero-actions .btn.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 6px;
+  color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color), transparent 92%);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+.hero .hero-actions .btn.btn-ghost:hover,
+.hero .hero-actions .btn.btn-ghost:focus {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.hero .hero-actions .link-underline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  color: var(--accent-color);
+  padding-bottom: 4px;
+  align-self: center;
+}
+
+.hero .hero-actions .link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--accent-color), transparent 40%);
+  transform: scaleX(0.4);
+  transform-origin: left;
+  transition: 0.3s ease-in-out;
+}
+
+.hero .hero-actions .link-underline:hover::after,
+.hero .hero-actions .link-underline:focus::after {
+  transform: scaleX(1);
+}
 .hero .hero-actions .btn.btn-primary {
   background: var(--accent-color);
   color: var(--contrast-color);
@@ -1410,12 +1456,36 @@ section,
   background: color-mix(in srgb, var(--surface-color), var(--accent-color) 2%);
   border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
   height: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.resume .resume-item.resume-card::before {
+  content: "";
+  position: absolute;
+  top: -120%;
+  left: -30%;
+  width: 40%;
+  height: 340%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    color-mix(in srgb, var(--accent-color), transparent 78%),
+    transparent
+  );
+  transform: rotate(20deg);
+  transition: 0.6s ease;
+  pointer-events: none;
 }
 
 .resume .resume-item.resume-card:hover {
   transform: translateY(-3px);
   border-color: color-mix(in srgb, var(--accent-color), transparent 60%);
   box-shadow: 0 10px 30px color-mix(in srgb, var(--default-color), transparent 92%);
+}
+
+.resume .resume-item.resume-card:hover::before {
+  left: 120%;
 }
 
 .resume .resume-item .resume-title {
@@ -1553,9 +1623,26 @@ section,
 
 .resume .resume-contact-list li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.55rem;
   padding-bottom: 0.55rem !important;
+}
+
+.resume .resume-contact-list .contact-link-stack {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  gap: 3px;
+}
+
+.resume .resume-contact-list .contact-link-stack small {
+  color: color-mix(in srgb, var(--default-color), transparent 35%);
+  font-size: 12px;
+}
+
+.resume .resume-contact-list .flag-do {
+  font-size: 1.05rem;
+  line-height: 1;
 }
 
 .resume .resume-contact-list li i,
@@ -1587,29 +1674,84 @@ section,
 }
 
 .resume .resume-actions .btn {
-  border-radius: 999px;
-  padding: 0.7rem 1.1rem;
+  border-radius: 6px;
+  padding: 0.7rem 1rem;
   font-weight: 600;
   border: 1px solid var(--accent-color);
 }
 
-.resume .resume-actions .btn.btn-primary {
-  background: var(--accent-color);
-  color: var(--contrast-color);
-}
-
-.resume .resume-actions .btn.btn-primary:hover {
-  background: color-mix(in srgb, var(--accent-color), black 12%);
-  border-color: color-mix(in srgb, var(--accent-color), black 12%);
-}
-
-.resume .resume-actions .btn.btn-outline {
+.resume .resume-actions .btn.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: var(--accent-color);
-  background: transparent;
+  background: color-mix(in srgb, var(--accent-color), transparent 92%);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 70%);
 }
 
-.resume .resume-actions .btn.btn-outline:hover {
-  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+.resume .resume-actions .btn.btn-ghost:hover,
+.resume .resume-actions .btn.btn-ghost:focus {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.resume .resume-actions .link-underline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  color: var(--accent-color);
+  padding-bottom: 4px;
+}
+
+.resume .resume-actions .link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--accent-color), transparent 40%);
+  transform: scaleX(0.4);
+  transform-origin: left;
+  transition: 0.3s ease-in-out;
+}
+
+.resume .resume-actions .link-underline:hover::after,
+.resume .resume-actions .link-underline:focus::after {
+  transform: scaleX(1);
+}
+
+.floating-cv-download {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 99997;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 40%);
+  background: color-mix(in srgb, var(--surface-color), var(--accent-color) 10%);
+  color: var(--accent-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: 0.3s ease-in-out;
+}
+
+.floating-cv-download.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.floating-cv-download:hover {
+  color: var(--contrast-color);
+  background: var(--accent-color);
 }
 
 @media (max-width: 991.98px) {
