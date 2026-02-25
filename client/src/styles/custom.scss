@@ -386,6 +386,12 @@
 }
 
 
+@keyframes subtle-border-orbit {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
 @keyframes subtle-shadow-sweep {
   0% {
     transform: translateX(-70%) translateY(-8%);
@@ -422,7 +428,8 @@
     transparent 335deg,
     transparent 360deg
   );
-  opacity: 0.5;
+  opacity: 0.52;
+  animation: subtle-border-orbit 7.2s linear infinite;
   pointer-events: none;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -518,6 +525,7 @@
   transform: rotateY(180deg);
   z-index: 1;
   display: flex;
+  z-index: 1;
   flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
