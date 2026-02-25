@@ -385,6 +385,43 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+
+@keyframes subtle-border-orbit {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.skills-summary-card,
+.skill-face {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.skills-summary-card::before,
+.skill-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 245deg,
+    color-mix(in srgb, var(--accent-color), white 25%) 290deg,
+    transparent 335deg,
+    transparent 360deg
+  );
+  opacity: 0.42;
+  animation: subtle-border-orbit 8s linear infinite;
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
 .skills-summary-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 38px color-mix(in srgb, var(--accent-color), transparent 70%);
@@ -441,12 +478,14 @@
 
 .skill-front {
   display: flex;
+  z-index: 1;
   flex-direction: column;
   box-shadow: 0 14px 26px color-mix(in srgb, #000, transparent 80%);
 }
 
 .skill-back {
   transform: rotateY(180deg);
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
