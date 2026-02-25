@@ -143,6 +143,7 @@ type Dictionary = {
   heroDescription: string;
   ctaWork: string;
   ctaContact: string;
+  ctaDownloadCv: string;
   floating: { design: string; code: string; ideas: string };
   pages: Record<'resume' | 'services' | 'portfolio' | 'contact', { title: string; text: string }>;
   about: AboutContent;
@@ -158,6 +159,35 @@ type Dictionary = {
   langToggle: string;
 };
 
+type ResumeContent = {
+  title: string;
+  subtitle: string;
+  profileTitle: string;
+  profileSummary: string;
+  location: string;
+  linkedin: string;
+  github: string;
+  email: string;
+  phone: string;
+  experienceTitle: string;
+  educationTitle: string;
+  skillsTitle: string;
+  contactCta: string;
+  downloadCta: string;
+  experience: Array<{
+    company: string;
+    role: string;
+    period: string;
+    bullets: string[];
+  }>;
+  education: Array<{
+    institution: string;
+    degree: string;
+    period: string;
+  }>;
+  highlightedSkills: Array<{ name: string; level: number }>;
+};
+
 const copy: Record<Lang, Dictionary> = {
   en: {
     nav: ['Home', 'About', 'Resume', 'Services', 'Portfolio', 'Contact'],
@@ -167,6 +197,7 @@ const copy: Record<Lang, Dictionary> = {
       'Full Stack Developer focused on building web and mobile products with strong UX/UI, clean architecture, and business impact.',
     ctaWork: 'View My Work',
     ctaContact: 'Get In Touch',
+    ctaDownloadCv: 'Download CV',
     floating: { design: 'Design', code: 'Code', ideas: 'Ideas' },
     pages: {
       resume: { title: 'Resume', text: 'Experience, education, technical stack, and key achievements.' },
@@ -243,6 +274,7 @@ const copy: Record<Lang, Dictionary> = {
       'Desarrollador Full Stack enfocado en construir productos web y móviles con fuerte UX/UI, arquitectura limpia e impacto de negocio.',
     ctaWork: 'Ver mi trabajo',
     ctaContact: 'Contáctame',
+    ctaDownloadCv: 'Descargar CV',
     floating: { design: 'Diseño', code: 'Código', ideas: 'Ideas' },
     pages: {
       resume: { title: 'Resumen', text: 'Experiencia, educación, stack técnico y logros relevantes.' },
@@ -316,6 +348,119 @@ const copy: Record<Lang, Dictionary> = {
 const rolesByLang: Record<Lang, string[]> = {
   en: ['UI/UX Designer', 'Web Developer', 'Digital Artist', 'Brand Strategist'],
   es: ['Diseñador UI/UX', 'Desarrollador Web', 'Artista Digital', 'Estratega de Marca']
+};
+
+const resumeContent: Record<Lang, ResumeContent> = {
+  en: {
+    title: 'Resume',
+    subtitle: 'Professional profile, experience, education, and technical strengths built from real project delivery.',
+    profileTitle: 'Professional Summary',
+    profileSummary:
+      'Software Developer with over 2 years of experience. I started as a mobile developer working with Xamarin, then built mobile apps and APIs with .NET MAUI and ASP.NET 9. I focus on clean architecture, clean code, design patterns, and secure, high-performance solutions with strong UX impact.',
+    location: 'Santo Domingo, Dominican Republic',
+    linkedin: 'linkedin.com/in/elvis-hernandez-075496285',
+    github: 'github.com/Elvis2025',
+    email: 'inelvis16031124@gmail.com',
+    phone: '+1 849-869-8664',
+    experienceTitle: 'Professional Experience',
+    educationTitle: 'Education',
+    skillsTitle: 'Core Skills',
+    contactCta: 'Contact me',
+    downloadCta: 'Download CV',
+    experience: [
+      {
+        company: 'IB Systems',
+        role: 'Full Stack Developer',
+        period: '2024 - Present',
+        bullets: [
+          'Currently implementing and optimizing high-quality backend and frontend features in production systems.',
+          'Working under Agile and Scrum methodologies to improve delivery predictability and throughput.',
+          'Using Boilerplate as a base to keep consistency, quality standards, and maintainable architecture.',
+          'Applying SOLID principles in new repositories and maintenance tasks for clean and readable code.'
+        ]
+      },
+      {
+        company: 'MDSOFT',
+        role: 'Mobile Developer',
+        period: '2022 - 2024',
+        bullets: [
+          'Delivered three mobile and database-driven projects in record time, fully tailored to client needs.',
+          'Applied SOLID principles and engineering best practices across all delivered modules.',
+          'Built a B2B application with .NET MAUI (.NET 9) consuming an ASP.NET 9 API using Onion Architecture and security controls.',
+          'Refactored and redesigned a .NET 8 mobile application, revamping UI/UX and implementing new modules and business logic.',
+          'Extended Xamarin features with PDF generation, portable printer formatting, XML automation, and internal enterprise processes.'
+        ]
+      }
+    ],
+    education: [
+      {
+        institution: 'Technological Institute of the Americas (ITLA)',
+        degree: 'Software Development Degree (Ongoing)',
+        period: 'In progress'
+      }
+    ],
+    highlightedSkills: [
+      { name: 'Angular / TypeScript', level: 90 },
+      { name: 'ASP.NET / .NET MAUI', level: 93 },
+      { name: 'SQL Server / Data Modeling', level: 90 },
+      { name: 'Clean & Onion Architecture', level: 92 }
+    ]
+  },
+  es: {
+    title: 'Resumen',
+    subtitle: 'Perfil profesional, experiencia, educación y fortalezas técnicas construidas en proyectos reales.',
+    profileTitle: 'Resumen Profesional',
+    profileSummary:
+      'Desarrollador de software con más de 2 años de experiencia. Inicié como desarrollador móvil trabajando con Xamarin, luego construí aplicaciones y APIs con .NET MAUI y ASP.NET 9. Me enfoco en arquitectura limpia, código limpio, patrones de diseño y soluciones seguras y de alto rendimiento con impacto en UX.',
+    location: 'Santo Domingo, República Dominicana',
+    linkedin: 'linkedin.com/in/elvis-hernandez-075496285',
+    github: 'github.com/Elvis2025',
+    email: 'inelvis16031124@gmail.com',
+    phone: '+1 849-869-8664',
+    experienceTitle: 'Experiencia Profesional',
+    educationTitle: 'Educación',
+    skillsTitle: 'Habilidades Clave',
+    contactCta: 'Contáctame',
+    downloadCta: 'Descargar CV',
+    experience: [
+      {
+        company: 'IB Systems',
+        role: 'Full Stack Developer',
+        period: '2024 - Actualidad',
+        bullets: [
+          'Actualmente implemento y optimizo funcionalidades de alta calidad para backend y frontend en producción.',
+          'Trabajo con metodologías Agile y Scrum para mejorar predictibilidad y velocidad de entrega.',
+          'Uso Boilerplate como base para mantener consistencia técnica, calidad y mantenibilidad.',
+          'Aplico principios SOLID en nuevos repositorios y mantenimientos para código limpio y legible.'
+        ]
+      },
+      {
+        company: 'MDSOFT',
+        role: 'Desarrollador Móvil',
+        period: '2022 - 2024',
+        bullets: [
+          'Entregué tres proyectos móviles y de base de datos en tiempo récord, totalmente adaptados al cliente.',
+          'Apliqué principios SOLID y buenas prácticas de ingeniería en todos los módulos desarrollados.',
+          'Construí una app B2B con .NET MAUI (.NET 9) consumiendo una API en ASP.NET 9 con Onion Architecture y controles de seguridad.',
+          'Refactoricé y rediseñé una app móvil en .NET 8, renovando UI/UX y agregando nuevos módulos y lógica de negocio.',
+          'Extendí funcionalidades en Xamarin con generación de PDFs, formato para impresoras portátiles, automatización XML y procesos internos.'
+        ]
+      }
+    ],
+    education: [
+      {
+        institution: 'Instituto Tecnológico de las Américas (ITLA)',
+        degree: 'Carrera de Desarrollo de Software (En curso)',
+        period: 'En progreso'
+      }
+    ],
+    highlightedSkills: [
+      { name: 'Angular / TypeScript', level: 90 },
+      { name: 'ASP.NET / .NET MAUI', level: 93 },
+      { name: 'SQL Server / Modelado de Datos', level: 90 },
+      { name: 'Clean & Onion Architecture', level: 92 }
+    ]
+  }
 };
 
 const skillsCatalog: Record<Lang, SkillCard[]> = {
@@ -598,6 +743,9 @@ function HomePage({ lang }: { lang: Lang }) {
                 <Link to="/contact" className="btn btn-outline">
                   {text.ctaContact}
                 </Link>
+                <a href="/api/cv/download" className="btn btn-outline">
+                  <i className="bi bi-file-earmark-pdf" /> {text.ctaDownloadCv}
+                </a>
               </div>
               <div className="social-links" data-aos="fade-up" data-aos-delay="600">
                 <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
@@ -899,6 +1047,128 @@ function AboutPage({ lang }: { lang: Lang }) {
   );
 }
 
+function ResumePage({ lang }: { lang: Lang }) {
+  const data = resumeContent[lang];
+  const [showProgress, setShowProgress] = useState(false);
+
+  useEffect(() => {
+    setShowProgress(false);
+    const timer = window.setTimeout(() => setShowProgress(true), 220);
+    return () => window.clearTimeout(timer);
+  }, [lang]);
+
+  return (
+    <section id="resume" className="resume section">
+      <div className="container section-title" data-aos="fade-up">
+        <h2>{data.title}</h2>
+        <p>{data.subtitle}</p>
+      </div>
+
+      <div className="container" data-aos="fade-up" data-aos-delay="120">
+        <div className="row g-5">
+          <div className="col-lg-7">
+            <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="150">
+              <h3 className="resume-title"><i className="bi bi-person-badge" /> {data.profileTitle}</h3>
+              <div className="resume-content">
+                <article>
+                  <h4>Elvis Jesús Hernández Suárez</h4>
+                  <p>{data.profileSummary}</p>
+                  <ul className="resume-contact-list">
+                    <li>
+                      <i className="bi bi-geo-alt" aria-hidden="true" />
+                      <span>{data.location}</span>
+                    </li>
+                    <li>
+                      <i className="bi bi-linkedin" aria-hidden="true" />
+                      <a href={`https://${data.linkedin}`} target="_blank" rel="noreferrer">
+                        {data.linkedin}
+                      </a>
+                    </li>
+                    <li>
+                      <i className="bi bi-envelope" aria-hidden="true" />
+                      <a href={`mailto:${data.email}`}>{data.email}</a>
+                    </li>
+                    <li>
+                      <i className="bi bi-telephone" aria-hidden="true" />
+                      <span>{data.phone}</span>
+                    </li>
+                    <li>
+                      <i className="bi bi-github" aria-hidden="true" />
+                      <a href={`https://${data.github}`} target="_blank" rel="noreferrer">
+                        {data.github}
+                      </a>
+                    </li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+
+            <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="200">
+              <h3 className="resume-title"><i className="bi bi-briefcase" /> {data.experienceTitle}</h3>
+              <div className="resume-content">
+                {data.experience.map((job) => (
+                  <article key={`${job.company}-${job.role}`}>
+                    <h4><i className="bi bi-person-workspace" /> {job.role}</h4>
+                    <h5><i className="bi bi-calendar3" /> {job.period}</h5>
+                    <p className="company"><i className="bi bi-building" /> {job.company}</p>
+                    <ul>
+                      {job.bullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="250">
+              <h3 className="resume-title"><i className="bi bi-mortarboard" /> {data.educationTitle}</h3>
+              <div className="resume-content">
+                {data.education.map((item) => (
+                  <article key={item.institution}>
+                    <h4><i className="bi bi-award" /> {item.degree}</h4>
+                    <h5><i className="bi bi-calendar3" /> {item.period}</h5>
+                    <p className="institution"><i className="bi bi-bank" /> {item.institution}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-5">
+            <div className="resume-item resume-card" data-aos="fade-left" data-aos-delay="180">
+              <h3 className="resume-title"><i className="bi bi-stars" /> {data.skillsTitle}</h3>
+              {data.highlightedSkills.map((skill) => (
+                <div key={skill.name} className="skill-item">
+                  <h4>{skill.name}</h4>
+                  <div className="progress">
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      aria-valuenow={skill.level}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      style={{ width: showProgress ? `${skill.level}%` : '0%' }}
+                    />
+                  </div>
+                </div>
+              ))}
+              <div className="resume-actions">
+                <Link to="/contact" className="btn btn-primary">
+                  <i className="bi bi-chat-dots" /> {data.contactCta}
+                </Link>
+                <a className="btn btn-outline" href="/api/cv/download">
+                  <i className="bi bi-file-earmark-pdf" /> {data.downloadCta}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function InnerPage({ title, text }: { title: string; text: string }) {
   return (
     <section className="section">
@@ -934,7 +1204,7 @@ function renderPage(pathname: string, lang: Lang) {
     case '/about':
       return <AboutPage lang={lang} />;
     case '/resume':
-      return <InnerPage title={pages.resume.title} text={pages.resume.text} />;
+      return <ResumePage lang={lang} />;
     case '/services':
       return <InnerPage title={pages.services.title} text={pages.services.text} />;
     case '/portfolio':
