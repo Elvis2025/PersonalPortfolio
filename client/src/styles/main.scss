@@ -1520,6 +1520,89 @@ section,
   color: var(--accent-color);
 }
 
+
+
+.resume .resume-item .resume-title i {
+  color: var(--accent-color);
+  margin-right: 0.45rem;
+}
+
+.resume .resume-contact-list {
+  list-style: none;
+  padding-left: 0 !important;
+}
+
+.resume .resume-contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding-bottom: 0.55rem !important;
+}
+
+.resume .resume-contact-list li i,
+.resume .resume-item article h4 i,
+.resume .resume-item article h5 i,
+.resume .resume-item article .institution i,
+.resume .resume-item article .company i {
+  color: var(--accent-color);
+}
+
+.resume .resume-item article h4 i,
+.resume .resume-item article h5 i,
+.resume .resume-item article .institution i,
+.resume .resume-item article .company i {
+  margin-right: 0.4rem;
+}
+
+.resume .resume-actions .btn i {
+  margin-right: 0.4rem;
+}
+
+.resume .resume-cv-hint {
+  margin-top: 0.85rem;
+  font-size: 0.92rem;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+}
+
+.resume .resume-cv-hint i {
+  color: var(--accent-color);
+  margin-right: 0.4rem;
+}
+
+
+.resume .resume-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.resume .resume-actions .btn {
+  border-radius: 999px;
+  padding: 0.7rem 1.1rem;
+  font-weight: 600;
+  border: 1px solid var(--accent-color);
+}
+
+.resume .resume-actions .btn.btn-primary {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+}
+
+.resume .resume-actions .btn.btn-primary:hover {
+  background: color-mix(in srgb, var(--accent-color), black 12%);
+  border-color: color-mix(in srgb, var(--accent-color), black 12%);
+}
+
+.resume .resume-actions .btn.btn-outline {
+  color: var(--accent-color);
+  background: transparent;
+}
+
+.resume .resume-actions .btn.btn-outline:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+}
+
 @media (max-width: 991.98px) {
   .resume .resume-item {
     margin-bottom: 2rem;
