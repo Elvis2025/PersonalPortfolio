@@ -5,7 +5,9 @@
     "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "dev:client": "npm run dev --prefix client",
     "dev:server": "npm run dev --prefix server",
-    "build": "npm run build --prefix server && npm run build --prefix client"
+    "build": "npm run install:apps && npm run build --prefix server && npm run build --prefix client",
+    "install:apps": "npm ci --prefix server && npm ci --prefix client",
+    "start": "npm run start --prefix server"
   },
   "devDependencies": {
     "concurrently": "^9.0.1",
