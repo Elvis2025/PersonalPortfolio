@@ -699,16 +699,30 @@ function SkillsSection({ lang }: { lang: Lang }) {
 
   useEffect(() => {
     const skillElements = Array.from(document.querySelectorAll<HTMLElement>('#skills .skills-animation [data-aos]'));
-    const timers: number[] = [];
+    if (!skillElements.length) return;
 
-    skillElements.forEach((element) => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const element = entry.target as HTMLElement;
+          const delay = Number(element.dataset.aosDelay ?? '0');
+          window.setTimeout(() => {
+            element.classList.add('aos-animate');
+          }, delay);
+          observer.unobserve(element);
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+    );
+
+    skillElements.forEach((element, index) => {
       element.classList.remove('aos-animate');
-      const delay = Number(element.dataset.aosDelay ?? '0');
-      const timer = window.setTimeout(() => element.classList.add('aos-animate'), delay);
-      timers.push(timer);
+      element.dataset.aosDelay = String(220 + index * 85);
+      observer.observe(element);
     });
 
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
+    return () => observer.disconnect();
   }, [activeFilter, lang]);
 
   const filteredSkills = skills.filter((skill) => activeFilter === 'all' || skill.category === activeFilter);
@@ -747,10 +761,10 @@ function SkillsSection({ lang }: { lang: Lang }) {
         ))}
       </ul>
 
-      <div className="container-fluid px-4 px-lg-5" data-aos="fade-up" data-aos-delay="220">
+      <div className="container-fluid px-4 px-lg-5">
         <div className="row g-4 skills-animation">
           {filteredSkills.map((skill, index) => (
-            <div key={`${skill.category}-${skill.title}`} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={260 + index * 90}>
+            <div key={`${skill.category}-${skill.title}`} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={220 + index * 85}>
               <div className="skill-box" tabIndex={0} aria-label={`${skill.title} ${skill.percent}%`}>
                 <div className="skill-box-inner">
                   <div className="skill-face skill-front">
