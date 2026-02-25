@@ -475,6 +475,20 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  background-size: 220% 220%;
+  animation: resume-surface-flow 8s ease-in-out infinite;
+}
+
+@keyframes resume-surface-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .resume .resume-item.resume-card::before {
@@ -492,7 +506,7 @@
     transparent 360deg
   );
   opacity: 0.52;
-  animation: subtle-border-orbit 7.2s linear infinite;
+  animation: subtle-border-orbit 5.4s linear infinite;
   pointer-events: none;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -513,7 +527,7 @@
   );
   pointer-events: none;
   z-index: 0;
-  animation: subtle-shadow-sweep 4.8s ease-in-out infinite alternate;
+  animation: subtle-shadow-sweep 4.2s ease-in-out infinite alternate;
 }
 
 .resume .resume-item.resume-card > * {
