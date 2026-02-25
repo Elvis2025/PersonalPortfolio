@@ -29,6 +29,31 @@ const currentFilePath = fileURLToPath(import.meta.url);
 const currentDirPath = path.dirname(currentFilePath);
 const clientDistPath = path.resolve(currentDirPath, '../../client/dist');
 const hasClientDist = fs.existsSync(clientDistPath);
+const fallbackCvDir = path.resolve(currentDirPath, '../../client/public/cv');
+const distCvDir = path.join(clientDistPath, 'cv');
+const cvStoragePath = process.env.CV_STORAGE_PATH
+  ? path.resolve(process.env.CV_STORAGE_PATH)
+  : hasClientDist
+    ? distCvDir
+    : fallbackCvDir;
+
+function getLatestPdfInDirectory(directoryPath: string) {
+  if (!fs.existsSync(directoryPath)) {
+    return null;
+  }
+
+  const pdfFiles = fs
+    .readdirSync(directoryPath)
+    .filter((fileName) => fileName.toLowerCase().endsWith('.pdf'))
+    .map((fileName) => {
+      const filePath = path.join(directoryPath, fileName);
+      const stats = fs.statSync(filePath);
+      return { fileName, filePath, mtimeMs: stats.mtimeMs };
+    })
+    .sort((a, b) => b.mtimeMs - a.mtimeMs);
+
+  return pdfFiles[0] ?? null;
+}
 
 if (hasClientDist) {
   app.use(express.static(clientDistPath));
@@ -49,6 +74,20 @@ app.get('/', (req: any, res: any) => {
   }
 
   return res.status(200).send('portfolio-server running');
+});
+
+
+app.get('/api/cv/download', (_req: any, res: any) => {
+  const latestPdf = getLatestPdfInDirectory(cvStoragePath);
+
+  if (!latestPdf) {
+    return res.status(404).json({
+      error: 'CV PDF not found',
+      message: `Place a PDF file inside: ${cvStoragePath}`
+    });
+  }
+
+  return res.download(latestPdf.filePath, latestPdf.fileName);
 });
 
 app.get('/health', (_req: any, res: any) => {

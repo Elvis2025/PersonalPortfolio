@@ -173,6 +173,7 @@ type ResumeContent = {
   skillsTitle: string;
   contactCta: string;
   downloadCta: string;
+  cvHint: string;
   experience: Array<{
     company: string;
     role: string;
@@ -364,6 +365,7 @@ const resumeContent: Record<Lang, ResumeContent> = {
     skillsTitle: 'Core Skills',
     contactCta: 'Contact me',
     downloadCta: 'Download CV',
+    cvHint: 'Place your PDF inside /client/public/cv and this button will download the latest file automatically.',
     experience: [
       {
         company: 'IB Systems',
@@ -419,6 +421,7 @@ const resumeContent: Record<Lang, ResumeContent> = {
     skillsTitle: 'Habilidades Clave',
     contactCta: 'Contáctame',
     downloadCta: 'Descargar CV',
+    cvHint: 'Coloca tu PDF en /client/public/cv y este botón descargará automáticamente el archivo más reciente.',
     experience: [
       {
         company: 'IB Systems',
@@ -1062,23 +1065,32 @@ function ResumePage({ lang }: { lang: Lang }) {
         <div className="row g-5">
           <div className="col-lg-7">
             <div className="resume-item" data-aos="fade-right" data-aos-delay="150">
-              <h3 className="resume-title">{data.profileTitle}</h3>
+              <h3 className="resume-title"><i className="bi bi-person-badge" /> {data.profileTitle}</h3>
               <div className="resume-content">
                 <article>
                   <h4>Elvis Jesús Hernández Suárez</h4>
                   <p>{data.profileSummary}</p>
-                  <ul>
-                    <li>{data.location}</li>
+                  <ul className="resume-contact-list">
                     <li>
+                      <i className="bi bi-geo-alt" aria-hidden="true" />
+                      <span>{data.location}</span>
+                    </li>
+                    <li>
+                      <i className="bi bi-linkedin" aria-hidden="true" />
                       <a href={`https://${data.linkedin}`} target="_blank" rel="noreferrer">
                         {data.linkedin}
                       </a>
                     </li>
                     <li>
+                      <i className="bi bi-envelope" aria-hidden="true" />
                       <a href={`mailto:${data.email}`}>{data.email}</a>
                     </li>
-                    <li>{data.phone}</li>
                     <li>
+                      <i className="bi bi-telephone" aria-hidden="true" />
+                      <span>{data.phone}</span>
+                    </li>
+                    <li>
+                      <i className="bi bi-github" aria-hidden="true" />
                       <a href={`https://${data.github}`} target="_blank" rel="noreferrer">
                         {data.github}
                       </a>
@@ -1089,13 +1101,13 @@ function ResumePage({ lang }: { lang: Lang }) {
             </div>
 
             <div className="resume-item" data-aos="fade-right" data-aos-delay="200">
-              <h3 className="resume-title">{data.experienceTitle}</h3>
+              <h3 className="resume-title"><i className="bi bi-briefcase" /> {data.experienceTitle}</h3>
               <div className="resume-content">
                 {data.experience.map((job) => (
                   <article key={`${job.company}-${job.role}`}>
-                    <h4>{job.role}</h4>
-                    <h5>{job.period}</h5>
-                    <p className="company">{job.company}</p>
+                    <h4><i className="bi bi-person-workspace" /> {job.role}</h4>
+                    <h5><i className="bi bi-calendar3" /> {job.period}</h5>
+                    <p className="company"><i className="bi bi-building" /> {job.company}</p>
                     <ul>
                       {job.bullets.map((bullet) => (
                         <li key={bullet}>{bullet}</li>
@@ -1107,13 +1119,13 @@ function ResumePage({ lang }: { lang: Lang }) {
             </div>
 
             <div className="resume-item" data-aos="fade-right" data-aos-delay="250">
-              <h3 className="resume-title">{data.educationTitle}</h3>
+              <h3 className="resume-title"><i className="bi bi-mortarboard" /> {data.educationTitle}</h3>
               <div className="resume-content">
                 {data.education.map((item) => (
                   <article key={item.institution}>
-                    <h4>{item.degree}</h4>
-                    <h5>{item.period}</h5>
-                    <p className="institution">{item.institution}</p>
+                    <h4><i className="bi bi-award" /> {item.degree}</h4>
+                    <h5><i className="bi bi-calendar3" /> {item.period}</h5>
+                    <p className="institution"><i className="bi bi-bank" /> {item.institution}</p>
                   </article>
                 ))}
               </div>
@@ -1122,7 +1134,7 @@ function ResumePage({ lang }: { lang: Lang }) {
 
           <div className="col-lg-5">
             <div className="resume-item" data-aos="fade-left" data-aos-delay="180">
-              <h3 className="resume-title">{data.skillsTitle}</h3>
+              <h3 className="resume-title"><i className="bi bi-stars" /> {data.skillsTitle}</h3>
               {data.highlightedSkills.map((skill) => (
                 <div key={skill.name} className="skill-item">
                   <h4>{skill.name}</h4>
@@ -1140,12 +1152,15 @@ function ResumePage({ lang }: { lang: Lang }) {
               ))}
               <div className="resume-actions">
                 <Link to="/contact" className="btn btn-primary">
-                  {data.contactCta}
+                  <i className="bi bi-chat-dots" /> {data.contactCta}
                 </Link>
-                <a className="btn btn-outline" href="/cv/elvis-jesus-hernandez-suarez-cv.txt" download>
-                  {data.downloadCta}
+                <a className="btn btn-outline" href="/api/cv/download">
+                  <i className="bi bi-file-earmark-pdf" /> {data.downloadCta}
                 </a>
               </div>
+              <p className="resume-cv-hint">
+                <i className="bi bi-folder2-open" /> {data.cvHint}
+              </p>
             </div>
           </div>
         </div>
