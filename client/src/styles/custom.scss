@@ -538,6 +538,77 @@
   box-shadow: 0 20px 38px color-mix(in srgb, var(--accent-color), transparent 70%);
 }
 
+.resume-flip-card {
+  position: relative;
+  perspective: 1200px;
+  min-height: 100%;
+  border-radius: 16px;
+  outline: none;
+}
+
+.resume-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.75s ease, box-shadow 0.45s ease;
+}
+
+.resume-flip-card:hover .resume-flip-inner,
+.resume-flip-card:focus-within .resume-flip-inner,
+.resume-flip-card:focus-visible .resume-flip-inner {
+  transform: rotateY(180deg) translateY(-6px);
+  box-shadow: 0 24px 45px color-mix(in srgb, var(--accent-color), transparent 72%);
+}
+
+.resume-flip-face {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.resume-flip-face.resume-front {
+  position: relative;
+}
+
+.resume-flip-face.resume-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.resume-back-content {
+  color: color-mix(in srgb, var(--default-color), transparent 10%);
+}
+
+.resume-back-content p {
+  margin-bottom: 12px;
+}
+
+.resume-back-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.resume-back-content li {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 72%);
+  background: color-mix(in srgb, var(--accent-color), transparent 91%);
+}
+
+.resume-back-content li strong {
+  color: var(--heading-color);
+}
+
 .skills-summary-card span {
   display: block;
   font-size: 0.9rem;
