@@ -2,6 +2,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import nodemailer from 'nodemailer';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 dotenv.config();
 
@@ -13,17 +16,44 @@ app.use(express.json());
 
 const requests = new Map<string, number[]>();
 
+const frontendUrl = process.env.FRONTEND_URL;
 
-const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:5173';
+function getPublicBaseUrl(req: any) {
+  const forwardedProto = req.header('x-forwarded-proto')?.split(',')[0]?.trim();
+  const proto = forwardedProto || req.protocol || 'https';
+  const host = req.header('x-forwarded-host') || req.get('host');
+  return host ? `${proto}://${host}` : null;
+}
 
-app.get('/', (_req: any, res: any) => {
-  return res.redirect(frontendUrl);
+const currentFilePath = fileURLToPath(import.meta.url);
+const currentDirPath = path.dirname(currentFilePath);
+const clientDistPath = path.resolve(currentDirPath, '../../client/dist');
+const hasClientDist = fs.existsSync(clientDistPath);
+
+if (hasClientDist) {
+  app.use(express.static(clientDistPath));
+}
+
+app.get('/', (req: any, res: any) => {
+  if (hasClientDist) {
+    return res.sendFile(path.join(clientDistPath, 'index.html'));
+  }
+
+  if (frontendUrl) {
+    return res.redirect(frontendUrl);
+  }
+
+  const publicBaseUrl = getPublicBaseUrl(req);
+  if (publicBaseUrl && publicBaseUrl !== `${req.protocol}://${req.get('host')}`) {
+    return res.redirect(publicBaseUrl);
+  }
+
+  return res.status(200).send('portfolio-server running');
 });
 
 app.get('/health', (_req: any, res: any) => {
   return res.json({ ok: true, service: 'portfolio-server' });
 });
-
 
 app.post('/api/contact', async (req: any, res: any) => {
   const { name, email, subject, message, company } = req.body as Record<string, string>;
@@ -70,6 +100,16 @@ app.post('/api/contact', async (req: any, res: any) => {
   return res.json({ ok: true });
 });
 
+if (hasClientDist) {
+  app.get('*', (req: any, res: any, next: any) => {
+    if (req.path.startsWith('/api') || req.path === '/health') {
+      return next();
+    }
+
+    return res.sendFile(path.join(clientDistPath, 'index.html'));
+  });
+}
+
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on port ${port}`);
 });
