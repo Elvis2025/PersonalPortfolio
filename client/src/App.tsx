@@ -718,7 +718,7 @@ function SkillsSection({ lang }: { lang: Lang }) {
 
     skillElements.forEach((element, index) => {
       element.classList.remove('aos-animate');
-      element.dataset.aosDelay = String(80 + index * 55);
+      element.dataset.aosDelay = String(40 + index * 35);
       observer.observe(element);
     });
 
@@ -764,7 +764,7 @@ function SkillsSection({ lang }: { lang: Lang }) {
       <div className="container-fluid px-4 px-lg-5">
         <div className="row g-4 skills-animation">
           {filteredSkills.map((skill, index) => (
-            <div key={`${skill.category}-${skill.title}`} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={80 + index * 55}>
+            <div key={`${skill.category}-${skill.title}`} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={40 + index * 35}>
               <div className="skill-box" tabIndex={0} aria-label={`${skill.title} ${skill.percent}%`}>
                 <div className="skill-box-inner">
                   <div className="skill-face skill-front">

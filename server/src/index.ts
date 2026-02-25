@@ -14,10 +14,26 @@ app.use(express.json());
 const requests = new Map<string, number[]>();
 
 
-const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:5173';
+const frontendUrl = process.env.FRONTEND_URL;
 
-app.get('/', (_req: any, res: any) => {
-  return res.redirect(frontendUrl);
+function getPublicBaseUrl(req: any) {
+  const forwardedProto = req.header('x-forwarded-proto')?.split(',')[0]?.trim();
+  const proto = forwardedProto || req.protocol || 'https';
+  const host = req.header('x-forwarded-host') || req.get('host');
+  return host ? `${proto}://${host}` : null;
+}
+
+app.get('/', (req: any, res: any) => {
+  if (frontendUrl) {
+    return res.redirect(frontendUrl);
+  }
+
+  const publicBaseUrl = getPublicBaseUrl(req);
+  if (publicBaseUrl) {
+    return res.redirect(publicBaseUrl);
+  }
+
+  return res.status(200).send('portfolio-server running');
 });
 
 app.get('/health', (_req: any, res: any) => {
@@ -71,5 +87,5 @@ app.post('/api/contact', async (req: any, res: any) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on port ${port}`);
 });
