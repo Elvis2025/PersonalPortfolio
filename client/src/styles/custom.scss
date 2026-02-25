@@ -517,12 +517,28 @@
   position: absolute;
   inset: -26%;
   border-radius: inherit;
-  background: radial-gradient(
-    40% 58% at 50% 50%,
-    color-mix(in srgb, var(--accent-color), transparent 65%) 0%,
-    color-mix(in srgb, var(--accent-color), transparent 92%) 55%,
-    transparent 100%
-  );
+  background-image:
+    radial-gradient(
+      40% 58% at 50% 50%,
+      color-mix(in srgb, var(--accent-color), transparent 65%) 0%,
+      color-mix(in srgb, var(--accent-color), transparent 92%) 55%,
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      160deg,
+      transparent 0 52px,
+      color-mix(in srgb, #9dd5ff, transparent 90%) 52px 54px,
+      transparent 54px 104px
+    ),
+    repeating-linear-gradient(
+      20deg,
+      transparent 0 58px,
+      color-mix(in srgb, #9dd5ff, transparent 91%) 58px 60px,
+      transparent 60px 118px
+    );
+  background-size: cover, 260% 260%, 260% 260%;
+  background-position: center, 0% 0%, 100% 100%;
+  opacity: 0.9;
   pointer-events: none;
   z-index: 0;
   animation: subtle-shadow-sweep 4.8s ease-in-out infinite alternate;
