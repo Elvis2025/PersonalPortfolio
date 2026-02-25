@@ -1409,7 +1409,7 @@ section,
   transition: 0.3s ease-in-out;
   background: color-mix(in srgb, var(--surface-color), var(--accent-color) 2%);
   border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
-  height: 100%;
+  height: auto;
 }
 
 .resume .resume-item.resume-card:hover {
