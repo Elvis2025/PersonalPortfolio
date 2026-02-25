@@ -423,6 +423,12 @@
   color: var(--accent-color);
 }
 
+.skill-percent .skill-icon-image {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
 /* Slower reveal pacing */
 [data-aos] {
   transition-duration: 1.05s;
