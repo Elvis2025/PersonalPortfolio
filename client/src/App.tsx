@@ -42,12 +42,64 @@ type SkillCard = {
   icon: string;
 };
 
+const brandedSkillIcons: Record<string, string> = {
+  'ASP.NET Core': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg',
+  'C#': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg',
+  Java: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
+  'Spring Boot': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg',
+  'Node.js': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+  Express: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg',
+  'SQL Server': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg',
+  SQLite: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg',
+  MongoDB: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+  PostgreSQL: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
+  MySQL: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg',
+  Angular: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg',
+  React: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+  JavaScript: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+  TypeScript: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+  HTML5: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
+  CSS3: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
+  SCSS: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg',
+  Blazor: 'img:https://cdn.simpleicons.org/blazor/512BD4',
+  Razor: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg',
+  XAML: 'img:https://cdn.simpleicons.org/xaml/0C54C2',
+  Flutter: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
+  '.NET MAUI': 'img:https://cdn.simpleicons.org/dotnet/512BD4',
+  Xamarin: 'img:https://cdn.simpleicons.org/xamarin/3498DB',
+  WinForms: 'img:https://cdn.simpleicons.org/windows/0078D6',
+  WinUI: 'img:https://cdn.simpleicons.org/windows11/0078D6',
+  WPF: 'img:https://cdn.simpleicons.org/windows/0078D6',
+  JavaFX: 'img:https://cdn.simpleicons.org/openjdk/ED8B00',
+  'Servicio Windows con C#': 'img:https://cdn.simpleicons.org/windows/0078D6',
+  'Servicio Windows con VB': 'img:https://cdn.simpleicons.org/visualbasic/512BD4',
+  'Windows Service with C#': 'img:https://cdn.simpleicons.org/windows/0078D6',
+  'Windows Service with VB': 'img:https://cdn.simpleicons.org/visualbasic/512BD4',
+  'Visual Studio Code': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
+  'Visual Studio': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visualstudio/visualstudio-plain.svg',
+  'SQL Server Management Studio': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg',
+  'MySQL Workbench': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg',
+  'pgAdmin / gestor PostgreSQL': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
+  'pgAdmin / PostgreSQL manager': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
+  'Android Studio': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/androidstudio/androidstudio-original.svg',
+  NetBeans: 'img:https://cdn.simpleicons.org/apachenetbeanside/1B6AC6',
+  Eclipse: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/eclipse/eclipse-original.svg',
+  Postman: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg',
+  Git: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
+  'Azure DevOps': 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azuredevops/azuredevops-original.svg',
+  GitHub: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
+  GitLab: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg',
+  Bitbucket: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bitbucket/bitbucket-original.svg'
+};
+
 function renderSkillIcon(icon: string, label: string) {
-  if (icon.startsWith('img:')) {
-    return <img className="skill-icon-image" src={icon.replace('img:', '')} alt={`${label} icon`} loading="lazy" />;
+  const resolvedIcon = brandedSkillIcons[label] ?? icon;
+
+  if (resolvedIcon.startsWith('img:')) {
+    return <img className="skill-icon-image" src={resolvedIcon.replace('img:', '')} alt={`${label} icon`} loading="lazy" />;
   }
 
-  return <i className={`bi ${icon}`} aria-hidden="true" />;
+  return <i className={`bi ${resolvedIcon}`} aria-hidden="true" />;
 }
 
 type Dictionary = {
