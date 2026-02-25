@@ -517,15 +517,41 @@
   position: absolute;
   inset: -26%;
   border-radius: inherit;
-  background: radial-gradient(
-    40% 58% at 50% 50%,
-    color-mix(in srgb, var(--accent-color), transparent 65%) 0%,
-    color-mix(in srgb, var(--accent-color), transparent 92%) 55%,
-    transparent 100%
-  );
+  background-image:
+    radial-gradient(
+      40% 58% at 50% 50%,
+      color-mix(in srgb, var(--accent-color), transparent 65%) 0%,
+      color-mix(in srgb, var(--accent-color), transparent 92%) 55%,
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      160deg,
+      transparent 0 64px,
+      color-mix(in srgb, #76c0ff, transparent 96%) 64px 66px,
+      transparent 66px 130px
+    ),
+    repeating-linear-gradient(
+      20deg,
+      transparent 0 72px,
+      color-mix(in srgb, #76c0ff, transparent 97%) 72px 74px,
+      transparent 74px 146px
+    );
+  background-size: cover, 220% 220%, 220% 220%;
+  background-position: center, 0% 0%, 100% 100%;
   pointer-events: none;
   z-index: 0;
-  animation: subtle-shadow-sweep 4.8s ease-in-out infinite alternate;
+  animation:
+    subtle-shadow-sweep 4.8s ease-in-out infinite alternate,
+    resume-cross-lines 10s linear infinite;
+}
+
+@keyframes resume-cross-lines {
+  0% {
+    background-position: center, 0% 0%, 100% 100%;
+  }
+  100% {
+    background-position: center, 180% 0%, -80% 100%;
+  }
 }
 
 .resume .resume-item.resume-card > * {
