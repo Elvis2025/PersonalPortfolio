@@ -739,18 +739,18 @@ function SkillsSection({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <div className="container">
-        <ul className="skills-filters">
-          {filterOrder.map((filter) => (
-            <li key={filter} className={activeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveFilter(filter)}>
-              {sectionText.filters[filter]}
-            </li>
-          ))}
-        </ul>
+      <ul className="skills-filters" data-aos="fade-up" data-aos-delay="180">
+        {filterOrder.map((filter) => (
+          <li key={filter} className={activeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveFilter(filter)}>
+            {sectionText.filters[filter]}
+          </li>
+        ))}
+      </ul>
 
+      <div className="container-fluid px-4 px-lg-5" data-aos="fade-up" data-aos-delay="220">
         <div className="row g-4 skills-animation">
           {filteredSkills.map((skill, index) => (
-            <div key={`${skill.category}-${skill.title}`} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={130 + index * 90}>
+            <div key={`${skill.category}-${skill.title}`} className="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay={260 + index * 90}>
               <div className="skill-box" tabIndex={0} aria-label={`${skill.title} ${skill.percent}%`}>
                 <div className="skill-box-inner">
                   <div className="skill-face skill-front">
