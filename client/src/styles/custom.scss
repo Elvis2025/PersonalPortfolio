@@ -511,18 +511,18 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   border: 1px solid color-mix(in srgb, var(--accent-color), transparent 75%);
-  background-color: color-mix(in srgb, #071427, transparent 0%);
+  background-color: color-mix(in srgb, #06101f, transparent 0%);
   background-image:
-    radial-gradient(95% 55% at 50% 118%, color-mix(in srgb, #4aa3ff, transparent 84%) 0%, transparent 72%),
-    radial-gradient(85% 46% at 50% 112%, color-mix(in srgb, #76c0ff, transparent 90%) 0%, transparent 74%),
-    radial-gradient(circle at 18% 74%, color-mix(in srgb, #9dd5ff, transparent 78%) 0 2px, transparent 4px),
-    radial-gradient(circle at 33% 63%, color-mix(in srgb, #9dd5ff, transparent 80%) 0 2px, transparent 4px),
-    radial-gradient(circle at 47% 71%, color-mix(in srgb, #9dd5ff, transparent 80%) 0 2px, transparent 4px),
-    radial-gradient(circle at 62% 66%, color-mix(in srgb, #9dd5ff, transparent 82%) 0 2px, transparent 4px),
-    radial-gradient(circle at 77% 74%, color-mix(in srgb, #9dd5ff, transparent 80%) 0 2px, transparent 4px),
-    linear-gradient(160deg, transparent 0 20%, color-mix(in srgb, #76c0ff, transparent 94%) 20.3% 20.7%, transparent 21% 40%, color-mix(in srgb, #76c0ff, transparent 94%) 40.3% 40.7%, transparent 41% 64%, color-mix(in srgb, #76c0ff, transparent 95%) 64.2% 64.6%, transparent 65%),
-    linear-gradient(20deg, transparent 0 28%, color-mix(in srgb, #76c0ff, transparent 95%) 28.2% 28.6%, transparent 29% 52%, color-mix(in srgb, #76c0ff, transparent 95%) 52.2% 52.6%, transparent 53% 100%),
-    linear-gradient(175deg, color-mix(in srgb, #0a213e, transparent 0%), color-mix(in srgb, #071427, transparent 0%));
+    radial-gradient(95% 55% at 50% 118%, color-mix(in srgb, #4aa3ff, transparent 89%) 0%, transparent 72%),
+    radial-gradient(85% 46% at 50% 112%, color-mix(in srgb, #76c0ff, transparent 97%) 0%, transparent 74%),
+    radial-gradient(circle at 18% 74%, color-mix(in srgb, #9dd5ff, transparent 86%) 0 2px, transparent 4px),
+    radial-gradient(circle at 33% 63%, color-mix(in srgb, #9dd5ff, transparent 88%) 0 2px, transparent 4px),
+    radial-gradient(circle at 47% 71%, color-mix(in srgb, #9dd5ff, transparent 88%) 0 2px, transparent 4px),
+    radial-gradient(circle at 62% 66%, color-mix(in srgb, #9dd5ff, transparent 90%) 0 2px, transparent 4px),
+    radial-gradient(circle at 77% 74%, color-mix(in srgb, #9dd5ff, transparent 88%) 0 2px, transparent 4px),
+    linear-gradient(160deg, transparent 0 20%, color-mix(in srgb, #76c0ff, transparent 97%) 20.3% 20.7%, transparent 21% 40%, color-mix(in srgb, #76c0ff, transparent 97%) 40.3% 40.7%, transparent 41% 64%, color-mix(in srgb, #76c0ff, transparent 98%) 64.2% 64.6%, transparent 65%),
+    linear-gradient(20deg, transparent 0 28%, color-mix(in srgb, #76c0ff, transparent 98%) 28.2% 28.6%, transparent 29% 52%, color-mix(in srgb, #76c0ff, transparent 98%) 52.2% 52.6%, transparent 53% 100%),
+    linear-gradient(175deg, color-mix(in srgb, #07162a, transparent 0%), color-mix(in srgb, #06101f, transparent 0%));
 }
 
 .skill-front {
