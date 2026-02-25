@@ -487,6 +487,7 @@
   isolation: isolate;
   overflow: hidden;
   min-height: 100%;
+  transform-style: flat;
 }
 
 .resume .resume-item.resume-card::before {
@@ -526,23 +527,24 @@
     ),
     repeating-linear-gradient(
       160deg,
-      transparent 0 64px,
-      color-mix(in srgb, #76c0ff, transparent 96%) 64px 66px,
-      transparent 66px 130px
+      transparent 0 52px,
+      color-mix(in srgb, #9dd5ff, transparent 90%) 52px 54px,
+      transparent 54px 104px
     ),
     repeating-linear-gradient(
       20deg,
-      transparent 0 72px,
-      color-mix(in srgb, #76c0ff, transparent 97%) 72px 74px,
-      transparent 74px 146px
+      transparent 0 58px,
+      color-mix(in srgb, #9dd5ff, transparent 91%) 58px 60px,
+      transparent 60px 118px
     );
-  background-size: cover, 220% 220%, 220% 220%;
+  background-size: cover, 260% 260%, 260% 260%;
   background-position: center, 0% 0%, 100% 100%;
+  opacity: 0.9;
   pointer-events: none;
   z-index: 0;
   animation:
     subtle-shadow-sweep 4.8s ease-in-out infinite alternate,
-    resume-cross-lines 10s linear infinite;
+    resume-cross-lines 7.5s linear infinite;
 }
 
 @keyframes resume-cross-lines {
@@ -550,7 +552,7 @@
     background-position: center, 0% 0%, 100% 100%;
   }
   100% {
-    background-position: center, 180% 0%, -80% 100%;
+    background-position: center, 220% 0%, -120% 100%;
   }
 }
 
@@ -564,75 +566,11 @@
   box-shadow: 0 20px 38px color-mix(in srgb, var(--accent-color), transparent 70%);
 }
 
-.resume-flip-card {
-  position: relative;
-  perspective: 1200px;
-  min-height: 100%;
-  border-radius: 16px;
-  outline: none;
-}
-
-.resume-flip-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.75s ease, box-shadow 0.45s ease;
-}
-
-.resume-flip-card:hover .resume-flip-inner,
-.resume-flip-card:focus-within .resume-flip-inner,
-.resume-flip-card:focus-visible .resume-flip-inner {
-  transform: rotateY(180deg) translateY(-6px);
-  box-shadow: 0 24px 45px color-mix(in srgb, var(--accent-color), transparent 72%);
-}
-
-.resume-flip-face {
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.resume-flip-face.resume-front {
-  position: relative;
-}
-
-.resume-flip-face.resume-back {
-  position: absolute;
-  inset: 0;
-  transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.resume-back-content {
-  color: color-mix(in srgb, var(--default-color), transparent 10%);
-}
-
-.resume-back-content p {
-  margin-bottom: 12px;
-}
-
-.resume-back-content ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 8px;
-}
-
-.resume-back-content li {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 72%);
-  background: color-mix(in srgb, var(--accent-color), transparent 91%);
-}
-
-.resume-back-content li strong {
-  color: var(--heading-color);
+.resume .resume-item.resume-card:hover,
+.resume .resume-item.resume-card:focus-within,
+.resume .resume-item.resume-card:focus-visible,
+.resume .resume-item.resume-card:active {
+  rotate: none;
 }
 
 .skills-summary-card span {
