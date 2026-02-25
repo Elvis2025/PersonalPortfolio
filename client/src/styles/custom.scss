@@ -404,9 +404,68 @@
 
 .skills .skill-box {
   height: 100%;
+  min-height: 252px;
+  perspective: 1200px;
+}
+
+.skill-box-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 252px;
+  transform-style: preserve-3d;
+  transition: transform 0.75s ease, box-shadow 0.45s ease;
+}
+
+.skill-box:hover .skill-box-inner,
+.skill-box:focus-within .skill-box-inner {
+  transform: rotateY(180deg) translateY(-6px);
+  box-shadow: 0 24px 45px color-mix(in srgb, var(--accent-color), transparent 72%);
+}
+
+.skill-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 18px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 75%);
+  background: linear-gradient(165deg, color-mix(in srgb, var(--surface-color), transparent 0%), color-mix(in srgb, var(--accent-color), transparent 90%));
+}
+
+.skill-front {
   display: flex;
   flex-direction: column;
-  min-height: 238px;
+  box-shadow: 0 14px 26px color-mix(in srgb, #000, transparent 80%);
+}
+
+.skill-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+  box-shadow: 0 18px 32px color-mix(in srgb, var(--accent-color), transparent 78%);
+}
+
+.skill-back h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.skill-back p {
+  margin: 0;
+  font-size: 0.89rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--default-color), transparent 8%);
+}
+
+.skill-back-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
 }
 
 .skill-percent {
@@ -419,8 +478,26 @@
   color: color-mix(in srgb, var(--default-color), transparent 8%);
 }
 
+.skill-percent-large {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
 .skill-percent i {
   color: var(--accent-color);
+}
+
+.skill-percent .skill-icon-image {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.skill-percent .skill-icon-large,
+.skill-percent i.skill-icon-large {
+  width: 34px;
+  height: 34px;
+  font-size: 1.75rem;
 }
 
 /* Slower reveal pacing */
