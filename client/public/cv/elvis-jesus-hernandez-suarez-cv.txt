@@ -1,0 +1,41 @@
+Elvis Jesús Hernández Suárez
+Santo Domingo, Dominican Republic
+LinkedIn: linkedin.com/in/elvis-hernandez-075496285
+Phone: +1 849-869-8664
+Email: inelvis16031124@gmail.com
+GitHub: github.com/Elvis2025
+
+Professional Summary
+Software Developer with over 2 years of experience. I began as a mobile developer,
+implementing features and fixing bugs in Xamarin applications, and later developed
+mobile apps and APIs with .NET MAUI and ASP.NET 9 tailored to each client's needs.
+Focused on excellent UX with Clean Architecture, clean code, design patterns, and
+security best practices.
+
+Professional Experience
+IB Systems — Full Stack Developer (2024 - Present)
+- Implement and optimize high-quality backend and frontend features.
+- Work under Agile and Scrum methodologies to improve delivery effectiveness.
+- Use Boilerplate as a foundation for best coding practices.
+- Apply SOLID principles in new repositories and maintenance tasks.
+
+MDSOFT — Mobile Developer (2022 - 2024)
+- Delivered mobile and database-level features tailored to client needs.
+- Applied SOLID principles and engineering best practices.
+- Built a B2B mobile app with .NET MAUI (.NET 9) + ASP.NET 9 API (Onion Architecture).
+- Refactored and redesigned a .NET 8 mobile app with complete UI/UX improvements.
+- Extended Xamarin app capabilities: PDF generation, portable printing formats,
+  XML automation, and internal enterprise process automations.
+
+Education
+Technological Institute of the Americas (ITLA)
+Software Development Degree (Ongoing)
+
+Additional Skills
+Back-end: ASP.NET, ASP.NET Core, AngularJS, Angular 20, Node.js, Next.js, Boilerplate,
+Kotlin, Java, C#, Visual Basic, SQL Server, MySQL, SQLite, MongoDB, Oracle,
+Entity Framework, Dapper, ADO.NET, RESTful APIs, Clean/Onion/Vertical Slice Architecture.
+
+Front-end: HTML, HTML5, CSS, CSS3, SCSS, Tailwind CSS, Bootstrap,
+AngularJS, Angular 20, React.js, Blazor, Razor, JavaScript, TypeScript,
+XAML with .NET MAUI, XML and Jetpack Compose (Kotlin).
