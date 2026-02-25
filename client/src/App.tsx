@@ -143,6 +143,7 @@ type Dictionary = {
   heroDescription: string;
   ctaWork: string;
   ctaContact: string;
+  ctaDownloadCv: string;
   floating: { design: string; code: string; ideas: string };
   pages: Record<'resume' | 'services' | 'portfolio' | 'contact', { title: string; text: string }>;
   about: AboutContent;
@@ -158,6 +159,35 @@ type Dictionary = {
   langToggle: string;
 };
 
+type ResumeContent = {
+  title: string;
+  subtitle: string;
+  profileTitle: string;
+  profileSummary: string;
+  location: string;
+  linkedin: { label: string; url: string; displayUrl: string };
+  github: { label: string; url: string; displayUrl: string };
+  email: { label: string; address: string };
+  phone: string;
+  experienceTitle: string;
+  educationTitle: string;
+  skillsTitle: string;
+  contactCta: string;
+  downloadCta: string;
+  experience: Array<{
+    company: string;
+    role: string;
+    period: string;
+    bullets: string[];
+  }>;
+  education: Array<{
+    institution: string;
+    degree: string;
+    period: string;
+  }>;
+  highlightedSkills: Array<{ name: string; level: number }>;
+};
+
 const copy: Record<Lang, Dictionary> = {
   en: {
     nav: ['Home', 'About', 'Resume', 'Services', 'Portfolio', 'Contact'],
@@ -167,6 +197,7 @@ const copy: Record<Lang, Dictionary> = {
       'Full Stack Developer focused on building web and mobile products with strong UX/UI, clean architecture, and business impact.',
     ctaWork: 'View My Work',
     ctaContact: 'Get In Touch',
+    ctaDownloadCv: 'Download CV',
     floating: { design: 'Design', code: 'Code', ideas: 'Ideas' },
     pages: {
       resume: { title: 'Resume', text: 'Experience, education, technical stack, and key achievements.' },
@@ -243,6 +274,7 @@ const copy: Record<Lang, Dictionary> = {
       'Desarrollador Full Stack enfocado en construir productos web y móviles con fuerte UX/UI, arquitectura limpia e impacto de negocio.',
     ctaWork: 'Ver mi trabajo',
     ctaContact: 'Contáctame',
+    ctaDownloadCv: 'Descargar CV',
     floating: { design: 'Diseño', code: 'Código', ideas: 'Ideas' },
     pages: {
       resume: { title: 'Resumen', text: 'Experiencia, educación, stack técnico y logros relevantes.' },
@@ -316,6 +348,137 @@ const copy: Record<Lang, Dictionary> = {
 const rolesByLang: Record<Lang, string[]> = {
   en: ['UI/UX Designer', 'Web Developer', 'Digital Artist', 'Brand Strategist'],
   es: ['Diseñador UI/UX', 'Desarrollador Web', 'Artista Digital', 'Estratega de Marca']
+};
+
+const resumeContent: Record<Lang, ResumeContent> = {
+  en: {
+    title: 'Resume',
+    subtitle: 'Professional profile, experience, education, and technical strengths built from real project delivery.',
+    profileTitle: 'Professional Summary',
+    profileSummary:
+      'Software Developer with over 2 years of experience. I started as a mobile developer working with Xamarin, then built mobile apps and APIs with .NET MAUI and ASP.NET 9. I focus on clean architecture, clean code, design patterns, and secure, high-performance solutions with strong UX impact.',
+    location: 'Santo Domingo, Dominican Republic',
+    linkedin: {
+      label: 'LinkedIn',
+      url: 'https://linkedin.com/in/elvis-hernandez-075496285',
+      displayUrl: 'linkedin.com/in/elvis-hernandez-075496285'
+    },
+    github: {
+      label: 'GitHub',
+      url: 'https://github.com/Elvis2025',
+      displayUrl: 'github.com/Elvis2025'
+    },
+    email: { label: 'Email', address: 'inelvis16031124@gmail.com' },
+    phone: '+1 849-869-8664',
+    experienceTitle: 'Professional Experience',
+    educationTitle: 'Education',
+    skillsTitle: 'Core Skills',
+    contactCta: 'Contact me',
+    downloadCta: 'Download CV',
+    experience: [
+      {
+        company: 'IB Systems',
+        role: 'Full Stack Developer',
+        period: '2024 - Present',
+        bullets: [
+          'Currently implementing and optimizing high-quality backend and frontend features in production systems.',
+          'Working under Agile and Scrum methodologies to improve delivery predictability and throughput.',
+          'Using Boilerplate as a base to keep consistency, quality standards, and maintainable architecture.',
+          'Applying SOLID principles in new repositories and maintenance tasks for clean and readable code.'
+        ]
+      },
+      {
+        company: 'MDSOFT',
+        role: 'Mobile Developer',
+        period: '2022 - 2024',
+        bullets: [
+          'Delivered three mobile and database-driven projects in record time, fully tailored to client needs.',
+          'Applied SOLID principles and engineering best practices across all delivered modules.',
+          'Built a B2B application with .NET MAUI (.NET 9) consuming an ASP.NET 9 API using Onion Architecture and security controls.',
+          'Refactored and redesigned a .NET 8 mobile application, revamping UI/UX and implementing new modules and business logic.',
+          'Extended Xamarin features with PDF generation, portable printer formatting, XML automation, and internal enterprise processes.'
+        ]
+      }
+    ],
+    education: [
+      {
+        institution: 'Technological Institute of the Americas (ITLA)',
+        degree: 'Software Development Degree (Ongoing)',
+        period: 'In progress'
+      }
+    ],
+    highlightedSkills: [
+      { name: 'Software Architecture', level: 93 },
+      { name: 'Flutter', level: 84 },
+      { name: 'React / TypeScript', level: 90 },
+      { name: 'Blazor / C#', level: 88 },
+      { name: 'Spring Boot / Java', level: 86 }
+    ]
+  },
+  es: {
+    title: 'Resumen',
+    subtitle: 'Perfil profesional, experiencia, educación y fortalezas técnicas construidas en proyectos reales.',
+    profileTitle: 'Resumen Profesional',
+    profileSummary:
+      'Desarrollador de software con más de 2 años de experiencia. Inicié como desarrollador móvil trabajando con Xamarin, luego construí aplicaciones y APIs con .NET MAUI y ASP.NET 9. Me enfoco en arquitectura limpia, código limpio, patrones de diseño y soluciones seguras y de alto rendimiento con impacto en UX.',
+    location: 'Santo Domingo, República Dominicana',
+    linkedin: {
+      label: 'LinkedIn',
+      url: 'https://linkedin.com/in/elvis-hernandez-075496285',
+      displayUrl: 'linkedin.com/in/elvis-hernandez-075496285'
+    },
+    github: {
+      label: 'GitHub',
+      url: 'https://github.com/Elvis2025',
+      displayUrl: 'github.com/Elvis2025'
+    },
+    email: { label: 'Correo', address: 'inelvis16031124@gmail.com' },
+    phone: '+1 849-869-8664',
+    experienceTitle: 'Experiencia Profesional',
+    educationTitle: 'Educación',
+    skillsTitle: 'Habilidades Clave',
+    contactCta: 'Contáctame',
+    downloadCta: 'Descargar CV',
+    experience: [
+      {
+        company: 'IB Systems',
+        role: 'Full Stack Developer',
+        period: '2024 - Actualidad',
+        bullets: [
+          'Actualmente implemento y optimizo funcionalidades de alta calidad para backend y frontend en producción.',
+          'Trabajo con metodologías Agile y Scrum para mejorar predictibilidad y velocidad de entrega.',
+          'Uso Boilerplate como base para mantener consistencia técnica, calidad y mantenibilidad.',
+          'Aplico principios SOLID en nuevos repositorios y mantenimientos para código limpio y legible.'
+        ]
+      },
+      {
+        company: 'MDSOFT',
+        role: 'Desarrollador Móvil',
+        period: '2022 - 2024',
+        bullets: [
+          'Entregué tres proyectos móviles y de base de datos en tiempo récord, totalmente adaptados al cliente.',
+          'Apliqué principios SOLID y buenas prácticas de ingeniería en todos los módulos desarrollados.',
+          'Construí una app B2B con .NET MAUI (.NET 9) consumiendo una API en ASP.NET 9 con Onion Architecture y controles de seguridad.',
+          'Refactoricé y rediseñé una app móvil en .NET 8, renovando UI/UX y agregando nuevos módulos y lógica de negocio.',
+          'Extendí funcionalidades en Xamarin con generación de PDFs, formato para impresoras portátiles, automatización XML y procesos internos.'
+        ]
+      }
+    ],
+    education: [
+      {
+        institution: 'Instituto Tecnológico de las Américas (ITLA)',
+        degree: 'Carrera de Desarrollo de Software (En curso)',
+        period: 'En progreso'
+      }
+    ],
+    highlightedSkills: [
+      { name: 'Arquitectura de Software', level: 93 },
+      { name: 'Flutter', level: 84 },
+      { name: 'React / TypeScript', level: 90 },
+      { name: 'Blazor / C#', level: 88 },
+      { name: 'Spring Boot / Java', level: 86 }
+    ]
+  }
 };
 
 const skillsCatalog: Record<Lang, SkillCard[]> = {
@@ -592,12 +755,12 @@ function HomePage({ lang }: { lang: Lang }) {
               </h2>
               <p data-aos="fade-up" data-aos-delay="400">{text.heroDescription}</p>
               <div className="hero-actions" data-aos="fade-up" data-aos-delay="500">
-                <Link to="/portfolio" className="btn btn-primary">
-                  {text.ctaWork}
+                <Link to="/contact" className="btn btn-ghost">
+                  <i className="bi bi-chat-dots" /> {text.ctaContact} <i className="bi bi-arrow-up-right" />
                 </Link>
-                <Link to="/contact" className="btn btn-outline">
-                  {text.ctaContact}
-                </Link>
+                <a href="/api/cv/download" className="link-underline cv-download-trigger">
+                  {text.ctaDownloadCv} <i className="bi bi-download" />
+                </a>
               </div>
               <div className="social-links" data-aos="fade-up" data-aos-delay="600">
                 <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
@@ -899,6 +1062,146 @@ function AboutPage({ lang }: { lang: Lang }) {
   );
 }
 
+function ResumePage({ lang }: { lang: Lang }) {
+  const data = resumeContent[lang];
+  const [showProgress, setShowProgress] = useState(false);
+
+  useEffect(() => {
+    setShowProgress(false);
+    const timer = window.setTimeout(() => setShowProgress(true), 220);
+    return () => window.clearTimeout(timer);
+  }, [lang]);
+
+  return (
+    <section id="resume" className="resume section">
+      <div className="container section-title" data-aos="fade-up">
+        <h2>{data.title}</h2>
+        <p>{data.subtitle}</p>
+      </div>
+
+      <div className="container" data-aos="fade-up" data-aos-delay="120">
+        <div className="row g-4">
+          <div className="col-12 col-lg-7">
+            <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="150">
+              <span className="resume-card-line" aria-hidden="true" />
+              <h3 className="resume-title"><i className="bi bi-person-badge" /> {data.profileTitle}</h3>
+              <div className="resume-content">
+                <article>
+                  <h4>Elvis Jesús Hernández Suárez</h4>
+                  <p>{data.profileSummary}</p>
+                  <ul className="resume-contact-list">
+                    <li>
+                      <i className="bi bi-geo-alt" aria-hidden="true" />
+                      <span>{data.location}</span>
+                    </li>
+                    <li>
+                      <i className="bi bi-linkedin" aria-hidden="true" />
+                      <span className="contact-link-stack">
+                        <a href={data.linkedin.url} target="_blank" rel="noreferrer">
+                          {data.linkedin.label}
+                        </a>
+                        <small>{data.linkedin.displayUrl}</small>
+                      </span>
+                    </li>
+                    <li>
+                      <i className="bi bi-envelope" aria-hidden="true" />
+                      <span className="contact-link-stack">
+                        <a href={`mailto:${data.email.address}`}>{data.email.label}</a>
+                        <small>{data.email.address}</small>
+                      </span>
+                    </li>
+                    <li>
+                      <i className="bi bi-whatsapp" aria-hidden="true" />
+                      <span className="flag-do" aria-label="República Dominicana">🇩🇴</span>
+                      <span>{data.phone}</span>
+                    </li>
+                    <li>
+                      <i className="bi bi-github" aria-hidden="true" />
+                      <span className="contact-link-stack">
+                        <a href={data.github.url} target="_blank" rel="noreferrer">
+                          {data.github.label}
+                        </a>
+                        <small>{data.github.displayUrl}</small>
+                      </span>
+                    </li>
+                  </ul>
+                </article>
+              </div>
+              <div className="resume-actions">
+                <Link to="/contact" className="btn btn-ghost">
+                  <i className="bi bi-chat-dots" /> {data.contactCta} <i className="bi bi-arrow-up-right" />
+                </Link>
+                <a className="link-underline cv-download-trigger" href="/api/cv/download">
+                  {data.downloadCta} <i className="bi bi-download" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-12 col-lg-5">
+            <div className="resume-item resume-card" data-aos="fade-left" data-aos-delay="180">
+              <span className="resume-card-line" aria-hidden="true" />
+              <h3 className="resume-title"><i className="bi bi-stars" /> {data.skillsTitle}</h3>
+              {data.highlightedSkills.map((skill) => (
+                <div key={skill.name} className="skill-item">
+                  <h4>{skill.name}</h4>
+                  <div className="progress">
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      aria-valuenow={skill.level}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      style={{ width: showProgress ? `${skill.level}%` : '0%' }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="col-12">
+            <div className="resume-item resume-card" data-aos="fade-up" data-aos-delay="210">
+              <span className="resume-card-line" aria-hidden="true" />
+              <h3 className="resume-title"><i className="bi bi-briefcase" /> {data.experienceTitle}</h3>
+              <div className="resume-content">
+                {data.experience.map((job) => (
+                  <article key={`${job.company}-${job.role}`}>
+                    <h4><i className="bi bi-person-workspace" /> {job.role}</h4>
+                    <h5><i className="bi bi-calendar3" /> {job.period}</h5>
+                    <p className="company"><i className="bi bi-building" /> {job.company}</p>
+                    <ul>
+                      {job.bullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="col-12">
+            <div className="resume-item resume-card" data-aos="fade-up" data-aos-delay="250">
+              <span className="resume-card-line" aria-hidden="true" />
+              <h3 className="resume-title"><i className="bi bi-mortarboard" /> {data.educationTitle}</h3>
+              <div className="resume-content">
+                {data.education.map((item) => (
+                  <article key={item.institution}>
+                    <h4><i className="bi bi-award" /> {item.degree}</h4>
+                    <h5><i className="bi bi-calendar3" /> {item.period}</h5>
+                    <p className="institution"><i className="bi bi-bank" /> {item.institution}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function InnerPage({ title, text }: { title: string; text: string }) {
   return (
     <section className="section">
@@ -934,7 +1237,7 @@ function renderPage(pathname: string, lang: Lang) {
     case '/about':
       return <AboutPage lang={lang} />;
     case '/resume':
-      return <InnerPage title={pages.resume.title} text={pages.resume.text} />;
+      return <ResumePage lang={lang} />;
     case '/services':
       return <InnerPage title={pages.services.title} text={pages.services.text} />;
     case '/portfolio':
@@ -950,6 +1253,7 @@ export function App() {
   const [pathname, setPathname] = useState(window.location.pathname);
   const [isBootLoading, setIsBootLoading] = useState(true);
   const [lang, setLang] = useState<Lang>('en');
+  const [showFloatingDownload, setShowFloatingDownload] = useState(true);
 
   const navItems = useMemo<NavItem[]>(() => {
     const labels = copy[lang].nav;
@@ -1000,6 +1304,44 @@ export function App() {
     return () => observer.disconnect();
   }, [pathname, lang]);
 
+  useEffect(() => {
+    const downloadTriggers = Array.from(document.querySelectorAll<HTMLElement>('.cv-download-trigger'));
+    if (downloadTriggers.length === 0) {
+      setShowFloatingDownload(true);
+      return;
+    }
+
+    const visibleIds = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const elementId = (entry.target as HTMLElement).dataset.cvObserverId;
+          if (!elementId) return;
+
+          if (entry.isIntersecting) {
+            visibleIds.add(elementId);
+          } else {
+            visibleIds.delete(elementId);
+          }
+        });
+        setShowFloatingDownload(visibleIds.size === 0);
+      },
+      { threshold: 0.25 }
+    );
+
+    downloadTriggers.forEach((item, index) => {
+      item.dataset.cvObserverId = `cv-trigger-${index}`;
+      observer.observe(item);
+    });
+
+    return () => {
+      downloadTriggers.forEach((item) => {
+        delete item.dataset.cvObserverId;
+      });
+      observer.disconnect();
+    };
+  }, [pathname, lang]);
+
   return (
     <>
       <div id="preloader" className={isBootLoading ? 'preloader-visible' : 'preloader-hidden'} aria-hidden="true" />
@@ -1010,6 +1352,13 @@ export function App() {
         onToggleLang={() => setLang((current) => (current === 'en' ? 'es' : 'en'))}
       />
       <main className="main">{renderPage(pathname, lang)}</main>
+      <a
+        href="/api/cv/download"
+        className={`floating-cv-download ${showFloatingDownload ? 'active' : ''}`}
+        aria-label="Download CV"
+      >
+        <i className="bi bi-file-earmark-arrow-down" />
+      </a>
       <Footer lang={lang} />
     </>
   );
