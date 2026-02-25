@@ -716,31 +716,31 @@ function SkillsSection({ lang }: { lang: Lang }) {
 
   return (
     <section id="skills" className="skills section">
-      <div className="container section-title" data-aos="fade-up">
+      <div className="container section-title">
         <h2>{sectionText.title}</h2>
         <p>{sectionText.subtitle}</p>
       </div>
 
-      <div className="container" id="skills-summary" data-aos="fade-up" data-aos-delay="100">
+      <div className="container" id="skills-summary">
         <h3 className="skills-summary-title">{sectionText.summaryTitle}</h3>
         <div className="skills-summary-grid">
-          <div className="skills-summary-card" data-aos="zoom-in" data-aos-delay="140">
+          <div className="skills-summary-card">
             <span>{sectionText.summary.frontend}</span>
             <strong>{counts.frontend}%</strong>
           </div>
-          <div className="skills-summary-card" data-aos="zoom-in" data-aos-delay="220">
+          <div className="skills-summary-card">
             <span>{sectionText.summary.backend}</span>
             <strong>{counts.backend}%</strong>
           </div>
-          <div className="skills-summary-card" data-aos="zoom-in" data-aos-delay="300">
+          <div className="skills-summary-card">
             <span>{sectionText.summary.mobile}</span>
             <strong>{counts.mobile}%</strong>
           </div>
         </div>
       </div>
 
-      <div className="container" data-aos="fade-up" data-aos-delay="160">
-        <ul className="skills-filters" data-aos="fade-up" data-aos-delay="180">
+      <div className="container">
+        <ul className="skills-filters">
           {filterOrder.map((filter) => (
             <li key={filter} className={activeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveFilter(filter)}>
               {sectionText.filters[filter]}
