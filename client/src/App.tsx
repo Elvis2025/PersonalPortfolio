@@ -143,6 +143,7 @@ type Dictionary = {
   heroDescription: string;
   ctaWork: string;
   ctaContact: string;
+  ctaDownloadCv: string;
   floating: { design: string; code: string; ideas: string };
   pages: Record<'resume' | 'services' | 'portfolio' | 'contact', { title: string; text: string }>;
   about: AboutContent;
@@ -173,7 +174,6 @@ type ResumeContent = {
   skillsTitle: string;
   contactCta: string;
   downloadCta: string;
-  cvHint: string;
   experience: Array<{
     company: string;
     role: string;
@@ -197,6 +197,7 @@ const copy: Record<Lang, Dictionary> = {
       'Full Stack Developer focused on building web and mobile products with strong UX/UI, clean architecture, and business impact.',
     ctaWork: 'View My Work',
     ctaContact: 'Get In Touch',
+    ctaDownloadCv: 'Download CV',
     floating: { design: 'Design', code: 'Code', ideas: 'Ideas' },
     pages: {
       resume: { title: 'Resume', text: 'Experience, education, technical stack, and key achievements.' },
@@ -273,6 +274,7 @@ const copy: Record<Lang, Dictionary> = {
       'Desarrollador Full Stack enfocado en construir productos web y móviles con fuerte UX/UI, arquitectura limpia e impacto de negocio.',
     ctaWork: 'Ver mi trabajo',
     ctaContact: 'Contáctame',
+    ctaDownloadCv: 'Descargar CV',
     floating: { design: 'Diseño', code: 'Código', ideas: 'Ideas' },
     pages: {
       resume: { title: 'Resumen', text: 'Experiencia, educación, stack técnico y logros relevantes.' },
@@ -365,7 +367,6 @@ const resumeContent: Record<Lang, ResumeContent> = {
     skillsTitle: 'Core Skills',
     contactCta: 'Contact me',
     downloadCta: 'Download CV',
-    cvHint: 'Place your PDF inside /client/public/cv and this button will download the latest file automatically.',
     experience: [
       {
         company: 'IB Systems',
@@ -421,7 +422,6 @@ const resumeContent: Record<Lang, ResumeContent> = {
     skillsTitle: 'Habilidades Clave',
     contactCta: 'Contáctame',
     downloadCta: 'Descargar CV',
-    cvHint: 'Coloca tu PDF en /client/public/cv y este botón descargará automáticamente el archivo más reciente.',
     experience: [
       {
         company: 'IB Systems',
@@ -743,6 +743,9 @@ function HomePage({ lang }: { lang: Lang }) {
                 <Link to="/contact" className="btn btn-outline">
                   {text.ctaContact}
                 </Link>
+                <a href="/api/cv/download" className="btn btn-outline">
+                  <i className="bi bi-file-earmark-pdf" /> {text.ctaDownloadCv}
+                </a>
               </div>
               <div className="social-links" data-aos="fade-up" data-aos-delay="600">
                 <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
@@ -1064,7 +1067,7 @@ function ResumePage({ lang }: { lang: Lang }) {
       <div className="container" data-aos="fade-up" data-aos-delay="120">
         <div className="row g-5">
           <div className="col-lg-7">
-            <div className="resume-item" data-aos="fade-right" data-aos-delay="150">
+            <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="150">
               <h3 className="resume-title"><i className="bi bi-person-badge" /> {data.profileTitle}</h3>
               <div className="resume-content">
                 <article>
@@ -1100,7 +1103,7 @@ function ResumePage({ lang }: { lang: Lang }) {
               </div>
             </div>
 
-            <div className="resume-item" data-aos="fade-right" data-aos-delay="200">
+            <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="200">
               <h3 className="resume-title"><i className="bi bi-briefcase" /> {data.experienceTitle}</h3>
               <div className="resume-content">
                 {data.experience.map((job) => (
@@ -1118,7 +1121,7 @@ function ResumePage({ lang }: { lang: Lang }) {
               </div>
             </div>
 
-            <div className="resume-item" data-aos="fade-right" data-aos-delay="250">
+            <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="250">
               <h3 className="resume-title"><i className="bi bi-mortarboard" /> {data.educationTitle}</h3>
               <div className="resume-content">
                 {data.education.map((item) => (
@@ -1133,7 +1136,7 @@ function ResumePage({ lang }: { lang: Lang }) {
           </div>
 
           <div className="col-lg-5">
-            <div className="resume-item" data-aos="fade-left" data-aos-delay="180">
+            <div className="resume-item resume-card" data-aos="fade-left" data-aos-delay="180">
               <h3 className="resume-title"><i className="bi bi-stars" /> {data.skillsTitle}</h3>
               {data.highlightedSkills.map((skill) => (
                 <div key={skill.name} className="skill-item">
@@ -1158,9 +1161,6 @@ function ResumePage({ lang }: { lang: Lang }) {
                   <i className="bi bi-file-earmark-pdf" /> {data.downloadCta}
                 </a>
               </div>
-              <p className="resume-cv-hint">
-                <i className="bi bi-folder2-open" /> {data.cvHint}
-              </p>
             </div>
           </div>
         </div>
