@@ -487,7 +487,6 @@
   isolation: isolate;
   overflow: hidden;
   min-height: 100%;
-  transform-style: flat;
 }
 
 .resume .resume-item.resume-card::before {
@@ -542,19 +541,9 @@
   opacity: 0.9;
   pointer-events: none;
   z-index: 0;
-  animation:
-    subtle-shadow-sweep 4.8s ease-in-out infinite alternate,
-    resume-cross-lines 7.5s linear infinite;
+  animation: subtle-shadow-sweep 4.8s ease-in-out infinite alternate;
 }
 
-@keyframes resume-cross-lines {
-  0% {
-    background-position: center, 0% 0%, 100% 100%;
-  }
-  100% {
-    background-position: center, 220% 0%, -120% 100%;
-  }
-}
 
 .resume .resume-item.resume-card > * {
   position: relative;
@@ -566,12 +555,6 @@
   box-shadow: 0 20px 38px color-mix(in srgb, var(--accent-color), transparent 70%);
 }
 
-.resume .resume-item.resume-card:hover,
-.resume .resume-item.resume-card:focus-within,
-.resume .resume-item.resume-card:focus-visible,
-.resume .resume-item.resume-card:active {
-  rotate: none;
-}
 
 .skills-summary-card span {
   display: block;
