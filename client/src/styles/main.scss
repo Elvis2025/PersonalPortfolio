@@ -312,7 +312,10 @@ h6 {
     display: none;
     list-style: none;
     position: absolute;
-    inset: 60px 20px 20px 20px;
+    top: 60px;
+    right: 20px;
+    left: 20px;
+    bottom: auto;
     padding: 10px 0;
     margin: 0;
     border-radius: 8px;
@@ -391,8 +394,11 @@ h6 {
   .navmenu ul.navmenu-list-open {
     display: block !important;
     position: fixed;
-    inset: 76px 20px 20px 20px;
-    min-height: calc(100vh - 96px);
+    top: 76px;
+    right: 20px;
+    left: 20px;
+    bottom: auto;
+    max-height: calc(100vh - 110px);
     z-index: 10000;
   }
 
