@@ -412,7 +412,8 @@ const resumeContent: Record<Lang, ResumeContent> = {
       { name: 'Flutter', level: 84 },
       { name: 'React / TypeScript', level: 90 },
       { name: 'Blazor / C#', level: 88 },
-      { name: 'Spring Boot / Java', level: 86 }
+      { name: 'Spring Boot / Java', level: 86 },
+      { name: 'ASP .NET / C#', level: 94 }
     ]
   },
   es: {
@@ -476,7 +477,8 @@ const resumeContent: Record<Lang, ResumeContent> = {
       { name: 'Flutter', level: 84 },
       { name: 'React / TypeScript', level: 90 },
       { name: 'Blazor / C#', level: 88 },
-      { name: 'Spring Boot / Java', level: 86 }
+      { name: 'Spring Boot / Java', level: 86 },
+      { name: 'ASP .NET / C#', level: 94 }
     ]
   }
 };
@@ -1142,7 +1144,7 @@ function ResumePage({ lang }: { lang: Lang }) {
               <h3 className="resume-title"><i className="bi bi-stars" /> {data.skillsTitle}</h3>
               {data.highlightedSkills.map((skill) => (
                 <div key={skill.name} className="skill-item">
-                  <h4>{skill.name}</h4>
+                  <h4>{skill.name} — {skill.level}%</h4>
                   <div className="progress">
                     <div
                       className="progress-bar"
