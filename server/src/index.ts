@@ -182,25 +182,50 @@ app.post('/api/contact', async (req: any, res: any) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT ?? 587),
-    secure: Number(process.env.SMTP_PORT ?? 587) === 465,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
-    }
-  });
+  const normalizedEmail = String(email).trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  await transporter.sendMail({
-    from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
-    to: process.env.CONTACT_TO_EMAIL,
-    replyTo: email,
-    subject: `[Portfolio] ${subject}`,
-    text: `Name: ${name}\nEmail: ${email}\n\n${message}`
-  });
+  if (!emailRegex.test(normalizedEmail)) {
+    return res.status(400).json({ error: 'Invalid email format' });
+  }
 
-  return res.json({ ok: true });
+  const smtpHost = process.env.SMTP_HOST;
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+  const smtpPort = Number(process.env.SMTP_PORT ?? 587);
+  const contactToEmail = process.env.CONTACT_TO_EMAIL;
+
+  if (!smtpHost || !smtpUser || !smtpPass || !contactToEmail) {
+    return res.status(500).json({ error: 'SMTP configuration is incomplete' });
+  }
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass
+      }
+    });
+
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM ?? smtpUser,
+      to: contactToEmail,
+      replyTo: normalizedEmail,
+      subject: `[Portfolio] ${String(subject).trim()}`,
+      text: `Name: ${String(name).trim()}
+Email: ${normalizedEmail}
+
+${String(message).trim()}`
+    });
+
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error('Contact email failed:', error);
+    return res.status(502).json({ error: 'Email delivery failed' });
+  }
 });
 
 if (hasClientDist) {
