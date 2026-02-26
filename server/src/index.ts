@@ -6,7 +6,24 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-dotenv.config();
+const currentFilePath = fileURLToPath(import.meta.url);
+const currentDirPath = path.dirname(currentFilePath);
+
+const envCandidatePaths = [
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(currentDirPath, '../.env'),
+  path.resolve(currentDirPath, '../../.env')
+];
+
+const seenEnvPaths = new Set<string>();
+for (const envPath of envCandidatePaths) {
+  if (seenEnvPaths.has(envPath) || !fs.existsSync(envPath)) {
+    continue;
+  }
+
+  dotenv.config({ path: envPath, override: false });
+  seenEnvPaths.add(envPath);
+}
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
@@ -25,8 +42,6 @@ function getPublicBaseUrl(req: any) {
   return host ? `${proto}://${host}` : null;
 }
 
-const currentFilePath = fileURLToPath(import.meta.url);
-const currentDirPath = path.dirname(currentFilePath);
 const clientDistPath = path.resolve(currentDirPath, '../../client/dist');
 const hasClientDist = fs.existsSync(clientDistPath);
 const fallbackCvDir = path.resolve(currentDirPath, '../../client/public/cv');
@@ -172,21 +187,21 @@ app.post('/api/contact', async (req: any, res: any) => {
   const history = (requests.get(ip) ?? []).filter((ts) => now - ts < windowMs);
 
   if (history.length >= maxPerWindow) {
-    return res.status(429).json({ error: 'Too many requests' });
+    return res.status(429).json({ error: 'TOO_MANY_REQUESTS', message: 'Too many requests' });
   }
 
   history.push(now);
   requests.set(ip, history);
 
   if (!name || !email || !subject || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res.status(400).json({ error: 'MISSING_REQUIRED_FIELDS', message: 'Missing required fields' });
   }
 
   const normalizedEmail = String(email).trim();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!emailRegex.test(normalizedEmail)) {
-    return res.status(400).json({ error: 'Invalid email format' });
+    return res.status(400).json({ error: 'INVALID_EMAIL_FORMAT', message: 'Invalid email format' });
   }
 
   const smtpHost = process.env.SMTP_HOST;
@@ -196,7 +211,10 @@ app.post('/api/contact', async (req: any, res: any) => {
   const contactToEmail = process.env.CONTACT_TO_EMAIL;
 
   if (!smtpHost || !smtpUser || !smtpPass || !contactToEmail) {
-    return res.status(500).json({ error: 'SMTP configuration is incomplete' });
+    return res.status(503).json({
+      error: 'CONTACT_SERVICE_UNAVAILABLE',
+      message: 'SMTP configuration is incomplete'
+    });
   }
 
   try {
@@ -224,7 +242,7 @@ ${String(message).trim()}`
     return res.json({ ok: true });
   } catch (error) {
     console.error('Contact email failed:', error);
-    return res.status(502).json({ error: 'Email delivery failed' });
+    return res.status(502).json({ error: 'EMAIL_DELIVERY_FAILED', message: 'Email delivery failed' });
   }
 });
 

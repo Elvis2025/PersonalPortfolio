@@ -183,6 +183,8 @@ type Dictionary = {
       generic: string;
       tooManyRequests: string;
       missingFields: string;
+      invalidEmail: string;
+      serviceUnavailable: string;
     };
   };
 };
@@ -369,7 +371,9 @@ const copy: Record<Lang, Dictionary> = {
       errors: {
         generic: 'Could not send your message right now. Please try again in a moment.',
         tooManyRequests: 'Too many attempts. Please wait one minute and try again.',
-        missingFields: 'Please complete all required fields before sending.'
+        missingFields: 'Please complete all required fields before sending.',
+        invalidEmail: 'Please enter a valid email address.',
+        serviceUnavailable: 'Contact service is temporarily unavailable. Please try again later or email me directly at inelvis16031124@gmail.com.'
       }
     }
   },
@@ -474,7 +478,9 @@ const copy: Record<Lang, Dictionary> = {
       errors: {
         generic: 'No se pudo enviar tu mensaje ahora mismo. Inténtalo de nuevo en unos minutos.',
         tooManyRequests: 'Demasiados intentos. Espera un minuto y vuelve a intentarlo.',
-        missingFields: 'Por favor completa todos los campos requeridos antes de enviar.'
+        missingFields: 'Por favor completa todos los campos requeridos antes de enviar.',
+        invalidEmail: 'Por favor ingresa un correo electrónico válido.',
+        serviceUnavailable: 'El servicio de contacto no está disponible temporalmente. Inténtalo más tarde o escríbeme directamente a inelvis16031124@gmail.com.'
       }
     }
   }
@@ -525,12 +531,22 @@ function ContactPage({ lang }: { lang: Lang }) {
         body: JSON.stringify(formData)
       });
 
+      const payload = (await response.json().catch(() => null)) as { error?: string; message?: string } | null;
+
       if (!response.ok) {
-        if (response.status === 429) {
+        if (response.status === 429 || payload?.error === 'TOO_MANY_REQUESTS') {
           throw new Error(text.errors.tooManyRequests);
         }
 
-        throw new Error(text.errors.generic);
+        if (response.status === 400 && (payload?.error === 'MISSING_REQUIRED_FIELDS' || payload?.error === 'INVALID_EMAIL_FORMAT')) {
+          throw new Error(payload.error === 'INVALID_EMAIL_FORMAT' ? text.errors.invalidEmail : text.errors.missingFields);
+        }
+
+        if (response.status === 503 || payload?.error === 'CONTACT_SERVICE_UNAVAILABLE') {
+          throw new Error(text.errors.serviceUnavailable);
+        }
+
+        throw new Error(payload?.message ?? text.errors.generic);
       }
 
       setSuccessMessage(text.success);
