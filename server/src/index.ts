@@ -42,9 +42,17 @@ function getPdfFilesInDirectory(directoryPath: string) {
     return [] as Array<{ fileName: string; filePath: string; mtimeMs: number }>;
   }
 
+  const knownCvNamesWithoutExtension = new Set(['english-eh-cv', 'spanish-eh-cv']);
+
   return fs
     .readdirSync(directoryPath)
-    .filter((fileName) => fileName.toLowerCase().endsWith('.pdf'))
+    .filter((fileName) => {
+      const lowerName = fileName.toLowerCase();
+      if (lowerName.endsWith('.pdf')) return true;
+
+      const parsedName = path.parse(lowerName);
+      return parsedName.ext === '' && knownCvNamesWithoutExtension.has(parsedName.name);
+    })
     .map((fileName) => {
       const filePath = path.join(directoryPath, fileName);
       const stats = fs.statSync(filePath);
@@ -76,6 +84,10 @@ function getCvByLanguage(directoryPath: string, lang: 'en' | 'es') {
     const lowerName = file.fileName.toLowerCase();
     return languageHints.some((hint) => lowerName.includes(hint));
   }) ?? null;
+}
+
+function getDownloadFileName(fileName: string) {
+  return fileName.toLowerCase().endsWith('.pdf') ? fileName : `${fileName}.pdf`;
 }
 
 if (hasClientDist) {
@@ -113,7 +125,7 @@ app.get('/api/cv/download', (req: any, res: any) => {
       });
     }
 
-    return res.download(languageCv.filePath, languageCv.fileName);
+    return res.download(languageCv.filePath, getDownloadFileName(languageCv.fileName));
   }
 
   const latestPdf = getLatestPdfInDirectory(cvStoragePath);
@@ -125,7 +137,7 @@ app.get('/api/cv/download', (req: any, res: any) => {
     });
   }
 
-  return res.download(latestPdf.filePath, latestPdf.fileName);
+  return res.download(latestPdf.filePath, getDownloadFileName(latestPdf.fileName));
 });
 
 app.get('/health', (_req: any, res: any) => {
