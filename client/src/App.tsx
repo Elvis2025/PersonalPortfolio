@@ -207,6 +207,38 @@ type ServicesContent = {
   items: ServiceItem[];
 };
 
+type PortfolioCategory = 'all' | 'web' | 'mobile' | 'desktop' | 'api' | 'legacy';
+
+type PortfolioProject = {
+  id: string;
+  title: string;
+  type: string;
+  category: Exclude<PortfolioCategory, 'all'>;
+  summary: string;
+  month: string;
+  client: string;
+  stack: string[];
+  challenge: string;
+  solution: string;
+  impact: string[];
+  tags: string[];
+  url?: string;
+};
+
+type PortfolioContent = {
+  title: string;
+  subtitle: string;
+  viewAll: string;
+  viewProject: string;
+  nextProject: string;
+  overview: string;
+  challengeTitle: string;
+  solutionTitle: string;
+  featuresTitle: string;
+  categories: Record<PortfolioCategory, string>;
+  projects: PortfolioProject[];
+};
+
 const copy: Record<Lang, Dictionary> = {
   en: {
     nav: ['Home', 'About', 'Resume', 'Services', 'Portfolio', 'Contact'],
@@ -699,6 +731,222 @@ const servicesContent: Record<Lang, ServicesContent> = {
   }
 };
 
+
+
+const portfolioContent: Record<Lang, PortfolioContent> = {
+  en: {
+    title: 'Portfolio',
+    subtitle:
+      'A curated set of real projects across web, mobile, desktop, APIs, and modernization work delivered for business operations and product growth.',
+    viewAll: 'View All Projects',
+    viewProject: 'View project details',
+    nextProject: 'Next project',
+    overview: 'Project Overview',
+    challengeTitle: 'The Challenge',
+    solutionTitle: 'The Solution',
+    featuresTitle: 'Key Features',
+    categories: {
+      all: 'All',
+      web: 'Web',
+      mobile: 'Mobile',
+      desktop: 'Desktop',
+      api: 'APIs',
+      legacy: 'Legacy / Modernization'
+    },
+    projects: [
+      {
+        id: 'veterinary-web',
+        title: 'Veterinary Management Platform',
+        type: 'Web Application',
+        category: 'web',
+        summary: 'A complete veterinary platform built with React, JavaScript, Tailwind CSS, Node.js, and MongoDB.',
+        month: '2023',
+        client: 'Veterinary Clinic',
+        stack: ['React', 'JavaScript', 'Tailwind CSS', 'Node.js', 'MongoDB'],
+        challenge: 'The clinic needed one place to manage pets, owners, appointments, and treatment history with fast search and easy admin workflows.',
+        solution: 'I delivered a full-stack dashboard with modular frontend components, API integration, appointment flow, and secure role-aware data operations.',
+        impact: ['Pet and owner records centralized', 'Faster appointment scheduling and history tracking', 'Cleaner data flow between reception and doctors'],
+        tags: ['React', 'MongoDB', 'Tailwind']
+      },
+      {
+        id: 'b2b-maui',
+        title: 'B2B Sales & Operations App',
+        type: 'Mobile Application',
+        category: 'mobile',
+        summary: 'Cross-platform business app using .NET MAUI connected to ASP.NET 9 APIs with Onion Architecture.',
+        month: '2024',
+        client: 'MDSOFT Client',
+        stack: ['.NET MAUI', 'ASP.NET 9', 'C#', 'SQL Server', 'Onion Architecture'],
+        challenge: 'Sales and operations teams required offline-friendly mobile workflows with secure API access and synchronized business data.',
+        solution: 'Implemented robust mobile modules, secure auth flows, and API integrations while preserving clean architecture and maintainability.',
+        impact: ['Improved field productivity', 'Reduced manual reporting errors', 'Better mobile-to-backend reliability'],
+        tags: ['.NET MAUI', 'ASP.NET', 'B2B']
+      },
+      {
+        id: 'erp-modernization',
+        title: 'Legacy ERP Modernization Initiative',
+        type: 'Modernization Program',
+        category: 'legacy',
+        summary: 'Incremental refactor and migration of ERP modules toward modular clean architecture and improved UX.',
+        month: '2025',
+        client: 'Enterprise Internal Systems',
+        stack: ['C#', '.NET', 'SQL Server', 'Clean Architecture', 'Angular'],
+        challenge: 'The legacy ERP had tight coupling, difficult maintenance, and slow delivery cycles for new business requirements.',
+        solution: 'Led targeted module refactors, defined cleaner boundaries, and improved frontend/backend collaboration without operational downtime.',
+        impact: ['Reduced technical debt hotspots', 'Faster module delivery cycles', 'More maintainable architecture for future growth'],
+        tags: ['Refactor', 'ERP', 'Architecture']
+      },
+      {
+        id: 'desktop-operations',
+        title: 'Internal Desktop Operations Suite',
+        type: 'Desktop Application',
+        category: 'desktop',
+        summary: 'Desktop workflows for operational control, reporting, and document processing in enterprise environments.',
+        month: '2022 - 2024',
+        client: 'Operations Teams',
+        stack: ['WinForms', 'WPF', 'C#', 'SQL Server'],
+        challenge: 'Teams depended on scattered manual tools for daily processes, creating delays and inconsistency in reporting.',
+        solution: 'Developed and maintained desktop modules with business rules, reusable components, and database-driven process automation.',
+        impact: ['Standardized internal workflows', 'Improved report consistency', 'Lowered repetitive manual workload'],
+        tags: ['Desktop', 'WinForms', 'Automation']
+      },
+      {
+        id: 'enterprise-apis',
+        title: 'Enterprise API Ecosystem',
+        type: 'API Platform',
+        category: 'api',
+        summary: 'Backend APIs powering mobile and web clients with secure validation, integration, and scalable service boundaries.',
+        month: '2024 - Present',
+        client: 'IB Systems',
+        stack: ['ASP.NET Core', 'C#', 'SQL Server', 'Postman', 'Azure DevOps'],
+        challenge: 'Multiple clients required reliable, secure APIs with consistent contracts and better observability across features.',
+        solution: 'Designed and optimized API modules with layered architecture, validation pipelines, and delivery workflows aligned with agile teams.',
+        impact: ['More stable integrations across apps', 'Improved maintainability and testability', 'Higher confidence in production deployments'],
+        tags: ['API', 'ASP.NET Core', 'SQL Server']
+      },
+      {
+        id: 'xamarin-enhancements',
+        title: 'Xamarin Legacy App Enhancements',
+        type: 'Mobile Maintenance & Refactor',
+        category: 'legacy',
+        summary: 'Feature expansion and technical improvements for existing Xamarin apps in production.',
+        month: '2022 - 2023',
+        client: 'MDSOFT Client Projects',
+        stack: ['Xamarin', 'C#', 'XML', 'PDF tooling'],
+        challenge: 'Legacy mobile apps needed new business features while keeping compatibility with existing operational processes.',
+        solution: 'Added PDF generation, printer formatting, XML automation, and performance-focused fixes while stabilizing legacy code paths.',
+        impact: ['Extended product lifecycle', 'Maintained continuity for existing users', 'Enabled gradual transition to newer stacks'],
+        tags: ['Xamarin', 'Legacy', 'Optimization']
+      }
+    ]
+  },
+  es: {
+    title: 'Portafolio',
+    subtitle:
+      'Selección de proyectos reales en web, móvil, desktop, APIs y modernización, entregados para mejorar operación y crecimiento de producto.',
+    viewAll: 'Ver todos los proyectos',
+    viewProject: 'Ver detalles del proyecto',
+    nextProject: 'Siguiente proyecto',
+    overview: 'Resumen del Proyecto',
+    challengeTitle: 'El Reto',
+    solutionTitle: 'La Solución',
+    featuresTitle: 'Características Clave',
+    categories: {
+      all: 'Todos',
+      web: 'Web',
+      mobile: 'Mobile',
+      desktop: 'Desktop',
+      api: 'APIs',
+      legacy: 'Legacy / Modernización'
+    },
+    projects: [
+      {
+        id: 'veterinary-web',
+        title: 'Plataforma de Gestión Veterinaria',
+        type: 'Aplicación Web',
+        category: 'web',
+        summary: 'Plataforma veterinaria completa construida con React, JavaScript, Tailwind CSS, Node.js y MongoDB.',
+        month: '2023',
+        client: 'Clínica Veterinaria',
+        stack: ['React', 'JavaScript', 'Tailwind CSS', 'Node.js', 'MongoDB'],
+        challenge: 'La clínica necesitaba centralizar mascotas, dueños, citas e historial de tratamientos con búsqueda rápida y administración simple.',
+        solution: 'Entregué un dashboard full-stack con componentes modulares, integración API, flujo de citas y operaciones seguras por rol.',
+        impact: ['Centralización de expedientes de mascotas y clientes', 'Agendamiento e historial más ágiles', 'Flujo de datos más limpio entre recepción y doctores'],
+        tags: ['React', 'MongoDB', 'Tailwind']
+      },
+      {
+        id: 'b2b-maui',
+        title: 'App B2B de Ventas y Operaciones',
+        type: 'Aplicación Móvil',
+        category: 'mobile',
+        summary: 'Aplicación cross-platform con .NET MAUI conectada a APIs ASP.NET 9 bajo Onion Architecture.',
+        month: '2024',
+        client: 'Cliente de MDSOFT',
+        stack: ['.NET MAUI', 'ASP.NET 9', 'C#', 'SQL Server', 'Onion Architecture'],
+        challenge: 'Los equipos comerciales y operativos necesitaban flujos móviles confiables con acceso seguro a APIs y sincronización de datos.',
+        solution: 'Implementé módulos móviles robustos, autenticación segura e integraciones API manteniendo arquitectura limpia y mantenibilidad.',
+        impact: ['Mayor productividad en campo', 'Menos errores en reportes manuales', 'Mejor confiabilidad entre app y backend'],
+        tags: ['.NET MAUI', 'ASP.NET', 'B2B']
+      },
+      {
+        id: 'erp-modernization',
+        title: 'Modernización de ERP Legacy',
+        type: 'Programa de Modernización',
+        category: 'legacy',
+        summary: 'Refactor incremental y migración de módulos ERP hacia arquitectura limpia modular y mejor UX.',
+        month: '2025',
+        client: 'Sistemas Empresariales Internos',
+        stack: ['C#', '.NET', 'SQL Server', 'Clean Architecture', 'Angular'],
+        challenge: 'El ERP legacy tenía alto acoplamiento, mantenimiento difícil y ciclos lentos para nuevas necesidades de negocio.',
+        solution: 'Lideré refactors por módulos, definí fronteras más limpias y mejoré colaboración frontend/backend sin detener operación.',
+        impact: ['Reducción de deuda técnica crítica', 'Ciclos más rápidos de entrega por módulo', 'Arquitectura más mantenible para escalar'],
+        tags: ['Refactor', 'ERP', 'Arquitectura']
+      },
+      {
+        id: 'desktop-operations',
+        title: 'Suite Desktop para Operaciones Internas',
+        type: 'Aplicación Desktop',
+        category: 'desktop',
+        summary: 'Flujos desktop para control operativo, reportes y procesamiento documental en entornos empresariales.',
+        month: '2022 - 2024',
+        client: 'Equipos de Operaciones',
+        stack: ['WinForms', 'WPF', 'C#', 'SQL Server'],
+        challenge: 'Los equipos dependían de herramientas manuales dispersas para procesos diarios, generando retrasos e inconsistencias.',
+        solution: 'Desarrollé y mantuve módulos desktop con reglas de negocio, componentes reutilizables y automatización de procesos.',
+        impact: ['Estandarización de flujos internos', 'Mayor consistencia en reportes', 'Menor carga manual repetitiva'],
+        tags: ['Desktop', 'WinForms', 'Automatización']
+      },
+      {
+        id: 'enterprise-apis',
+        title: 'Ecosistema de APIs Empresariales',
+        type: 'Plataforma de APIs',
+        category: 'api',
+        summary: 'APIs backend para clientes móviles y web con validación segura, integración y límites escalables.',
+        month: '2024 - Actualidad',
+        client: 'IB Systems',
+        stack: ['ASP.NET Core', 'C#', 'SQL Server', 'Postman', 'Azure DevOps'],
+        challenge: 'Múltiples clientes requerían APIs confiables, seguras y con contratos consistentes para nuevos módulos.',
+        solution: 'Diseñé y optimicé módulos API con arquitectura en capas, validaciones y flujo de entrega alineado a equipos ágiles.',
+        impact: ['Integraciones más estables entre aplicaciones', 'Mayor mantenibilidad y testabilidad', 'Más confianza en despliegues productivos'],
+        tags: ['API', 'ASP.NET Core', 'SQL Server']
+      },
+      {
+        id: 'xamarin-enhancements',
+        title: 'Mejoras en Apps Legacy con Xamarin',
+        type: 'Mantenimiento Móvil y Refactor',
+        category: 'legacy',
+        summary: 'Expansión funcional y mejoras técnicas para aplicaciones Xamarin en producción.',
+        month: '2022 - 2023',
+        client: 'Proyectos Cliente MDSOFT',
+        stack: ['Xamarin', 'C#', 'XML', 'PDF tooling'],
+        challenge: 'Las apps legacy requerían nuevas funciones de negocio manteniendo compatibilidad con procesos existentes.',
+        solution: 'Implementé generación PDF, formato de impresión, automatización XML y mejoras de rendimiento estabilizando código legado.',
+        impact: ['Extensión de vida útil del producto', 'Continuidad operativa para usuarios activos', 'Transición gradual habilitada hacia nuevos stacks'],
+        tags: ['Xamarin', 'Legacy', 'Optimización']
+      }
+    ]
+  }
+};
 const skillsCatalog: Record<Lang, SkillCard[]> = {
   es: [
     { title: 'ASP.NET Core', description: 'APIs robustas con seguridad, validaciones y arquitectura limpia.', percent: 95, category: 'backend', icon: 'img:https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg' },
@@ -1527,6 +1775,220 @@ function ServicesPage({ lang }: { lang: Lang }) {
   );
 }
 
+function ProjectPreviewSvg({ project }: { project: PortfolioProject }) {
+  const accent = '#1387c1';
+  const bg = '#0f1b22';
+
+  return (
+    <svg viewBox="0 0 640 360" role="img" aria-label={project.title} className="portfolio-svg-preview" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id={`g-${project.id}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor={bg} />
+          <stop offset="100%" stopColor="#17303d" />
+        </linearGradient>
+      </defs>
+      <rect width="640" height="360" rx="22" fill={`url(#g-${project.id})`} />
+      <circle cx="540" cy="90" r="74" fill="rgba(19,135,193,0.18)" />
+      <circle cx="115" cy="290" r="96" fill="rgba(19,135,193,0.12)" />
+      <rect x="44" y="54" width="280" height="30" rx="8" fill="rgba(231,242,247,0.16)" />
+      <rect x="44" y="100" width="360" height="14" rx="6" fill="rgba(231,242,247,0.20)" />
+      <rect x="44" y="122" width="298" height="14" rx="6" fill="rgba(231,242,247,0.10)" />
+      <rect x="44" y="176" width="168" height="120" rx="12" fill="rgba(19,135,193,0.22)" stroke="rgba(19,135,193,0.45)" />
+      <rect x="232" y="176" width="168" height="120" rx="12" fill="rgba(19,135,193,0.10)" stroke="rgba(19,135,193,0.35)" />
+      <rect x="420" y="176" width="168" height="120" rx="12" fill="rgba(19,135,193,0.17)" stroke="rgba(19,135,193,0.42)" />
+      <text x="56" y="75" fill="#e7f2f7" fontSize="16" fontFamily="Poppins, sans-serif">{project.type}</text>
+      <text x="56" y="335" fill={accent} fontSize="15" fontFamily="Poppins, sans-serif">{project.stack.slice(0, 3).join(' • ')}</text>
+    </svg>
+  );
+}
+
+function PortfolioPage({ lang }: { lang: Lang }) {
+  const data = portfolioContent[lang];
+  const [activeCategory, setActiveCategory] = useState<PortfolioCategory>('all');
+  const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
+
+  const visibleProjects = useMemo(
+    () =>
+      activeCategory === 'all' ? data.projects : data.projects.filter((project) => project.category === activeCategory),
+    [activeCategory, data.projects]
+  );
+
+  const activeProject = activeProjectIndex !== null ? visibleProjects[activeProjectIndex] : null;
+
+  useEffect(() => {
+    if (!activeProject) return;
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActiveProjectIndex(null);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onEscape);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onEscape);
+    };
+  }, [activeProject]);
+
+  const categoryOrder: PortfolioCategory[] = ['all', 'web', 'mobile', 'desktop', 'api', 'legacy'];
+
+  return (
+    <section id="portfolio" className="portfolio section">
+      <div className="container section-title" data-aos="fade-up">
+        <h2>{data.title}</h2>
+        <p>{data.subtitle}</p>
+      </div>
+
+      <div className="container" data-aos="fade-up" data-aos-delay="100">
+        <ul className="portfolio-filters" data-aos="fade-up" data-aos-delay="200">
+          {categoryOrder.map((category) => (
+            <li
+              key={category}
+              className={activeCategory === category ? 'filter-active' : ''}
+              onClick={() => {
+                setActiveCategory(category);
+                setActiveProjectIndex(null);
+              }}
+            >
+              {data.categories[category]}
+            </li>
+          ))}
+        </ul>
+
+        <div className="row gy-4" data-aos="fade-up" data-aos-delay="300">
+          {visibleProjects.map((project, index) => (
+            <div key={project.id} className="col-lg-4 col-md-6 portfolio-item">
+              <div className="portfolio-card">
+                <div className="portfolio-img">
+                  <ProjectPreviewSvg project={project} />
+                  <div className="portfolio-overlay">
+                    <button type="button" className="portfolio-overlay-button" onClick={() => setActiveProjectIndex(index)} aria-label={data.viewProject}>
+                      <i className="bi bi-eye" />
+                    </button>
+                  </div>
+                </div>
+                <div className="portfolio-info">
+                  <h4>{project.title}</h4>
+                  <p>{project.summary}</p>
+                  <div className="portfolio-tags">
+                    {project.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-5" data-aos="fade-up" data-aos-delay="400">
+          <button type="button" className="btn btn-primary" onClick={() => setActiveCategory('all')}>
+            {data.viewAll}
+          </button>
+        </div>
+      </div>
+
+      {activeProject ? (
+        <div className="portfolio-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="portfolio-modal-title" onClick={() => setActiveProjectIndex(null)}>
+          <article className="portfolio-modal" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="portfolio-modal-close" onClick={() => setActiveProjectIndex(null)} aria-label="Close">
+              <i className="bi bi-x-lg" />
+            </button>
+
+            <div className="portfolio-details-media">
+              <div className="main-image">
+                <ProjectPreviewSvg project={activeProject} />
+              </div>
+              <div className="tech-stack-badges">
+                {activeProject.stack.map((tech) => (
+                  <span key={tech}>{tech}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="portfolio-details-content">
+              <div className="project-meta">
+                <div className="badge-wrapper">
+                  <span className="project-badge">{activeProject.type}</span>
+                </div>
+                <div className="date-client">
+                  <div className="meta-item">
+                    <i className="bi bi-calendar-check" />
+                    <span>{activeProject.month}</span>
+                  </div>
+                  <div className="meta-item">
+                    <i className="bi bi-buildings" />
+                    <span>{activeProject.client}</span>
+                  </div>
+                </div>
+              </div>
+
+              <h2 className="project-title" id="portfolio-modal-title">{activeProject.title}</h2>
+
+              {activeProject.url ? (
+                <div className="project-website">
+                  <i className="bi bi-link-45deg" />
+                  <a href={activeProject.url} target="_blank" rel="noreferrer">{activeProject.url}</a>
+                </div>
+              ) : null}
+
+              <div className="project-overview">
+                <p className="lead">{activeProject.summary}</p>
+                <div className="accordion project-accordion">
+                  <div className="accordion-item">
+                    <h3 className="accordion-header">
+                      <button className="accordion-button" type="button">{data.overview}</button>
+                    </h3>
+                    <div className="accordion-body">
+                      <p>{activeProject.summary}</p>
+                    </div>
+                  </div>
+                  <div className="accordion-item">
+                    <h3 className="accordion-header">
+                      <button className="accordion-button" type="button">{data.challengeTitle}</button>
+                    </h3>
+                    <div className="accordion-body">
+                      <p>{activeProject.challenge}</p>
+                    </div>
+                  </div>
+                  <div className="accordion-item">
+                    <h3 className="accordion-header">
+                      <button className="accordion-button" type="button">{data.solutionTitle}</button>
+                    </h3>
+                    <div className="accordion-body">
+                      <p>{activeProject.solution}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="project-features">
+                <h3><i className="bi bi-stars" /> {data.featuresTitle}</h3>
+                <ul className="feature-list">
+                  {activeProject.impact.map((point) => (
+                    <li key={point}><i className="bi bi-check2-circle" /> {point}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="cta-buttons">
+                <button
+                  type="button"
+                  className="btn-next-project"
+                  onClick={() => setActiveProjectIndex((current) => (current === null ? 0 : (current + 1) % visibleProjects.length))}
+                >
+                  {data.nextProject} <i className="bi bi-arrow-right" />
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 
 function InnerPage({ title, text }: { title: string; text: string }) {
   return (
@@ -1567,7 +2029,7 @@ function renderPage(pathname: string, lang: Lang) {
     case '/services':
       return <ServicesPage lang={lang} />;
     case '/portfolio':
-      return <InnerPage title={pages.portfolio.title} text={pages.portfolio.text} />;
+      return <PortfolioPage lang={lang} />;
     case '/contact':
       return <InnerPage title={pages.contact.title} text={pages.contact.text} />;
     default:
