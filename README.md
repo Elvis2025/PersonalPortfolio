@@ -20,7 +20,7 @@ npm install --prefix server
 ## Variables de entorno
 
 1. Copia `.env.example` a `.env`.
-2. Completa credenciales SMTP reales.
+2. Completa credenciales SMTP reales (Gmail u otro proveedor).
 
 ```bash
 cp .env.example .env
@@ -45,31 +45,42 @@ npm run dev
 
 
 
-## Proveedor de correo (SMTP o Resend)
+## Proveedor de correo (SMTP / Nodemailer)
 
-El backend soporta dos modos:
+El backend usa Nodemailer con SMTP para enviar emails del formulario.
 
-1. `MAIL_PROVIDER=smtp` (default): usa `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`.
-2. `MAIL_PROVIDER=resend`: usa API HTTP de Resend con `RESEND_API_KEY` y `RESEND_FROM` (además de `CONTACT_TO_EMAIL`).
+Variables requeridas:
 
-Ejemplo Resend:
+- `EMAIL_HOST`
+- `EMAIL_PORT`
+- `EMAIL_USER`
+- `EMAIL_PASS`
+- `CONTACT_TO_EMAIL`
+
+Variables opcionales:
+
+- `EMAIL_FROM` (default: `Portfolio <EMAIL_USER>`)
+- `EMAIL_SECURE` (`true`/`false`, por defecto `true` si el puerto es `465`)
+
+Ejemplo:
 
 ```bash
-MAIL_PROVIDER=resend
-RESEND_API_KEY=re_xxxxxxxxx
-RESEND_FROM="Portfolio <onboarding@resend.dev>"
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=tu_correo@gmail.com
+EMAIL_PASS=tu_app_password
+EMAIL_FROM="Portfolio <tu_correo@gmail.com>"
+EMAIL_SECURE=false
 CONTACT_TO_EMAIL=tu_correo@dominio.com
 ```
 
-> No necesitas instalar librerías adicionales para usar Resend en este proyecto: se usa `fetch` nativo de Node.js.
-
-## Troubleshooting de envío de correo (Gmail)
+## Troubleshooting de envío de correo (SMTP)',
 
 Si el formulario devuelve `503` o falla el envío:
 
 1. Verifica que `.env` exista en la raíz del proyecto y que cada variable esté en una línea real (no uses `\n` literal dentro del archivo).
-2. Asegúrate de tener 2FA activa en Gmail y usa una **App Password** como `SMTP_PASS` (no la contraseña normal de Gmail).
-3. Si copiaste la App Password con espacios o comillas, el servidor ahora los normaliza automáticamente; aun así, valida que no haya caracteres extra.
+2. Verifica `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS` y `CONTACT_TO_EMAIL` en `.env`.
+3. En Gmail, usa 2FA + App Password (no contraseña normal).
 4. Revisa la respuesta JSON de `POST /api/contact` y el campo `reason` para diagnosticar (`EAUTH`, `535`, `ESOCKET`, etc.).
 
 ## Retiro de PHP
