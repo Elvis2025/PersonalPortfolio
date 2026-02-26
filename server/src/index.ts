@@ -184,14 +184,6 @@ app.post('/api/contact', async (req: any, res: any) => {
   const now = Date.now();
   const windowMs = 60_000;
   const maxPerWindow = 3;
-  const history = (requests.get(ip) ?? []).filter((ts) => now - ts < windowMs);
-
-  if (history.length >= maxPerWindow) {
-    return res.status(429).json({ error: 'TOO_MANY_REQUESTS', message: 'Too many requests' });
-  }
-
-  history.push(now);
-  requests.set(ip, history);
 
   if (!name || !email || !subject || !message) {
     return res.status(400).json({ error: 'MISSING_REQUIRED_FIELDS', message: 'Missing required fields' });
@@ -216,6 +208,22 @@ app.post('/api/contact', async (req: any, res: any) => {
       message: 'SMTP configuration is incomplete'
     });
   }
+
+  const rateLimitKey = `${ip}:${normalizedEmail.toLowerCase()}`;
+  const history = (requests.get(rateLimitKey) ?? []).filter((ts) => now - ts < windowMs);
+
+  if (history.length >= maxPerWindow) {
+    const retryAfterSeconds = Math.max(1, Math.ceil((history[0] + windowMs - now) / 1000));
+    res.setHeader('Retry-After', String(retryAfterSeconds));
+    return res.status(429).json({
+      error: 'TOO_MANY_REQUESTS',
+      message: `Too many requests. Try again in ${retryAfterSeconds}s`,
+      retryAfterSeconds
+    });
+  }
+
+  history.push(now);
+  requests.set(rateLimitKey, history);
 
   try {
     const transporter = nodemailer.createTransport({

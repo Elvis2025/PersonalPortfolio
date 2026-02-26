@@ -531,11 +531,12 @@ function ContactPage({ lang }: { lang: Lang }) {
         body: JSON.stringify(formData)
       });
 
-      const payload = (await response.json().catch(() => null)) as { error?: string; message?: string } | null;
+      const payload = (await response.json().catch(() => null)) as { error?: string; message?: string; retryAfterSeconds?: number } | null;
 
       if (!response.ok) {
         if (response.status === 429 || payload?.error === 'TOO_MANY_REQUESTS') {
-          throw new Error(text.errors.tooManyRequests);
+          const waitSuffix = payload?.retryAfterSeconds ? ` (${payload.retryAfterSeconds}s)` : '';
+          throw new Error(`${text.errors.tooManyRequests}${waitSuffix}`);
         }
 
         if (response.status === 400 && (payload?.error === 'MISSING_REQUIRED_FIELDS' || payload?.error === 'INVALID_EMAIL_FORMAT')) {
