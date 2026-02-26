@@ -566,6 +566,28 @@ const servicesContent: Record<Lang, ServicesContent> = {
         benefits: ['Incremental migration strategy', 'Refactor legacy modules with low risk', 'Improved maintainability and release speed']
       },
       {
+        id: 'devops',
+        icon: 'bi-cloud-arrow-up',
+        title: 'DevOps & CI/CD Enablement',
+        summary: 'Automation pipelines and deployment workflows to ship faster, safer, and with better release visibility.',
+        category: 'DevOps Engineering',
+        readTime: '4 min read',
+        description:
+          'I implement DevOps practices that improve delivery speed and reliability: CI/CD pipelines, versioning strategy, environment consistency, and deployment automation. The goal is to reduce manual errors and create predictable releases.',
+        benefits: ['CI/CD pipelines for build, test, and deployment', 'Environment and release workflow standardization', 'Monitoring-oriented delivery and rollback readiness']
+      },
+      {
+        id: 'refactoring',
+        icon: 'bi-arrow-repeat',
+        title: 'Code Refactoring & Process Optimization',
+        summary: 'Technical refactors focused on improving code quality, maintainability, and operational efficiency.',
+        category: 'Engineering Optimization',
+        readTime: '5 min read',
+        description:
+          'I analyze existing systems and refactor critical areas to improve readability, reduce complexity, and optimize execution flows. This service is ideal when teams need cleaner codebases and faster processes without rebuilding everything from scratch.',
+        benefits: ['Refactor legacy and high-risk modules safely', 'Improve performance and reduce technical bottlenecks', 'Optimize development and business process workflows']
+      },
+      {
         id: 'consulting',
         icon: 'bi-diagram-3',
         title: 'Technical Consulting',
@@ -639,6 +661,28 @@ const servicesContent: Record<Lang, ServicesContent> = {
         description:
           'Ayudo a migrar sistemas legacy a stacks modernos mediante refactors iterativos y releases controlados. Esto reduce deuda técnica y habilita mejoras futuras con menos riesgo.',
         benefits: ['Estrategia de migración incremental', 'Refactor seguro de módulos legacy', 'Mayor mantenibilidad y velocidad de entrega']
+      },
+      {
+        id: 'devops',
+        icon: 'bi-cloud-arrow-up',
+        title: 'DevOps y CI/CD',
+        summary: 'Pipelines automatizados y flujos de despliegue para entregar más rápido, con menos riesgo y mayor control.',
+        category: 'Ingeniería DevOps',
+        readTime: '4 min de lectura',
+        description:
+          'Implemento prácticas DevOps para mejorar velocidad y confiabilidad de entrega: pipelines de CI/CD, estrategia de versionado, consistencia entre ambientes y automatización de despliegues. El objetivo es reducir errores manuales y lograr releases predecibles.',
+        benefits: ['Pipelines CI/CD para build, pruebas y despliegue', 'Estandarización de ambientes y flujo de releases', 'Entrega orientada a monitoreo y capacidad de rollback']
+      },
+      {
+        id: 'refactoring',
+        icon: 'bi-arrow-repeat',
+        title: 'Refactorización de Código y Optimización de Procesos',
+        summary: 'Refactors técnicos enfocados en calidad de código, mantenibilidad y eficiencia operativa.',
+        category: 'Optimización de Ingeniería',
+        readTime: '5 min de lectura',
+        description:
+          'Analizo sistemas existentes y refactorizo áreas críticas para mejorar legibilidad, reducir complejidad y optimizar flujos de ejecución. Este servicio es ideal cuando un equipo necesita limpiar su base de código y acelerar procesos sin rehacer todo desde cero.',
+        benefits: ['Refactor seguro de módulos legacy o críticos', 'Mejora de rendimiento y reducción de cuellos de botella', 'Optimización de flujos de desarrollo y procesos de negocio']
       },
       {
         id: 'consulting',
