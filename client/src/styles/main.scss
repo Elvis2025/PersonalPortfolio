@@ -398,8 +398,18 @@ h6 {
     right: 20px;
     left: 20px;
     bottom: auto;
+    height: auto;
+    min-height: 280px;
     max-height: calc(100vh - 110px);
-    z-index: 10000;
+    overflow-y: auto;
+    z-index: 100000;
+    background-color: var(--nav-mobile-background-color);
+    border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(1, 7, 11, 0.56);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .navmenu ul.navmenu-list-open li {
