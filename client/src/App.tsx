@@ -1541,7 +1541,7 @@ function Header({ pathname, navItems, langToggle, onToggleLang }: { pathname: st
       <div className="container position-relative d-flex align-items-center justify-content-between">
         <nav
           id="navmenu"
-          className="navmenu"
+          className={`navmenu ${isMobileNavOpen ? 'navmenu-open' : ''}`}
           aria-label="Main navigation"
           onClick={(event) => {
             if (event.target === event.currentTarget) {

@@ -473,6 +473,29 @@ h6 {
   .mobile-nav-active .navmenu>ul {
     display: block;
   }
+
+  /* Fallback robusto: abre menú incluso si la clase en body no se aplica por algún motivo */
+  .navmenu.navmenu-open {
+    position: fixed;
+    overflow: hidden;
+    inset: 0;
+    background: rgba(33, 37, 41, 0.8);
+    transition: 0.3s;
+  }
+
+  .navmenu.navmenu-open>ul {
+    display: block;
+  }
+
+  .navmenu.navmenu-open .mobile-nav-toggle {
+    color: #fff;
+    position: fixed;
+    font-size: 32px;
+    top: 15px;
+    right: 15px;
+    margin-right: 0;
+    z-index: 9999;
+  }
 }
 
 /*--------------------------------------------------------------
