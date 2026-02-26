@@ -345,6 +345,7 @@ h6 {
     color: var(--nav-dropdown-hover-color);
   }
 
+  /* Open state from body class (template behavior) */
   .mobile-nav-active {
     overflow: hidden;
   }
@@ -371,7 +372,8 @@ h6 {
     display: block;
   }
 
-  /* Fallback robusto: abre menú incluso si la clase en body no se aplica por algún motivo */
+  /* Fallback: open state if class lands on nav instead of body */
+  .navmenu.mobile-nav-active,
   .navmenu.navmenu-open {
     position: fixed;
     overflow: hidden;
@@ -380,14 +382,12 @@ h6 {
     transition: 0.3s;
   }
 
-  .navmenu.navmenu-open>ul,
-  .navmenu ul.navmenu-list-open {
-    display: block !important;
-    position: fixed;
-    inset: 76px 20px 20px 20px;
-    z-index: 10000;
+  .navmenu.mobile-nav-active>ul,
+  .navmenu.navmenu-open>ul {
+    display: block;
   }
 
+  .navmenu.mobile-nav-active .mobile-nav-toggle,
   .navmenu.navmenu-open .mobile-nav-toggle {
     color: #fff;
     position: fixed;
@@ -398,6 +398,7 @@ h6 {
     z-index: 10001;
   }
 }
+
 
 /*--------------------------------------------------------------
 # Global Footer

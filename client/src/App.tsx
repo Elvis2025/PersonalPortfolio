@@ -1542,7 +1542,7 @@ function Header({ pathname, navItems, langToggle, onToggleLang }: { pathname: st
       <div className="container position-relative d-flex align-items-center justify-content-between">
         <nav
           id="navmenu"
-          className={`navmenu ${isMobileNavOpen ? 'navmenu-open' : ''}`}
+          className={`navmenu ${isMobileNavOpen ? 'navmenu-open mobile-nav-active' : ''}`}
           aria-label="Main navigation"
           onClick={(event) => {
             if (event.target === event.currentTarget) {
@@ -1550,7 +1550,7 @@ function Header({ pathname, navItems, langToggle, onToggleLang }: { pathname: st
             }
           }}
         >
-          <ul className={isMobileNavOpen ? 'navmenu-list-open' : undefined}>
+          <ul>
             {navItems.map((item) => (
               <li key={item.to}>
                 <Link to={item.to} className={pathname === item.to ? 'active' : ''} onNavigate={() => setIsMobileNavOpen(false)}>
