@@ -1,4 +1,5 @@
 import { FormEvent, MouseEvent, ReactNode, useEffect, useMemo, useState } from 'react';
+import { WhatsAppFloat } from './WhatsAppFloat';
 
 type Lang = 'en' | 'es';
 type SkillCategory =
@@ -1476,9 +1477,16 @@ function navigateTo(path: string) {
   window.dispatchEvent(new PopStateEvent('popstate'));
 }
 
-function Link({ to, children, className }: { to: string; children: ReactNode; className?: string }) {
+function normalizePathname(pathname: string) {
+  const [pathOnly] = pathname.split(/[?#]/);
+  const trimmed = pathOnly.length > 1 ? pathOnly.replace(/\/+$/, '') : pathOnly;
+  return trimmed || '/';
+}
+
+function Link({ to, children, className, onNavigate }: { to: string; children: ReactNode; className?: string; onNavigate?: () => void }) {
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
+    onNavigate?.();
     navigateTo(to);
   };
 
@@ -1507,20 +1515,58 @@ function triggerDualCvDownload(event: MouseEvent<HTMLAnchorElement>) {
 }
 
 function Header({ pathname, navItems, langToggle, onToggleLang }: { pathname: string; navItems: NavItem[]; langToggle: string; onToggleLang: () => void }) {
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
+  useEffect(() => {
+    const onEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileNavOpen(false);
+      }
+    };
+
+    document.body.classList.toggle('mobile-nav-active', isMobileNavOpen);
+    document.addEventListener('keydown', onEsc);
+
+    return () => {
+      document.body.classList.remove('mobile-nav-active');
+      document.removeEventListener('keydown', onEsc);
+    };
+  }, [isMobileNavOpen]);
+
+  useEffect(() => {
+    setIsMobileNavOpen(false);
+  }, [pathname]);
+
   return (
     <header id="header" className="header d-flex align-items-center light-background sticky-top">
       <div className="container position-relative d-flex align-items-center justify-content-between">
-        <nav id="navmenu" className="navmenu">
-          <ul>
+        <nav
+          id="navmenu"
+          className={`navmenu ${isMobileNavOpen ? 'navmenu-open' : ''}`}
+          aria-label="Main navigation"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) {
+              setIsMobileNavOpen(false);
+            }
+          }}
+        >
+          <ul className={isMobileNavOpen ? 'navmenu-list-open' : undefined}>
             {navItems.map((item) => (
               <li key={item.to}>
-                <Link to={item.to} className={pathname === item.to ? 'active' : ''}>
+                <Link to={item.to} className={pathname === item.to ? 'active' : ''} onNavigate={() => setIsMobileNavOpen(false)}>
                   {item.label}
                 </Link>
               </li>
             ))}
           </ul>
-          <i className="mobile-nav-toggle d-xl-none bi bi-list" />
+          <button
+            type="button"
+            className={`mobile-nav-toggle d-xl-none bi ${isMobileNavOpen ? 'bi-x' : 'bi-list'}`}
+            aria-label="Toggle navigation"
+            aria-controls="navmenu"
+            aria-expanded={isMobileNavOpen}
+            onClick={() => setIsMobileNavOpen((current) => !current)}
+          />
         </nav>
 
         <div className="header-social-links">
@@ -2418,8 +2464,9 @@ function Footer({ lang }: { lang: Lang }) {
 }
 
 function renderPage(pathname: string, lang: Lang) {
+  const normalizedPath = normalizePathname(pathname);
   const pages = copy[lang].pages;
-  switch (pathname) {
+  switch (normalizedPath) {
     case '/':
       return <HomePage lang={lang} />;
     case '/about':
@@ -2438,10 +2485,11 @@ function renderPage(pathname: string, lang: Lang) {
 }
 
 export function App() {
-  const [pathname, setPathname] = useState(window.location.pathname);
+  const [pathname, setPathname] = useState(normalizePathname(window.location.pathname));
   const [isBootLoading, setIsBootLoading] = useState(true);
   const [lang, setLang] = useState<Lang>('en');
   const [showFloatingDownload, setShowFloatingDownload] = useState(true);
+  const [showScrollTopFab, setShowScrollTopFab] = useState(false);
 
   const navItems = useMemo<NavItem[]>(() => {
     const labels = copy[lang].nav;
@@ -2456,9 +2504,19 @@ export function App() {
   }, [lang]);
 
   useEffect(() => {
-    const onPopState = () => setPathname(window.location.pathname);
+    const onPopState = () => setPathname(normalizePathname(window.location.pathname));
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  useEffect(() => {
+    const onScrollState = () => {
+      document.body.classList.toggle('scrolled', window.scrollY > 8);
+    };
+
+    onScrollState();
+    window.addEventListener('scroll', onScrollState, { passive: true });
+    return () => window.removeEventListener('scroll', onScrollState);
   }, []);
 
   useEffect(() => {
@@ -2493,7 +2551,9 @@ export function App() {
   }, [pathname, lang]);
 
   useEffect(() => {
-    const downloadTriggers = Array.from(document.querySelectorAll<HTMLElement>('.cv-download-trigger'));
+    // Selectores para botón de descarga integrado (ajústalos aquí si cambias el markup en páginas).
+    const inlineDownloadSelector = '.cv-download-trigger, [data-download-cv], .btn-download-cv, #downloadCvButton';
+    const downloadTriggers = Array.from(document.querySelectorAll<HTMLElement>(inlineDownloadSelector));
     if (downloadTriggers.length === 0) {
       setShowFloatingDownload(true);
       return;
@@ -2530,6 +2590,18 @@ export function App() {
     };
   }, [pathname, lang]);
 
+  useEffect(() => {
+    // Umbral para mostrar el botón "ir arriba" (ajústalo aquí).
+    const scrollThreshold = 200;
+    const onScroll = () => {
+      setShowScrollTopFab(window.scrollY > scrollThreshold);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [pathname]);
+
   return (
     <>
       <div id="preloader" className={isBootLoading ? 'preloader-visible' : 'preloader-hidden'} aria-hidden="true" />
@@ -2540,14 +2612,53 @@ export function App() {
         onToggleLang={() => setLang((current) => (current === 'en' ? 'es' : 'en'))}
       />
       <main className="main">{renderPage(pathname, lang)}</main>
-      <a
-        href="/api/cv/download"
-        onClick={triggerDualCvDownload}
-        className={`floating-cv-download ${showFloatingDownload ? 'active' : ''}`}
-        aria-label="Download CV"
-      >
-        <i className="bi bi-file-earmark-arrow-down" />
-      </a>
+      <div className="fab-stack" aria-label="Global quick actions">
+        {showScrollTopFab ? (
+          <button
+            type="button"
+            className="fab fab--scroll-top"
+            aria-label="Ir arriba"
+            title="Ir arriba"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            <span className="fab__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img" focusable="false">
+                <path
+                  d="M12 18V8m0 0-4 4m4-4 4 4M5 6h14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+        ) : null}
+        {showFloatingDownload ? (
+          <a
+            href="/api/cv/download"
+            onClick={triggerDualCvDownload}
+            className="floating-cv-download fab fab--cv active"
+            aria-label="Download CV"
+            title="Download CV"
+          >
+            <span className="fab__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img" focusable="false">
+                <path
+                  d="M12 4v10m0 0-4-4m4 4 4-4M5 18h14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </a>
+        ) : null}
+        <WhatsAppFloat />
+      </div>
       <Footer lang={lang} />
     </>
   );
