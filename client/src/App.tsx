@@ -1550,7 +1550,7 @@ function Header({ pathname, navItems, langToggle, onToggleLang }: { pathname: st
             }
           }}
         >
-          <ul>
+          <ul className={isMobileNavOpen ? 'navmenu-list-open' : undefined}>
             {navItems.map((item) => (
               <li key={item.to}>
                 <Link to={item.to} className={pathname === item.to ? 'active' : ''} onNavigate={() => setIsMobileNavOpen(false)}>

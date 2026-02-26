@@ -387,6 +387,25 @@ h6 {
     display: block;
   }
 
+  /* Estado forzado para garantizar visualización de items en móvil */
+  .navmenu ul.navmenu-list-open {
+    display: block !important;
+    position: fixed;
+    inset: 76px 20px 20px 20px;
+    min-height: calc(100vh - 96px);
+    z-index: 10000;
+  }
+
+  .navmenu ul.navmenu-list-open li {
+    display: block;
+  }
+
+  .navmenu ul.navmenu-list-open a {
+    padding: 12px 20px;
+    font-size: 17px;
+    font-weight: 500;
+  }
+
   .navmenu.mobile-nav-active .mobile-nav-toggle,
   .navmenu.navmenu-open .mobile-nav-toggle {
     color: #fff;
