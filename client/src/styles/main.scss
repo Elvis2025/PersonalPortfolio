@@ -318,13 +318,14 @@ h6 {
     bottom: auto;
     padding: 10px 0;
     margin: 0;
-    border-radius: 6px;
+    border-radius: 8px;
     background-color: var(--nav-mobile-background-color);
     border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
     box-shadow: 0 16px 34px rgba(1, 7, 11, 0.48);
     overflow-y: auto;
     transition: 0.3s;
     z-index: 9998;
+    min-height: 260px;
   }
 
   .navmenu a,
