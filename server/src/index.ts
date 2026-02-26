@@ -294,36 +294,112 @@ app.post('/api/contact', async (req: any, res: any) => {
   const safeMessage = String(message).trim();
 
   try {
-    const result = await resendClient.emails.send({
-      from: resendFrom, // Ej: "Elvis Portfolio <onboarding@resend.dev>"
-      to: contactToEmail, // tu correo donde recibes
-      replyTo: normalizedEmail,
-      subject: `[Portfolio] ${safeSubject}`,
-      html: `
-        <div style="font-family:Arial, sans-serif; line-height:1.5">
-          <h2 style="margin:0 0 12px">Nuevo mensaje desde tu Portfolio</h2>
-          <p><strong>Nombre:</strong> ${safeName}</p>
-          <p><strong>Email:</strong> ${normalizedEmail}</p>
-          <p><strong>Asunto:</strong> ${safeSubject}</p>
-          <hr style="margin:16px 0"/>
-          <p style="white-space:pre-wrap">${safeMessage.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
-        </div>
-      `
-    });
+  const escapeHtml = (s: string) =>
+    s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
 
-    return res.json({ ok: true, provider: 'resend', id: (result as any)?.data?.id ?? null });
-  } catch (error: any) {
-    const msg = String(error?.message ?? 'Unknown Resend error');
-    const code = String(error?.code ?? 'UNKNOWN');
+  const safeNameX = escapeHtml(String(name ?? '').trim() || 'Nuevo contacto');
+  const safeEmailX = escapeHtml(String(normalizedEmail ?? '').trim());
+  const safeSubjectX = escapeHtml(String(safeSubject ?? '').trim());
+  const safeMessageX = escapeHtml(String(message ?? '').trim());
 
-    console.error('Contact email failed (Resend):', { code, message: msg });
+  const html = `
+  <!doctype html>
+  <html lang="es">
+    <body style="margin:0;padding:0;background:#0b0f14;font-family:Arial,Helvetica,sans-serif;">
+      <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">
+        Mensaje desde tu portfolio · ${safeNameX}
+      </div>
 
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#0b0f14;padding:24px 12px;">
+        <tr>
+          <td align="center">
+            <table width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;">
+              <tr>
+                <td style="padding:8px 8px 14px 8px;">
+                  <div style="color:#c7d2fe;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;">
+                    Portfolio · Nuevo mensaje
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:18px;">
+                  <div style="color:#e5e7eb;font-size:15px;font-weight:700;line-height:1.2;">
+                    ${safeNameX}
+                  </div>
+                  <div style="color:#94a3b8;font-size:13px;line-height:1.4;margin-top:4px;">
+                    ${safeEmailX}
+                  </div>
+
+                  <div style="height:10px;"></div>
+
+                  <div style="color:#cbd5e1;font-size:13px;opacity:.9;">
+                    ${safeSubjectX}
+                  </div>
+
+                  <div style="height:14px;"></div>
+
+                  <div style="background:#0b1220;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px;">
+                    <div style="color:#e5e7eb;font-size:15px;line-height:1.65;white-space:pre-wrap;">
+                      ${safeMessageX}
+                    </div>
+                  </div>
+
+                  <div style="height:14px;"></div>
+
+                  <div style="color:#64748b;font-size:12px;line-height:1.4;">
+                    Para responder, usa “Reply” (se enviará al remitente automáticamente).
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:14px 8px 0 8px;">
+                  <div style="color:#334155;font-size:11px;">
+                    © ${new Date().getFullYear()} Elvis Portfolio
+                  </div>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+  </html>
+  `;
+
+  const result = await resendClient.emails.send({
+    from: resendFrom,
+    to: contactToEmail,
+    replyTo: normalizedEmail,
+    subject: `[Portfolio] ${safeSubject}`,
+    html
+  });
+
+  // ✅ ESTE ES EL FIX IMPORTANTE:
+  if ((result as any)?.error) {
+    console.error('Resend error:', (result as any).error);
     return res.status(503).json({
       error: 'CONTACT_SERVICE_UNAVAILABLE',
-      message: 'Email service is temporarily unavailable',
-      reason: code
+      message: 'Resend rejected the email',
+      details: (result as any).error
     });
   }
+
+  return res.json({ ok: true, provider: 'resend', id: (result as any)?.data?.id ?? null });
+} catch (error: any) {
+  console.error('Contact email failed (Resend):', error);
+  return res.status(503).json({
+    error: 'CONTACT_SERVICE_UNAVAILABLE',
+    message: 'Email service is temporarily unavailable'
+  });
+}
 });
 
 // ==============================
