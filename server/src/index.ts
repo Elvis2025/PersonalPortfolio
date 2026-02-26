@@ -248,9 +248,23 @@ ${String(message).trim()}`
     });
 
     return res.json({ ok: true });
-  } catch (error) {
-    console.error('Contact email failed:', error);
-    return res.status(502).json({ error: 'EMAIL_DELIVERY_FAILED', message: 'Email delivery failed' });
+  } catch (error: any) {
+    const errorCode = String(error?.code ?? 'UNKNOWN');
+    const errorResponseCode = typeof error?.responseCode === 'number' ? String(error.responseCode) : '';
+
+    console.error('Contact email failed:', {
+      code: errorCode,
+      responseCode: errorResponseCode || undefined,
+      message: String(error?.message ?? 'Unknown email transport error')
+    });
+
+    const reason = [errorCode, errorResponseCode].filter(Boolean).join(':');
+
+    return res.status(503).json({
+      error: 'CONTACT_SERVICE_UNAVAILABLE',
+      message: 'Email service is temporarily unavailable',
+      reason: reason || 'UNKNOWN'
+    });
   }
 });
 

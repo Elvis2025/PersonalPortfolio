@@ -185,6 +185,7 @@ type Dictionary = {
       missingFields: string;
       invalidEmail: string;
       serviceUnavailable: string;
+      deliveryFailed: string;
     };
   };
 };
@@ -373,7 +374,8 @@ const copy: Record<Lang, Dictionary> = {
         tooManyRequests: 'Too many attempts. Please wait one minute and try again.',
         missingFields: 'Please complete all required fields before sending.',
         invalidEmail: 'Please enter a valid email address.',
-        serviceUnavailable: 'Contact service is temporarily unavailable. Please try again later or email me directly at inelvis16031124@gmail.com.'
+        serviceUnavailable: 'Contact service is temporarily unavailable. Please try again later or email me directly at inelvis16031124@gmail.com.',
+        deliveryFailed: 'Your message could not be delivered right now. Please try again later or email me directly at inelvis16031124@gmail.com.'
       }
     }
   },
@@ -480,7 +482,8 @@ const copy: Record<Lang, Dictionary> = {
         tooManyRequests: 'Demasiados intentos. Espera un minuto y vuelve a intentarlo.',
         missingFields: 'Por favor completa todos los campos requeridos antes de enviar.',
         invalidEmail: 'Por favor ingresa un correo electrónico válido.',
-        serviceUnavailable: 'El servicio de contacto no está disponible temporalmente. Inténtalo más tarde o escríbeme directamente a inelvis16031124@gmail.com.'
+        serviceUnavailable: 'El servicio de contacto no está disponible temporalmente. Inténtalo más tarde o escríbeme directamente a inelvis16031124@gmail.com.',
+        deliveryFailed: 'No se pudo entregar tu mensaje en este momento. Inténtalo más tarde o escríbeme directamente a inelvis16031124@gmail.com.'
       }
     }
   }
@@ -545,6 +548,10 @@ function ContactPage({ lang }: { lang: Lang }) {
 
         if (response.status === 503 || payload?.error === 'CONTACT_SERVICE_UNAVAILABLE') {
           throw new Error(text.errors.serviceUnavailable);
+        }
+
+        if (response.status === 502 || payload?.error === 'EMAIL_DELIVERY_FAILED') {
+          throw new Error(text.errors.deliveryFailed);
         }
 
         throw new Error(payload?.message ?? text.errors.generic);
