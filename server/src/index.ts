@@ -204,17 +204,25 @@ app.post('/api/contact', async (req: any, res: any) => {
     return res.status(400).json({ error: 'INVALID_EMAIL_FORMAT', message: 'Invalid email format' });
   }
 
+  const mailProvider = (normalizeEnvValue(process.env.MAIL_PROVIDER) || 'smtp').toLowerCase();
   const smtpHost = normalizeEnvValue(process.env.SMTP_HOST);
   const smtpUser = normalizeEnvValue(process.env.SMTP_USER);
   const smtpPass = normalizeEnvValue(process.env.SMTP_PASS).replace(/\s+/g, '');
   const smtpPort = Number(normalizeEnvValue(process.env.SMTP_PORT) || '587');
   const smtpFrom = normalizeEnvValue(process.env.SMTP_FROM) || smtpUser;
+  const resendApiKey = normalizeEnvValue(process.env.RESEND_API_KEY);
+  const resendFrom = normalizeEnvValue(process.env.RESEND_FROM) || smtpFrom;
   const contactToEmail = normalizeEnvValue(process.env.CONTACT_TO_EMAIL);
+  const subjectLine = `[Portfolio] ${String(subject).trim()}`;
+  const textContent = `Name: ${String(name).trim()}
+Email: ${normalizedEmail}
 
-  if (!smtpHost || !smtpUser || !smtpPass || !contactToEmail || Number.isNaN(smtpPort)) {
+${String(message).trim()}`;
+
+  if (!contactToEmail) {
     return res.status(503).json({
       error: 'CONTACT_SERVICE_UNAVAILABLE',
-      message: 'SMTP configuration is incomplete'
+      message: 'CONTACT_TO_EMAIL is required'
     });
   }
 
@@ -234,6 +242,65 @@ app.post('/api/contact', async (req: any, res: any) => {
   history.push(now);
   requests.set(rateLimitKey, history);
 
+  if (mailProvider === 'resend') {
+    if (!resendApiKey || !resendFrom) {
+      return res.status(503).json({
+        error: 'CONTACT_SERVICE_UNAVAILABLE',
+        message: 'Resend configuration is incomplete. Set RESEND_API_KEY and RESEND_FROM.'
+      });
+    }
+
+    try {
+      const resendResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: resendFrom,
+          to: [contactToEmail],
+          reply_to: normalizedEmail,
+          subject: subjectLine,
+          text: textContent
+        })
+      });
+
+      if (!resendResponse.ok) {
+        const resendBody = await resendResponse.text();
+        console.error('Contact email failed (Resend):', {
+          status: resendResponse.status,
+          body: resendBody
+        });
+
+        return res.status(503).json({
+          error: 'CONTACT_SERVICE_UNAVAILABLE',
+          message: 'Resend email service rejected the request',
+          reason: `RESEND:${resendResponse.status}`
+        });
+      }
+
+      return res.json({ ok: true, provider: 'resend' });
+    } catch (error: any) {
+      console.error('Contact email failed (Resend):', {
+        message: String(error?.message ?? 'Unknown Resend error')
+      });
+
+      return res.status(503).json({
+        error: 'CONTACT_SERVICE_UNAVAILABLE',
+        message: 'Resend email service is temporarily unavailable',
+        reason: 'RESEND_NETWORK'
+      });
+    }
+  }
+
+  if (!smtpHost || !smtpUser || !smtpPass || Number.isNaN(smtpPort)) {
+    return res.status(503).json({
+      error: 'CONTACT_SERVICE_UNAVAILABLE',
+      message: 'SMTP configuration is incomplete'
+    });
+  }
+
   try {
     const transporter = nodemailer.createTransport({
       host: smtpHost,
@@ -249,19 +316,16 @@ app.post('/api/contact', async (req: any, res: any) => {
       from: smtpFrom,
       to: contactToEmail,
       replyTo: normalizedEmail,
-      subject: `[Portfolio] ${String(subject).trim()}`,
-      text: `Name: ${String(name).trim()}
-Email: ${normalizedEmail}
-
-${String(message).trim()}`
+      subject: subjectLine,
+      text: textContent
     });
 
-    return res.json({ ok: true });
+    return res.json({ ok: true, provider: 'smtp' });
   } catch (error: any) {
     const errorCode = String(error?.code ?? 'UNKNOWN');
     const errorResponseCode = typeof error?.responseCode === 'number' ? String(error.responseCode) : '';
 
-    console.error('Contact email failed:', {
+    console.error('Contact email failed (SMTP):', {
       code: errorCode,
       responseCode: errorResponseCode || undefined,
       message: String(error?.message ?? 'Unknown email transport error')

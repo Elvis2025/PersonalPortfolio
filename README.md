@@ -44,6 +44,25 @@ npm run dev
 4. Verifica llegada del correo a `inelvis16031124@gmail.com`.
 
 
+
+## Proveedor de correo (SMTP o Resend)
+
+El backend soporta dos modos:
+
+1. `MAIL_PROVIDER=smtp` (default): usa `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`.
+2. `MAIL_PROVIDER=resend`: usa API HTTP de Resend con `RESEND_API_KEY` y `RESEND_FROM` (además de `CONTACT_TO_EMAIL`).
+
+Ejemplo Resend:
+
+```bash
+MAIL_PROVIDER=resend
+RESEND_API_KEY=re_xxxxxxxxx
+RESEND_FROM="Portfolio <onboarding@resend.dev>"
+CONTACT_TO_EMAIL=tu_correo@dominio.com
+```
+
+> No necesitas instalar librerías adicionales para usar Resend en este proyecto: se usa `fetch` nativo de Node.js.
+
 ## Troubleshooting de envío de correo (Gmail)
 
 Si el formulario devuelve `503` o falla el envío:
