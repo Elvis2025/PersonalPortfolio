@@ -837,6 +837,62 @@ const portfolioContent: Record<Lang, PortfolioContent> = {
         solution: 'Added PDF generation, printer formatting, XML automation, and performance-focused fixes while stabilizing legacy code paths.',
         impact: ['Extended product lifecycle', 'Maintained continuity for existing users', 'Enabled gradual transition to newer stacks'],
         tags: ['Xamarin', 'Legacy', 'Optimization']
+      },
+      {
+        id: 'song-manager',
+        title: 'Song Manager',
+        type: 'Desktop + Web Utility',
+        category: 'desktop',
+        summary: 'Music catalog manager for organizing songs, metadata, playlists, and fast library search.',
+        month: '2023 - 2024',
+        client: 'Personal/Product Build',
+        stack: ['C#', 'SQLite', 'React', 'TypeScript'],
+        challenge: 'Managing large music collections with inconsistent metadata and duplicate files was slow and error-prone.',
+        solution: 'Built a management tool with search, grouping, metadata editing, and clean indexing workflow for better music library control.',
+        impact: ['Faster organization of song libraries', 'Cleaner metadata consistency', 'Reduced duplicate and misclassified tracks'],
+        tags: ['Song Manager', 'Desktop', 'Productivity']
+      },
+      {
+        id: 'ai-integration',
+        title: 'AI Integration Workflows',
+        type: 'AI-Enhanced Feature Set',
+        category: 'api',
+        summary: 'Integration of AI-assisted workflows into product features to automate repetitive and decision-heavy tasks.',
+        month: '2025',
+        client: 'Internal Product Initiatives',
+        stack: ['ASP.NET Core', 'TypeScript', 'Prompt Engineering', 'REST APIs'],
+        challenge: 'Teams required faster processing for repetitive operations and better assisted decision-making across modules.',
+        solution: 'Implemented AI-connected service flows with prompt orchestration, validations, and integration-safe backend endpoints.',
+        impact: ['Reduced manual processing time', 'Improved operator productivity', 'Enabled scalable AI-assisted workflows'],
+        tags: ['AI', 'Integration', 'Automation']
+      },
+      {
+        id: 'spend-flow',
+        title: 'Spend Flow',
+        type: 'Finance & Budget App',
+        category: 'web',
+        summary: 'Expense and budget management solution for tracking cash flow, categories, and spending behavior.',
+        month: '2024',
+        client: 'Product Concept',
+        stack: ['React', 'TypeScript', 'Node.js', 'MongoDB'],
+        challenge: 'Users needed a clear and simple way to control personal/business spending and visualize trends.',
+        solution: 'Designed a finance dashboard with transaction management, budgeting rules, and spending insights by category.',
+        impact: ['Better visibility of monthly spending', 'Faster financial decisions', 'Improved control over budgets and categories'],
+        tags: ['Fintech', 'Dashboard', 'Budgeting']
+      },
+      {
+        id: 'owney-beauty',
+        title: 'Owney Beauty',
+        type: 'Beauty Booking Platform',
+        category: 'web',
+        summary: 'Booking and client management platform for beauty services, schedules, and customer follow-up.',
+        month: '2024',
+        client: 'Owney Beauty',
+        stack: ['React', 'JavaScript', 'Tailwind CSS', 'Node.js'],
+        challenge: 'The business needed digital booking, service visibility, and follow-up workflows to reduce manual coordination.',
+        solution: 'Built a responsive booking experience with service catalog, appointment management, and simple client tracking tools.',
+        impact: ['More organized appointment calendar', 'Better client communication flow', 'Reduced manual scheduling workload'],
+        tags: ['Beauty', 'Booking', 'Web App']
       }
     ]
   },
@@ -943,6 +999,62 @@ const portfolioContent: Record<Lang, PortfolioContent> = {
         solution: 'Implementé generación PDF, formato de impresión, automatización XML y mejoras de rendimiento estabilizando código legado.',
         impact: ['Extensión de vida útil del producto', 'Continuidad operativa para usuarios activos', 'Transición gradual habilitada hacia nuevos stacks'],
         tags: ['Xamarin', 'Legacy', 'Optimización']
+      },
+      {
+        id: 'song-manager',
+        title: 'Song Manager',
+        type: 'Utilidad Desktop + Web',
+        category: 'desktop',
+        summary: 'Gestor musical para organizar canciones, metadatos, playlists y búsqueda rápida del catálogo.',
+        month: '2023 - 2024',
+        client: 'Construcción Personal / Producto',
+        stack: ['C#', 'SQLite', 'React', 'TypeScript'],
+        challenge: 'Gestionar bibliotecas grandes con metadatos inconsistentes y duplicados consumía demasiado tiempo.',
+        solution: 'Construí una herramienta de administración con búsqueda, agrupación, edición de metadatos e indexación limpia.',
+        impact: ['Organización más rápida del catálogo musical', 'Mejor consistencia de metadatos', 'Menos duplicados y pistas mal clasificadas'],
+        tags: ['Song Manager', 'Desktop', 'Productividad']
+      },
+      {
+        id: 'ai-integration',
+        title: 'Integraciones con IA',
+        type: 'Set de Funcionalidades con IA',
+        category: 'api',
+        summary: 'Integración de flujos asistidos por IA para automatizar tareas repetitivas y procesos de decisión.',
+        month: '2025',
+        client: 'Iniciativas Internas de Producto',
+        stack: ['ASP.NET Core', 'TypeScript', 'Prompt Engineering', 'REST APIs'],
+        challenge: 'Los equipos requerían acelerar operaciones repetitivas y mejorar decisiones asistidas dentro de módulos clave.',
+        solution: 'Implementé flujos conectados con IA mediante orquestación de prompts, validaciones y endpoints backend seguros.',
+        impact: ['Reducción del tiempo de procesamiento manual', 'Mayor productividad operativa', 'Escalabilidad en flujos asistidos por IA'],
+        tags: ['IA', 'Integración', 'Automatización']
+      },
+      {
+        id: 'spend-flow',
+        title: 'Spend Flow',
+        type: 'App de Finanzas y Presupuesto',
+        category: 'web',
+        summary: 'Solución para gestionar gastos y presupuestos, con control de flujo de dinero y análisis por categorías.',
+        month: '2024',
+        client: 'Concepto de Producto',
+        stack: ['React', 'TypeScript', 'Node.js', 'MongoDB'],
+        challenge: 'Los usuarios necesitaban una forma clara y sencilla de controlar gastos personales y de negocio.',
+        solution: 'Diseñé un dashboard financiero con gestión de transacciones, reglas de presupuesto y métricas de consumo.',
+        impact: ['Mayor visibilidad del gasto mensual', 'Decisiones financieras más rápidas', 'Mejor control de presupuesto por categorías'],
+        tags: ['Fintech', 'Dashboard', 'Presupuesto']
+      },
+      {
+        id: 'owney-beauty',
+        title: 'Owney Beauty',
+        type: 'Plataforma de Reservas Beauty',
+        category: 'web',
+        summary: 'Plataforma de reservas y gestión de clientes para servicios de belleza y seguimiento comercial.',
+        month: '2024',
+        client: 'Owney Beauty',
+        stack: ['React', 'JavaScript', 'Tailwind CSS', 'Node.js'],
+        challenge: 'El negocio necesitaba digitalizar reservas, visibilidad de servicios y seguimiento de clientes.',
+        solution: 'Construí una experiencia responsive de reservas con catálogo de servicios, agenda y herramientas de seguimiento.',
+        impact: ['Calendario de citas mejor organizado', 'Mejor flujo de comunicación con clientes', 'Reducción de carga manual en agendamiento'],
+        tags: ['Beauty', 'Reservas', 'Web App']
       }
     ]
   }
@@ -1776,7 +1888,20 @@ function ServicesPage({ lang }: { lang: Lang }) {
 }
 
 function ProjectPreviewSvg({ project }: { project: PortfolioProject }) {
-  const accent = '#1387c1';
+  const presets: Record<string, { icon: string; motif: string; accent: string }> = {
+    'veterinary-web': { icon: '🐾', motif: 'Pet records • Appointments • Medical history', accent: '#22c55e' },
+    'song-manager': { icon: '🎵', motif: 'Tracks • Playlists • Metadata manager', accent: '#a855f7' },
+    'ai-integration': { icon: '🤖', motif: 'Prompts • AI workflows • Smart automation', accent: '#06b6d4' },
+    'spend-flow': { icon: '💸', motif: 'Budgeting • Expenses • Cash-flow control', accent: '#f59e0b' },
+    'owney-beauty': { icon: '💄', motif: 'Bookings • Catalog • Client loyalty', accent: '#ec4899' },
+    'b2b-maui': { icon: '📱', motif: 'Field sales • Sync • Business operations', accent: '#3b82f6' },
+    'erp-modernization': { icon: '🧩', motif: 'Modular ERP • Refactor • Migration', accent: '#14b8a6' },
+    'desktop-operations': { icon: '🖥️', motif: 'Internal workflows • Reporting suite', accent: '#6366f1' },
+    'enterprise-apis': { icon: '🔌', motif: 'Secure APIs • Integrations • Contracts', accent: '#0ea5e9' },
+    'xamarin-enhancements': { icon: '🛠️', motif: 'Legacy support • PDF • XML automation', accent: '#f97316' }
+  };
+
+  const preset = presets[project.id] ?? { icon: '🚀', motif: project.type, accent: '#1387c1' };
   const bg = '#0f1b22';
 
   return (
@@ -1788,16 +1913,34 @@ function ProjectPreviewSvg({ project }: { project: PortfolioProject }) {
         </linearGradient>
       </defs>
       <rect width="640" height="360" rx="22" fill={`url(#g-${project.id})`} />
-      <circle cx="540" cy="90" r="74" fill="rgba(19,135,193,0.18)" />
-      <circle cx="115" cy="290" r="96" fill="rgba(19,135,193,0.12)" />
-      <rect x="44" y="54" width="280" height="30" rx="8" fill="rgba(231,242,247,0.16)" />
-      <rect x="44" y="100" width="360" height="14" rx="6" fill="rgba(231,242,247,0.20)" />
-      <rect x="44" y="122" width="298" height="14" rx="6" fill="rgba(231,242,247,0.10)" />
-      <rect x="44" y="176" width="168" height="120" rx="12" fill="rgba(19,135,193,0.22)" stroke="rgba(19,135,193,0.45)" />
-      <rect x="232" y="176" width="168" height="120" rx="12" fill="rgba(19,135,193,0.10)" stroke="rgba(19,135,193,0.35)" />
-      <rect x="420" y="176" width="168" height="120" rx="12" fill="rgba(19,135,193,0.17)" stroke="rgba(19,135,193,0.42)" />
-      <text x="56" y="75" fill="#e7f2f7" fontSize="16" fontFamily="Poppins, sans-serif">{project.type}</text>
-      <text x="56" y="335" fill={accent} fontSize="15" fontFamily="Poppins, sans-serif">{project.stack.slice(0, 3).join(' • ')}</text>
+      <circle cx="548" cy="90" r="78" fill={`${preset.accent}33`} />
+      <circle cx="102" cy="290" r="92" fill={`${preset.accent}22`} />
+      <rect x="32" y="30" width="576" height="50" rx="12" fill="rgba(231,242,247,0.10)" />
+      <text x="54" y="63" fill="#e7f2f7" fontSize="22" fontFamily="Poppins, sans-serif">{preset.icon} {project.title}</text>
+      <rect x="44" y="96" width="380" height="16" rx="7" fill="rgba(231,242,247,0.24)" />
+      <rect x="44" y="121" width="330" height="12" rx="6" fill="rgba(231,242,247,0.14)" />
+      <text x="48" y="107" fill="#e7f2f7" fontSize="11" fontFamily="Poppins, sans-serif">{project.type}</text>
+      <text x="48" y="129" fill={preset.accent} fontSize="11" fontFamily="Poppins, sans-serif">{preset.motif}</text>
+
+      <rect x="44" y="160" width="168" height="136" rx="12" fill={`${preset.accent}24`} stroke={`${preset.accent}77`} />
+      <rect x="236" y="160" width="168" height="136" rx="12" fill="rgba(231,242,247,0.08)" stroke="rgba(231,242,247,0.20)" />
+      <rect x="428" y="160" width="168" height="136" rx="12" fill="rgba(231,242,247,0.06)" stroke="rgba(231,242,247,0.16)" />
+
+      <text x="58" y="182" fill="#e7f2f7" fontSize="11" fontFamily="Poppins, sans-serif">MAIN FLOW</text>
+      <text x="250" y="182" fill="#e7f2f7" fontSize="11" fontFamily="Poppins, sans-serif">LOGIC</text>
+      <text x="440" y="182" fill="#e7f2f7" fontSize="11" fontFamily="Poppins, sans-serif">OUTPUT</text>
+
+      <rect x="58" y="194" width="140" height="10" rx="5" fill="rgba(231,242,247,0.2)" />
+      <rect x="58" y="211" width="116" height="10" rx="5" fill="rgba(231,242,247,0.14)" />
+      <rect x="58" y="228" width="132" height="10" rx="5" fill="rgba(231,242,247,0.14)" />
+
+      <circle cx="320" cy="228" r="26" fill={`${preset.accent}55`} />
+      <text x="312" y="234" fill="#fff" fontSize="14" fontFamily="Poppins, sans-serif">SYS</text>
+
+      <rect x="442" y="206" width="140" height="58" rx="10" fill={`${preset.accent}33`} />
+      <text x="452" y="240" fill="#e7f2f7" fontSize="12" fontFamily="Poppins, sans-serif">{project.stack.slice(0, 2).join(' + ')}</text>
+
+      <text x="48" y="336" fill={preset.accent} fontSize="14" fontFamily="Poppins, sans-serif">{project.tags.join(' • ')}</text>
     </svg>
   );
 }

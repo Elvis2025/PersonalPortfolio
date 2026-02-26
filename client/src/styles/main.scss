@@ -2599,6 +2599,10 @@ section,
   transform: scale(1.1);
 }
 
+.portfolio .portfolio-card:hover .portfolio-img .portfolio-svg-preview {
+  transform: scale(1.06);
+}
+
 .portfolio .portfolio-card .portfolio-img {
   position: relative;
   overflow: hidden;
