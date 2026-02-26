@@ -2443,6 +2443,7 @@ export function App() {
   const [isBootLoading, setIsBootLoading] = useState(true);
   const [lang, setLang] = useState<Lang>('en');
   const [showFloatingDownload, setShowFloatingDownload] = useState(true);
+  const [showScrollTopFab, setShowScrollTopFab] = useState(false);
 
   const navItems = useMemo<NavItem[]>(() => {
     const labels = copy[lang].nav;
@@ -2494,7 +2495,9 @@ export function App() {
   }, [pathname, lang]);
 
   useEffect(() => {
-    const downloadTriggers = Array.from(document.querySelectorAll<HTMLElement>('.cv-download-trigger'));
+    // Selectores para botón de descarga integrado (ajústalos aquí si cambias el markup en páginas).
+    const inlineDownloadSelector = '.cv-download-trigger, [data-download-cv], .btn-download-cv, #downloadCvButton';
+    const downloadTriggers = Array.from(document.querySelectorAll<HTMLElement>(inlineDownloadSelector));
     if (downloadTriggers.length === 0) {
       setShowFloatingDownload(true);
       return;
@@ -2531,6 +2534,18 @@ export function App() {
     };
   }, [pathname, lang]);
 
+  useEffect(() => {
+    // Umbral para mostrar el botón "ir arriba" (ajústalo aquí).
+    const scrollThreshold = 200;
+    const onScroll = () => {
+      setShowScrollTopFab(window.scrollY > scrollThreshold);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [pathname]);
+
   return (
     <>
       <div id="preloader" className={isBootLoading ? 'preloader-visible' : 'preloader-hidden'} aria-hidden="true" />
@@ -2542,26 +2557,50 @@ export function App() {
       />
       <main className="main">{renderPage(pathname, lang)}</main>
       <div className="fab-stack" aria-label="Global quick actions">
-        <a
-          href="/api/cv/download"
-          onClick={triggerDualCvDownload}
-          className={`floating-cv-download fab fab--cv ${showFloatingDownload ? 'active' : ''}`}
-          aria-label="Download CV"
-          title="Download CV"
-        >
-          <span className="fab__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" role="img" focusable="false">
-              <path
-                d="M12 4v10m0 0-4-4m4 4 4-4M5 18h14"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-        </a>
+        {showScrollTopFab ? (
+          <button
+            type="button"
+            className="fab fab--scroll-top"
+            aria-label="Ir arriba"
+            title="Ir arriba"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            <span className="fab__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img" focusable="false">
+                <path
+                  d="M12 18V8m0 0-4 4m4-4 4 4M5 6h14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+        ) : null}
+        {showFloatingDownload ? (
+          <a
+            href="/api/cv/download"
+            onClick={triggerDualCvDownload}
+            className="floating-cv-download fab fab--cv active"
+            aria-label="Download CV"
+            title="Download CV"
+          >
+            <span className="fab__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img" focusable="false">
+                <path
+                  d="M12 4v10m0 0-4-4m4 4 4-4M5 18h14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </a>
+        ) : null}
         <WhatsAppFloat />
       </div>
       <Footer lang={lang} />
