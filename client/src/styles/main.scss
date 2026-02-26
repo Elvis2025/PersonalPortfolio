@@ -143,13 +143,14 @@ h6 {
 # Global Header
 --------------------------------------------------------------*/
 .header {
-  --background-color: rgba(255, 255, 255, 0);
+  --background-color: rgba(15, 28, 35, 0.88);
   color: var(--default-color);
   background-color: var(--background-color);
+  backdrop-filter: blur(10px);
   padding: 15px 0;
-  transition: all 0.5s;
+  transition: background-color 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
   z-index: 997;
-  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
 }
 
 .header .logo {
@@ -205,7 +206,9 @@ h6 {
 /* Global Header on Scroll
 ------------------------------*/
 .scrolled .header {
-  --background-color: rgba(16, 26, 32, 0.9);
+  --background-color: rgba(10, 20, 26, 0.96);
+  box-shadow: 0 12px 28px rgba(3, 10, 14, 0.35);
+  border-bottom-color: color-mix(in srgb, var(--default-color), transparent 78%);
 }
 
 /*--------------------------------------------------------------
@@ -346,6 +349,9 @@ h6 {
 /* Mobile Navigation */
 @media (max-width: 1199px) {
   .mobile-nav-toggle {
+    appearance: none;
+    background: transparent;
+    border: 0;
     color: var(--nav-color);
     font-size: 28px;
     line-height: 0;
@@ -448,7 +454,7 @@ h6 {
 
   .mobile-nav-active .mobile-nav-toggle {
     color: #fff;
-    position: absolute;
+    position: fixed;
     font-size: 32px;
     top: 15px;
     right: 15px;
@@ -466,6 +472,29 @@ h6 {
 
   .mobile-nav-active .navmenu>ul {
     display: block;
+  }
+
+  /* Fallback robusto: abre menú incluso si la clase en body no se aplica por algún motivo */
+  .navmenu.navmenu-open {
+    position: fixed;
+    overflow: hidden;
+    inset: 0;
+    background: rgba(33, 37, 41, 0.8);
+    transition: 0.3s;
+  }
+
+  .navmenu.navmenu-open>ul {
+    display: block;
+  }
+
+  .navmenu.navmenu-open .mobile-nav-toggle {
+    color: #fff;
+    position: fixed;
+    font-size: 32px;
+    top: 15px;
+    right: 15px;
+    margin-right: 0;
+    z-index: 9999;
   }
 }
 
@@ -1723,24 +1752,81 @@ section,
   transform: scaleX(1);
 }
 
-.floating-cv-download {
+/* Floating actions (FAB)
+   - Ajusta tamaños en .fab (desktop) y media <= 480px (mobile)
+   - Ajusta separación vertical en .fab-stack gap
+   - Ajusta colores en .fab--cv y .fab--whatsapp */
+.fab-stack {
   position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 99997;
-  width: 46px;
-  height: 46px;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.fab {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 40%);
-  background: color-mix(in srgb, var(--surface-color), var(--accent-color) 10%);
-  color: var(--accent-color);
+  border: 0;
+  color: #ffffff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(12px);
-  transition: 0.3s ease-in-out;
+  box-shadow: 0 10px 22px rgba(2, 9, 14, 0.42), 0 2px 8px rgba(2, 9, 14, 0.3);
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+  will-change: transform;
+  animation: fab-float 3.4s ease-in-out infinite;
+}
+
+.fab:hover {
+  animation-play-state: paused;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 30px rgba(2, 9, 14, 0.58), 0 6px 14px rgba(2, 9, 14, 0.38);
+  filter: saturate(1.08);
+}
+
+.fab:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(19, 135, 193, 0.35), 0 14px 30px rgba(0, 0, 0, 0.28);
+}
+
+/* Orden del stack: CV arriba (1), WhatsApp abajo (2) */
+.fab--cv {
+  order: 1;
+  background: linear-gradient(145deg, #4c57d6 0%, #3644b5 100%);
+  animation-delay: 0s;
+}
+
+.fab--whatsapp {
+  order: 2;
+  animation-delay: 0.4s;
+}
+
+.fab--scroll-top {
+  order: 0;
+  background: linear-gradient(145deg, #2b3a46 0%, #202d38 100%);
+  border: 1px solid color-mix(in srgb, #6f8ca0, transparent 62%);
+  animation-delay: 0.2s;
+}
+
+.fab__icon {
+  width: 25px;
+  height: 25px;
+  line-height: 0;
+}
+
+.fab__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.floating-cv-download {
+  background: linear-gradient(145deg, #4c57d6 0%, #3644b5 100%);
 }
 
 .floating-cv-download.active {
@@ -1749,9 +1835,45 @@ section,
   transform: translateY(0);
 }
 
-.floating-cv-download:hover {
-  color: var(--contrast-color);
-  background: var(--accent-color);
+.whatsapp-float {
+  background: linear-gradient(145deg, #2fe073 0%, #25D366 100%);
+  border: 1px solid color-mix(in srgb, #8bf0b6, transparent 55%);
+}
+
+@keyframes fab-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@media (max-width: 480px) {
+  .fab-stack {
+    right: 18px;
+    bottom: 18px;
+    gap: 10px;
+  }
+
+  .fab {
+    width: 52px;
+    height: 52px;
+  }
+
+  .fab__icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab {
+    transition: none;
+    animation: none;
+  }
 }
 
 @media (max-width: 991.98px) {
