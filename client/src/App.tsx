@@ -188,6 +188,25 @@ type ResumeContent = {
   highlightedSkills: Array<{ name: string; level: number }>;
 };
 
+type ServiceItem = {
+  id: string;
+  icon: string;
+  title: string;
+  summary: string;
+  category: string;
+  readTime: string;
+  description: string;
+  benefits: string[];
+};
+
+type ServicesContent = {
+  title: string;
+  subtitle: string;
+  learnMore: string;
+  modalCta: string;
+  items: ServiceItem[];
+};
+
 const copy: Record<Lang, Dictionary> = {
   en: {
     nav: ['Home', 'About', 'Resume', 'Services', 'Portfolio', 'Contact'],
@@ -479,6 +498,203 @@ const resumeContent: Record<Lang, ResumeContent> = {
       { name: 'Blazor / C#', level: 88 },
       { name: 'Spring Boot / Java', level: 86 },
       { name: 'ASP .NET / C#', level: 94 }
+    ]
+  }
+};
+
+const servicesContent: Record<Lang, ServicesContent> = {
+  en: {
+    title: 'Services',
+    subtitle:
+      'End-to-end services designed to ship scalable products, improve business workflows, and deliver measurable impact in web, mobile, and backend systems.',
+    learnMore: 'Learn More',
+    modalCta: 'Let’s discuss this service',
+    items: [
+      {
+        id: 'fullstack',
+        icon: 'bi-code-slash',
+        title: 'Custom Full Stack Development',
+        summary: 'Web platforms and business systems built with React, Angular, ASP.NET, and SQL-based architectures.',
+        category: 'Full Stack Engineering',
+        readTime: '4 min read',
+        description:
+          'I build complete digital products from architecture to production release. This includes robust APIs, modern UIs, scalable database design, and maintainable code standards for long-term growth.',
+        benefits: ['Clean architecture and SOLID principles', 'Secure API design and integrations', 'Performance-focused frontend and backend delivery']
+      },
+      {
+        id: 'api',
+        icon: 'bi-hdd-network',
+        title: 'API & Backend Architecture',
+        summary: 'Reliable APIs for mobile apps, web apps, and enterprise integrations with strong validation and security.',
+        category: 'Backend Systems',
+        readTime: '5 min read',
+        description:
+          'I design and implement backend services with layered architecture, clear contracts, and observability. Ideal for products that need high reliability, modular growth, and easy maintenance.',
+        benefits: ['REST API design with clean contracts', 'Authentication, authorization, and business rules', 'Data access optimization and maintainability']
+      },
+      {
+        id: 'mobile',
+        icon: 'bi-phone-fill',
+        title: 'Mobile App Development',
+        summary: 'Cross-platform mobile solutions with .NET MAUI and Flutter focused on speed, usability, and reliability.',
+        category: 'Mobile Delivery',
+        readTime: '4 min read',
+        description:
+          'From concept to store-ready builds, I create mobile experiences connected to real business operations. I prioritize responsive UX, data synchronization, and smooth API communication.',
+        benefits: ['Cross-platform delivery and reusable code', 'Business-oriented UX and app flows', 'Backend-connected mobile architecture']
+      },
+      {
+        id: 'uiux',
+        icon: 'bi-palette2',
+        title: 'UI/UX Implementation',
+        summary: 'Interfaces transformed from ideas into production-ready experiences with accessibility and consistency.',
+        category: 'Product Experience',
+        readTime: '3 min read',
+        description:
+          'I convert design systems and product ideas into polished interfaces that users understand quickly. I balance aesthetics and usability to make products easier to adopt and maintain.',
+        benefits: ['Design-to-code implementation', 'Reusable components and visual consistency', 'Accessibility and responsive behavior']
+      },
+      {
+        id: 'modernization',
+        icon: 'bi-arrow-repeat',
+        title: 'Legacy Modernization',
+        summary: 'Modernization of existing apps and ERP modules without breaking critical business operations.',
+        category: 'System Evolution',
+        readTime: '5 min read',
+        description:
+          'I help teams migrate legacy systems to modern stacks through iterative refactors and controlled releases. This reduces technical debt and unlocks safer future improvements.',
+        benefits: ['Incremental migration strategy', 'Refactor legacy modules with low risk', 'Improved maintainability and release speed']
+      },
+      {
+        id: 'devops',
+        icon: 'bi-cloud-arrow-up',
+        title: 'DevOps & CI/CD Enablement',
+        summary: 'Automation pipelines and deployment workflows to ship faster, safer, and with better release visibility.',
+        category: 'DevOps Engineering',
+        readTime: '4 min read',
+        description:
+          'I implement DevOps practices that improve delivery speed and reliability: CI/CD pipelines, versioning strategy, environment consistency, and deployment automation. The goal is to reduce manual errors and create predictable releases.',
+        benefits: ['CI/CD pipelines for build, test, and deployment', 'Environment and release workflow standardization', 'Monitoring-oriented delivery and rollback readiness']
+      },
+      {
+        id: 'refactoring',
+        icon: 'bi-arrow-repeat',
+        title: 'Code Refactoring & Process Optimization',
+        summary: 'Technical refactors focused on improving code quality, maintainability, and operational efficiency.',
+        category: 'Engineering Optimization',
+        readTime: '5 min read',
+        description:
+          'I analyze existing systems and refactor critical areas to improve readability, reduce complexity, and optimize execution flows. This service is ideal when teams need cleaner codebases and faster processes without rebuilding everything from scratch.',
+        benefits: ['Refactor legacy and high-risk modules safely', 'Improve performance and reduce technical bottlenecks', 'Optimize development and business process workflows']
+      },
+      {
+        id: 'consulting',
+        icon: 'bi-diagram-3',
+        title: 'Technical Consulting',
+        summary: 'Architecture and implementation guidance for teams that need clarity on product and engineering decisions.',
+        category: 'Strategy & Guidance',
+        readTime: '3 min read',
+        description:
+          'I support teams in defining architecture, coding standards, and delivery workflows that align with business goals. This is ideal for projects that need direction, structure, and execution confidence.',
+        benefits: ['Architecture and roadmap review', 'Standards for scalable team collaboration', 'Actionable recommendations focused on delivery']
+      }
+    ]
+  },
+  es: {
+    title: 'Servicios',
+    subtitle:
+      'Servicios end-to-end diseñados para lanzar productos escalables, optimizar procesos de negocio y generar impacto real en web, móvil y backend.',
+    learnMore: 'Leer más',
+    modalCta: 'Quiero este servicio',
+    items: [
+      {
+        id: 'fullstack',
+        icon: 'bi-code-slash',
+        title: 'Desarrollo Full Stack a Medida',
+        summary: 'Plataformas web y sistemas de negocio construidos con React, Angular, ASP.NET y arquitecturas SQL.',
+        category: 'Ingeniería Full Stack',
+        readTime: '4 min de lectura',
+        description:
+          'Construyo productos digitales completos desde la arquitectura hasta el release en producción. Incluye APIs robustas, interfaces modernas, diseño escalable de base de datos y código mantenible.',
+        benefits: ['Arquitectura limpia y principios SOLID', 'Diseño seguro de APIs e integraciones', 'Entrega frontend y backend orientada a rendimiento']
+      },
+      {
+        id: 'api',
+        icon: 'bi-hdd-network',
+        title: 'Arquitectura de APIs y Backend',
+        summary: 'APIs confiables para apps móviles, web e integraciones empresariales con validación y seguridad.',
+        category: 'Sistemas Backend',
+        readTime: '5 min de lectura',
+        description:
+          'Diseño e implemento servicios backend con arquitectura por capas, contratos claros y observabilidad. Ideal para productos que necesitan confiabilidad, crecimiento modular y mantenimiento simple.',
+        benefits: ['Diseño REST con contratos limpios', 'Autenticación, autorización y reglas de negocio', 'Optimización de acceso a datos y mantenibilidad']
+      },
+      {
+        id: 'mobile',
+        icon: 'bi-phone-fill',
+        title: 'Desarrollo de Apps Móviles',
+        summary: 'Soluciones cross-platform con .NET MAUI y Flutter enfocadas en velocidad, usabilidad y estabilidad.',
+        category: 'Delivery Móvil',
+        readTime: '4 min de lectura',
+        description:
+          'Desde la idea hasta una app lista para producción, creo experiencias móviles conectadas a operaciones reales de negocio. Priorizo UX fluida, sincronización de datos y comunicación estable con APIs.',
+        benefits: ['Entrega multiplataforma y código reutilizable', 'UX orientada a procesos de negocio', 'Arquitectura móvil conectada con backend']
+      },
+      {
+        id: 'uiux',
+        icon: 'bi-palette2',
+        title: 'Implementación UI/UX',
+        summary: 'Interfaces convertidas de ideas a experiencias productivas con accesibilidad y consistencia visual.',
+        category: 'Experiencia de Producto',
+        readTime: '3 min de lectura',
+        description:
+          'Transformo sistemas de diseño e ideas de producto en interfaces pulidas que los usuarios comprenden rápido. Equilibro estética y usabilidad para facilitar adopción y mantenimiento.',
+        benefits: ['Implementación fiel de diseño a código', 'Componentes reutilizables y coherencia visual', 'Accesibilidad y comportamiento responsive']
+      },
+      {
+        id: 'modernization',
+        icon: 'bi-arrow-repeat',
+        title: 'Modernización de Sistemas Legacy',
+        summary: 'Modernización de apps existentes y módulos ERP sin romper operaciones críticas del negocio.',
+        category: 'Evolución Tecnológica',
+        readTime: '5 min de lectura',
+        description:
+          'Ayudo a migrar sistemas legacy a stacks modernos mediante refactors iterativos y releases controlados. Esto reduce deuda técnica y habilita mejoras futuras con menos riesgo.',
+        benefits: ['Estrategia de migración incremental', 'Refactor seguro de módulos legacy', 'Mayor mantenibilidad y velocidad de entrega']
+      },
+      {
+        id: 'devops',
+        icon: 'bi-cloud-arrow-up',
+        title: 'DevOps y CI/CD',
+        summary: 'Pipelines automatizados y flujos de despliegue para entregar más rápido, con menos riesgo y mayor control.',
+        category: 'Ingeniería DevOps',
+        readTime: '4 min de lectura',
+        description:
+          'Implemento prácticas DevOps para mejorar velocidad y confiabilidad de entrega: pipelines de CI/CD, estrategia de versionado, consistencia entre ambientes y automatización de despliegues. El objetivo es reducir errores manuales y lograr releases predecibles.',
+        benefits: ['Pipelines CI/CD para build, pruebas y despliegue', 'Estandarización de ambientes y flujo de releases', 'Entrega orientada a monitoreo y capacidad de rollback']
+      },
+      {
+        id: 'refactoring',
+        icon: 'bi-arrow-repeat',
+        title: 'Refactorización de Código y Optimización de Procesos',
+        summary: 'Refactors técnicos enfocados en calidad de código, mantenibilidad y eficiencia operativa.',
+        category: 'Optimización de Ingeniería',
+        readTime: '5 min de lectura',
+        description:
+          'Analizo sistemas existentes y refactorizo áreas críticas para mejorar legibilidad, reducir complejidad y optimizar flujos de ejecución. Este servicio es ideal cuando un equipo necesita limpiar su base de código y acelerar procesos sin rehacer todo desde cero.',
+        benefits: ['Refactor seguro de módulos legacy o críticos', 'Mejora de rendimiento y reducción de cuellos de botella', 'Optimización de flujos de desarrollo y procesos de negocio']
+      },
+      {
+        id: 'consulting',
+        icon: 'bi-diagram-3',
+        title: 'Consultoría Técnica',
+        summary: 'Acompañamiento en arquitectura e implementación para equipos que necesitan claridad técnica.',
+        category: 'Estrategia y Guía',
+        readTime: '3 min de lectura',
+        description:
+          'Acompaño equipos definiendo arquitectura, estándares de código y flujos de entrega alineados al negocio. Ideal para proyectos que necesitan dirección, estructura y confianza para ejecutar.',
+        benefits: ['Revisión de arquitectura y roadmap técnico', 'Estándares para trabajo escalable en equipo', 'Recomendaciones accionables enfocadas en entrega']
+      }
     ]
   }
 };
@@ -1217,6 +1433,100 @@ function ResumePage({ lang }: { lang: Lang }) {
   );
 }
 
+function ServicesPage({ lang }: { lang: Lang }) {
+  const data = servicesContent[lang];
+  const [activeService, setActiveService] = useState<ServiceItem | null>(null);
+
+  useEffect(() => {
+    if (!activeService) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActiveService(null);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [activeService]);
+
+  return (
+    <section id="services" className="services section">
+      <div className="container section-title" data-aos="fade-up">
+        <h2>{data.title}</h2>
+        <p>{data.subtitle}</p>
+      </div>
+
+      <div className="container" data-aos="fade-up" data-aos-delay="100">
+        <div className="row justify-content-center g-4 g-lg-5">
+          {data.items.map((service, index) => (
+            <div
+              key={service.id}
+              className="col-md-6"
+              data-aos={index % 2 === 0 ? 'fade-right' : 'fade-left'}
+              data-aos-delay={100 + Math.floor(index / 2) * 100}
+            >
+              <div className="service-item">
+                <div className="service-icon">
+                  <i className={`bi ${service.icon}`} />
+                </div>
+                <div className="service-content">
+                  <h3>{service.title}</h3>
+                  <p>{service.summary}</p>
+                  <button type="button" className="service-link service-modal-trigger" onClick={() => setActiveService(service)}>
+                    <span>{data.learnMore}</span>
+                    <i className="bi bi-arrow-right" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {activeService ? (
+        <div className="service-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="service-modal-title" onClick={() => setActiveService(null)}>
+          <div className="service-modal" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="service-modal-close" aria-label="Close" onClick={() => setActiveService(null)}>
+              <i className="bi bi-x-lg" />
+            </button>
+
+            <div className="service-modal-media">
+              <img src="/img/profile/eh-details.webp" alt="Elvis Hernandez details" loading="lazy" />
+            </div>
+
+            <div className="service-modal-content">
+              <div className="service-meta">
+                <span className="service-category">{activeService.category}</span>
+                <span className="reading-time">{activeService.readTime}</span>
+              </div>
+              <h3 id="service-modal-title">{activeService.title}</h3>
+              <p>{activeService.description}</p>
+              <ul>
+                {activeService.benefits.map((benefit) => (
+                  <li key={benefit}>
+                    <i className="bi bi-check2-circle" />
+                    <span>{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link to="/contact" className="btn btn-consultation">
+                <span>{data.modalCta}</span>
+                <i className="bi bi-arrow-right" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 
 function InnerPage({ title, text }: { title: string; text: string }) {
   return (
@@ -1255,7 +1565,7 @@ function renderPage(pathname: string, lang: Lang) {
     case '/resume':
       return <ResumePage lang={lang} />;
     case '/services':
-      return <InnerPage title={pages.services.title} text={pages.services.text} />;
+      return <ServicesPage lang={lang} />;
     case '/portfolio':
       return <InnerPage title={pages.portfolio.title} text={pages.portfolio.text} />;
     case '/contact':

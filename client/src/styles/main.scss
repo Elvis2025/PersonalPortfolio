@@ -1877,6 +1877,104 @@ section,
   color: color-mix(in srgb, var(--accent-color), transparent 25%);
 }
 
+.services .service-modal-trigger {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.services .service-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1055;
+  background: rgba(4, 11, 16, 0.8);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.services .service-modal {
+  width: min(980px, 100%);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  background: var(--surface-color);
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  position: relative;
+}
+
+.services .service-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--surface-color), var(--default-color) 10%);
+  color: var(--default-color);
+}
+
+.services .service-modal-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+}
+
+.services .service-modal-content {
+  padding: 2.25rem 2rem;
+}
+
+.services .service-modal-content .service-meta {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.services .service-modal-content .service-category {
+  background: color-mix(in srgb, var(--accent-color), transparent 82%);
+  color: var(--accent-color);
+  border-radius: 18px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+}
+
+.services .service-modal-content .reading-time {
+  color: color-mix(in srgb, var(--default-color), transparent 35%);
+  font-size: 0.9rem;
+}
+
+.services .service-modal-content h3 {
+  margin-bottom: 1rem;
+}
+
+.services .service-modal-content p {
+  color: color-mix(in srgb, var(--default-color), transparent 15%);
+}
+
+.services .service-modal-content ul {
+  margin: 1.25rem 0 1.75rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.services .service-modal-content li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.services .service-modal-content li i {
+  color: var(--accent-color);
+}
+
 @media (max-width: 767.98px) {
   .services .service-item {
     padding: 1.5rem;
@@ -1901,6 +1999,18 @@ section,
   .services .service-content p {
     margin-bottom: 1rem;
     font-size: 0.95rem;
+  }
+
+  .services .service-modal {
+    grid-template-columns: 1fr;
+  }
+
+  .services .service-modal-media img {
+    max-height: 260px;
+  }
+
+  .services .service-modal-content {
+    padding: 1.5rem;
   }
 }
 
