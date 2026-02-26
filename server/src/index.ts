@@ -37,12 +37,12 @@ const cvStoragePath = process.env.CV_STORAGE_PATH
     ? distCvDir
     : fallbackCvDir;
 
-function getLatestPdfInDirectory(directoryPath: string) {
+function getPdfFilesInDirectory(directoryPath: string) {
   if (!fs.existsSync(directoryPath)) {
-    return null;
+    return [] as Array<{ fileName: string; filePath: string; mtimeMs: number }>;
   }
 
-  const pdfFiles = fs
+  return fs
     .readdirSync(directoryPath)
     .filter((fileName) => fileName.toLowerCase().endsWith('.pdf'))
     .map((fileName) => {
@@ -51,8 +51,31 @@ function getLatestPdfInDirectory(directoryPath: string) {
       return { fileName, filePath, mtimeMs: stats.mtimeMs };
     })
     .sort((a, b) => b.mtimeMs - a.mtimeMs);
+}
 
+function getLatestPdfInDirectory(directoryPath: string) {
+  const pdfFiles = getPdfFilesInDirectory(directoryPath);
   return pdfFiles[0] ?? null;
+}
+
+function getCvByLanguage(directoryPath: string, lang: 'en' | 'es') {
+  const pdfFiles = getPdfFilesInDirectory(directoryPath);
+
+  const preferredNames = lang === 'en'
+    ? ['english-eh-cv.pdf']
+    : ['spanish-eh-cv.pdf', 'spanish-eh-cv'];
+
+  const exactMatch = pdfFiles.find((file) => preferredNames.includes(file.fileName.toLowerCase()));
+  if (exactMatch) return exactMatch;
+
+  const languageHints = lang === 'en'
+    ? ['english', '-en', '_en', ' en ', 'cv-en']
+    : ['spanish', 'espanol', 'español', '-es', '_es', ' es ', 'cv-es'];
+
+  return pdfFiles.find((file) => {
+    const lowerName = file.fileName.toLowerCase();
+    return languageHints.some((hint) => lowerName.includes(hint));
+  }) ?? null;
 }
 
 if (hasClientDist) {
@@ -77,7 +100,22 @@ app.get('/', (req: any, res: any) => {
 });
 
 
-app.get('/api/cv/download', (_req: any, res: any) => {
+app.get('/api/cv/download', (req: any, res: any) => {
+  const lang = String(req.query.lang ?? '').toLowerCase();
+
+  if (lang === 'en' || lang === 'es') {
+    const languageCv = getCvByLanguage(cvStoragePath, lang);
+
+    if (!languageCv) {
+      return res.status(404).json({
+        error: 'CV PDF not found',
+        message: `Could not find ${lang.toUpperCase()} CV inside: ${cvStoragePath}`
+      });
+    }
+
+    return res.download(languageCv.filePath, languageCv.fileName);
+  }
+
   const latestPdf = getLatestPdfInDirectory(cvStoragePath);
 
   if (!latestPdf) {

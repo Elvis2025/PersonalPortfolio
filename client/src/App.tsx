@@ -656,6 +656,23 @@ function Link({ to, children, className }: { to: string; children: ReactNode; cl
   );
 }
 
+function triggerDualCvDownload(event: MouseEvent<HTMLAnchorElement>) {
+  event.preventDefault();
+
+  const downloadUrls = ['/api/cv/download?lang=en', '/api/cv/download?lang=es'];
+
+  downloadUrls.forEach((url, index) => {
+    window.setTimeout(() => {
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.style.display = 'none';
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+    }, index * 180);
+  });
+}
+
 function Header({ pathname, navItems, langToggle, onToggleLang }: { pathname: string; navItems: NavItem[]; langToggle: string; onToggleLang: () => void }) {
   return (
     <header id="header" className="header d-flex align-items-center light-background sticky-top">
@@ -760,7 +777,7 @@ function HomePage({ lang }: { lang: Lang }) {
                 <Link to="/contact" className="btn btn-ghost">
                   <i className="bi bi-chat-dots" /> {text.ctaContact} <i className="bi bi-arrow-up-right" />
                 </Link>
-                <a href="/api/cv/download" className="link-underline cv-download-trigger">
+                <a href="/api/cv/download" onClick={triggerDualCvDownload} className="link-underline cv-download-trigger">
                   {text.ctaDownloadCv} <i className="bi bi-download" />
                 </a>
               </div>
@@ -1132,7 +1149,7 @@ function ResumePage({ lang }: { lang: Lang }) {
                 <Link to="/contact" className="btn btn-ghost">
                   <i className="bi bi-chat-dots" /> {data.contactCta} <i className="bi bi-arrow-up-right" />
                 </Link>
-                <a className="link-underline cv-download-trigger" href="/api/cv/download">
+                <a className="link-underline cv-download-trigger" href="/api/cv/download" onClick={triggerDualCvDownload}>
                   {data.downloadCta} <i className="bi bi-download" />
                 </a>
               </div>
@@ -1353,6 +1370,7 @@ export function App() {
       <main className="main">{renderPage(pathname, lang)}</main>
       <a
         href="/api/cv/download"
+        onClick={triggerDualCvDownload}
         className={`floating-cv-download ${showFloatingDownload ? 'active' : ''}`}
         aria-label="Download CV"
       >
