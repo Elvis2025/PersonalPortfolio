@@ -37,22 +37,57 @@ const cvStoragePath = process.env.CV_STORAGE_PATH
     ? distCvDir
     : fallbackCvDir;
 
-function getLatestPdfInDirectory(directoryPath: string) {
+function getPdfFilesInDirectory(directoryPath: string) {
   if (!fs.existsSync(directoryPath)) {
-    return null;
+    return [] as Array<{ fileName: string; filePath: string; mtimeMs: number }>;
   }
 
-  const pdfFiles = fs
+  const knownCvNamesWithoutExtension = new Set(['english-eh-cv', 'spanish-eh-cv']);
+
+  return fs
     .readdirSync(directoryPath)
-    .filter((fileName) => fileName.toLowerCase().endsWith('.pdf'))
+    .filter((fileName) => {
+      const lowerName = fileName.toLowerCase();
+      if (lowerName.endsWith('.pdf')) return true;
+
+      const parsedName = path.parse(lowerName);
+      return parsedName.ext === '' && knownCvNamesWithoutExtension.has(parsedName.name);
+    })
     .map((fileName) => {
       const filePath = path.join(directoryPath, fileName);
       const stats = fs.statSync(filePath);
       return { fileName, filePath, mtimeMs: stats.mtimeMs };
     })
     .sort((a, b) => b.mtimeMs - a.mtimeMs);
+}
 
+function getLatestPdfInDirectory(directoryPath: string) {
+  const pdfFiles = getPdfFilesInDirectory(directoryPath);
   return pdfFiles[0] ?? null;
+}
+
+function getCvByLanguage(directoryPath: string, lang: 'en' | 'es') {
+  const pdfFiles = getPdfFilesInDirectory(directoryPath);
+
+  const preferredNames = lang === 'en'
+    ? ['english-eh-cv.pdf']
+    : ['spanish-eh-cv.pdf', 'spanish-eh-cv'];
+
+  const exactMatch = pdfFiles.find((file) => preferredNames.includes(file.fileName.toLowerCase()));
+  if (exactMatch) return exactMatch;
+
+  const languageHints = lang === 'en'
+    ? ['english', '-en', '_en', ' en ', 'cv-en']
+    : ['spanish', 'espanol', 'español', '-es', '_es', ' es ', 'cv-es'];
+
+  return pdfFiles.find((file) => {
+    const lowerName = file.fileName.toLowerCase();
+    return languageHints.some((hint) => lowerName.includes(hint));
+  }) ?? null;
+}
+
+function getDownloadFileName(fileName: string) {
+  return fileName.toLowerCase().endsWith('.pdf') ? fileName : `${fileName}.pdf`;
 }
 
 if (hasClientDist) {
@@ -77,7 +112,22 @@ app.get('/', (req: any, res: any) => {
 });
 
 
-app.get('/api/cv/download', (_req: any, res: any) => {
+app.get('/api/cv/download', (req: any, res: any) => {
+  const lang = String(req.query.lang ?? '').toLowerCase();
+
+  if (lang === 'en' || lang === 'es') {
+    const languageCv = getCvByLanguage(cvStoragePath, lang);
+
+    if (!languageCv) {
+      return res.status(404).json({
+        error: 'CV PDF not found',
+        message: `Could not find ${lang.toUpperCase()} CV inside: ${cvStoragePath}`
+      });
+    }
+
+    return res.download(languageCv.filePath, getDownloadFileName(languageCv.fileName));
+  }
+
   const latestPdf = getLatestPdfInDirectory(cvStoragePath);
 
   if (!latestPdf) {
@@ -87,7 +137,7 @@ app.get('/api/cv/download', (_req: any, res: any) => {
     });
   }
 
-  return res.download(latestPdf.filePath, latestPdf.fileName);
+  return res.download(latestPdf.filePath, getDownloadFileName(latestPdf.fileName));
 });
 
 app.get('/health', (_req: any, res: any) => {
