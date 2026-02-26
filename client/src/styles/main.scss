@@ -1686,6 +1686,14 @@ section,
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  transition: opacity 0.2s ease;
+}
+
+/* Nunca por encima del menú móvil */
+.mobile-nav-active .fab-stack {
+  z-index: 900;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .fab {
