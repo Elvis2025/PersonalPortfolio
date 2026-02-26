@@ -1,4 +1,5 @@
 import { FormEvent, MouseEvent, ReactNode, useEffect, useMemo, useState } from 'react';
+import { WhatsAppFloat } from './WhatsAppFloat';
 
 type Lang = 'en' | 'es';
 type SkillCategory =
@@ -2540,14 +2541,29 @@ export function App() {
         onToggleLang={() => setLang((current) => (current === 'en' ? 'es' : 'en'))}
       />
       <main className="main">{renderPage(pathname, lang)}</main>
-      <a
-        href="/api/cv/download"
-        onClick={triggerDualCvDownload}
-        className={`floating-cv-download ${showFloatingDownload ? 'active' : ''}`}
-        aria-label="Download CV"
-      >
-        <i className="bi bi-file-earmark-arrow-down" />
-      </a>
+      <div className="fab-stack" aria-label="Global quick actions">
+        <a
+          href="/api/cv/download"
+          onClick={triggerDualCvDownload}
+          className={`floating-cv-download fab fab--cv ${showFloatingDownload ? 'active' : ''}`}
+          aria-label="Download CV"
+          title="Download CV"
+        >
+          <span className="fab__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img" focusable="false">
+              <path
+                d="M12 4v10m0 0-4-4m4 4 4-4M5 18h14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+        </a>
+        <WhatsAppFloat />
+      </div>
       <Footer lang={lang} />
     </>
   );
