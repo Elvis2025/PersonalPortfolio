@@ -547,7 +547,7 @@ function ContactPage({ lang }: { lang: Lang }) {
         }
 
         if (response.status === 503 || payload?.error === 'CONTACT_SERVICE_UNAVAILABLE') {
-          throw new Error(text.errors.serviceUnavailable);
+          throw new Error(payload?.message ?? text.errors.serviceUnavailable);
         }
 
         if (response.status === 502 || payload?.error === 'EMAIL_DELIVERY_FAILED') {

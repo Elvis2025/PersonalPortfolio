@@ -35,6 +35,14 @@ const requests = new Map<string, number[]>();
 
 const frontendUrl = process.env.FRONTEND_URL;
 
+function normalizeEnvValue(value: string | undefined) {
+  if (!value) return '';
+
+  const trimmed = value.trim();
+  const withoutWrappingQuotes = trimmed.replace(/^['"]|['"]$/g, '');
+  return withoutWrappingQuotes.trim();
+}
+
 function getPublicBaseUrl(req: any) {
   const forwardedProto = req.header('x-forwarded-proto')?.split(',')[0]?.trim();
   const proto = forwardedProto || req.protocol || 'https';
@@ -196,13 +204,14 @@ app.post('/api/contact', async (req: any, res: any) => {
     return res.status(400).json({ error: 'INVALID_EMAIL_FORMAT', message: 'Invalid email format' });
   }
 
-  const smtpHost = process.env.SMTP_HOST;
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.SMTP_PASS;
-  const smtpPort = Number(process.env.SMTP_PORT ?? 587);
-  const contactToEmail = process.env.CONTACT_TO_EMAIL;
+  const smtpHost = normalizeEnvValue(process.env.SMTP_HOST);
+  const smtpUser = normalizeEnvValue(process.env.SMTP_USER);
+  const smtpPass = normalizeEnvValue(process.env.SMTP_PASS).replace(/\s+/g, '');
+  const smtpPort = Number(normalizeEnvValue(process.env.SMTP_PORT) || '587');
+  const smtpFrom = normalizeEnvValue(process.env.SMTP_FROM) || smtpUser;
+  const contactToEmail = normalizeEnvValue(process.env.CONTACT_TO_EMAIL);
 
-  if (!smtpHost || !smtpUser || !smtpPass || !contactToEmail) {
+  if (!smtpHost || !smtpUser || !smtpPass || !contactToEmail || Number.isNaN(smtpPort)) {
     return res.status(503).json({
       error: 'CONTACT_SERVICE_UNAVAILABLE',
       message: 'SMTP configuration is incomplete'
@@ -237,7 +246,7 @@ app.post('/api/contact', async (req: any, res: any) => {
     });
 
     await transporter.sendMail({
-      from: process.env.SMTP_FROM ?? smtpUser,
+      from: smtpFrom,
       to: contactToEmail,
       replyTo: normalizedEmail,
       subject: `[Portfolio] ${String(subject).trim()}`,
@@ -259,6 +268,14 @@ ${String(message).trim()}`
     });
 
     const reason = [errorCode, errorResponseCode].filter(Boolean).join(':');
+
+    if (errorCode === 'EAUTH' || errorResponseCode === '535') {
+      return res.status(503).json({
+        error: 'CONTACT_SERVICE_UNAVAILABLE',
+        message: 'SMTP authentication failed. Check SMTP_USER and SMTP_PASS (App Password).',
+        reason: reason || 'EAUTH'
+      });
+    }
 
     return res.status(503).json({
       error: 'CONTACT_SERVICE_UNAVAILABLE',

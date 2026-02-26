@@ -43,6 +43,16 @@ npm run dev
 3. Envía y valida estado loading/success/error.
 4. Verifica llegada del correo a `inelvis16031124@gmail.com`.
 
+
+## Troubleshooting de envío de correo (Gmail)
+
+Si el formulario devuelve `503` o falla el envío:
+
+1. Verifica que `.env` exista en la raíz del proyecto y que cada variable esté en una línea real (no uses `\n` literal dentro del archivo).
+2. Asegúrate de tener 2FA activa en Gmail y usa una **App Password** como `SMTP_PASS` (no la contraseña normal de Gmail).
+3. Si copiaste la App Password con espacios o comillas, el servidor ahora los normaliza automáticamente; aun así, valida que no haya caracteres extra.
+4. Revisa la respuesta JSON de `POST /api/contact` y el campo `reason` para diagnosticar (`EAUTH`, `535`, `ESOCKET`, etc.).
+
 ## Retiro de PHP
 
 - El envío por `forms/contact.php` fue removido.
