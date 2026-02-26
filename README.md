@@ -75,6 +75,7 @@ Variables opcionales:
 
 - `EMAIL_FROM` (default: `Portfolio <EMAIL_USER>`)
 - `EMAIL_SECURE` (`true`/`false`, por defecto `true` si el puerto es `465`)
+- `EMAIL_TLS_REJECT_UNAUTHORIZED` (`true`/`false`, default `true`)
 
 Ejemplo:
 
@@ -85,17 +86,19 @@ EMAIL_USER=tu_correo@gmail.com
 EMAIL_PASS=tu_app_password
 EMAIL_FROM="Portfolio <tu_correo@gmail.com>"
 EMAIL_SECURE=false
+EMAIL_TLS_REJECT_UNAUTHORIZED=true
 CONTACT_TO_EMAIL=tu_correo@dominio.com
 ```
 
-## Troubleshooting de envío de correo (SMTP)',
+## Troubleshooting de envío de correo (SMTP)
 
 Si el formulario devuelve `503` o falla el envío:
 
 1. Verifica que `.env` exista en la raíz del proyecto y que cada variable esté en una línea real (no uses `\n` literal dentro del archivo).
 2. Verifica `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS` y `CONTACT_TO_EMAIL` en `.env`.
 3. En Gmail, usa 2FA + App Password (no contraseña normal).
-4. Revisa la respuesta JSON de `POST /api/contact` y el campo `reason` para diagnosticar (`EAUTH`, `535`, `ESOCKET`, etc.).
+4. Si el log dice `self-signed certificate in certificate chain`, prueba temporalmente `EMAIL_TLS_REJECT_UNAUTHORIZED=false` (solo para entornos controlados).
+5. Revisa la respuesta JSON de `POST /api/contact` y el campo `reason` para diagnosticar (`EAUTH`, `535`, `ESOCKET`, etc.).
 
 ## Retiro de PHP
 

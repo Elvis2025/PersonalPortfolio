@@ -211,6 +211,7 @@ app.post('/api/contact', async (req: any, res: any) => {
   const emailPass = normalizeEnvValue(process.env.EMAIL_PASS).replace(/\s+/g, '');
   const emailFrom = normalizeEnvValue(process.env.EMAIL_FROM) || `Portfolio <${emailUser}>`;
   const emailSecure = normalizeEnvValue(process.env.EMAIL_SECURE).toLowerCase() === 'true' || emailPort === 465;
+  const emailTlsRejectUnauthorized = normalizeEnvValue(process.env.EMAIL_TLS_REJECT_UNAUTHORIZED).toLowerCase() !== 'false';
 
   if (!contactToEmail || !emailHost || !emailUser || !emailPass || Number.isNaN(emailPort)) {
     return res.status(503).json({
@@ -243,6 +244,9 @@ app.post('/api/contact', async (req: any, res: any) => {
       auth: {
         user: emailUser,
         pass: emailPass
+      },
+      tls: {
+        rejectUnauthorized: emailTlsRejectUnauthorized
       }
     });
 
