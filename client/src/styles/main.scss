@@ -487,6 +487,15 @@ h6 {
     display: block;
   }
 
+  .navmenu ul.navmenu-list-open {
+    display: block !important;
+    position: fixed;
+    inset: 76px 20px 20px 20px;
+    z-index: 10000;
+    background-color: var(--nav-mobile-background-color);
+    box-shadow: 0 16px 34px rgba(1, 7, 11, 0.48);
+  }
+
   .navmenu.navmenu-open .mobile-nav-toggle {
     color: #fff;
     position: fixed;

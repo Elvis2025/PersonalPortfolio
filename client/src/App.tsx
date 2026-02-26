@@ -1483,9 +1483,10 @@ function normalizePathname(pathname: string) {
   return trimmed || '/';
 }
 
-function Link({ to, children, className }: { to: string; children: ReactNode; className?: string }) {
+function Link({ to, children, className, onNavigate }: { to: string; children: ReactNode; className?: string; onNavigate?: () => void }) {
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
+    onNavigate?.();
     navigateTo(to);
   };
 
@@ -1549,10 +1550,10 @@ function Header({ pathname, navItems, langToggle, onToggleLang }: { pathname: st
             }
           }}
         >
-          <ul>
+          <ul className={isMobileNavOpen ? 'navmenu-list-open' : undefined}>
             {navItems.map((item) => (
               <li key={item.to}>
-                <Link to={item.to} className={pathname === item.to ? 'active' : ''}>
+                <Link to={item.to} className={pathname === item.to ? 'active' : ''} onNavigate={() => setIsMobileNavOpen(false)}>
                   {item.label}
                 </Link>
               </li>
