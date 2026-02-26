@@ -31,15 +31,17 @@ const clientDistPath = path.resolve(currentDirPath, '../../client/dist');
 const hasClientDist = fs.existsSync(clientDistPath);
 const fallbackCvDir = path.resolve(currentDirPath, '../../client/public/cv');
 const distCvDir = path.join(clientDistPath, 'cv');
-const cvStoragePath = process.env.CV_STORAGE_PATH
-  ? path.resolve(process.env.CV_STORAGE_PATH)
-  : hasClientDist
-    ? distCvDir
-    : fallbackCvDir;
+const cvStoragePaths = [
+  process.env.CV_STORAGE_PATH ? path.resolve(process.env.CV_STORAGE_PATH) : null,
+  distCvDir,
+  fallbackCvDir,
+  path.resolve(process.cwd(), 'client/dist/cv'),
+  path.resolve(process.cwd(), 'client/public/cv')
+].filter((dirPath): dirPath is string => Boolean(dirPath));
 
 function getPdfFilesInDirectory(directoryPath: string) {
   if (!fs.existsSync(directoryPath)) {
-    return [] as Array<{ fileName: string; filePath: string; mtimeMs: number }>;
+    return [] as Array<{ fileName: string; filePath: string; mtimeMs: number; directoryPath: string }>;
   }
 
   const knownCvNamesWithoutExtension = new Set(['english-eh-cv', 'spanish-eh-cv']);
@@ -56,21 +58,33 @@ function getPdfFilesInDirectory(directoryPath: string) {
     .map((fileName) => {
       const filePath = path.join(directoryPath, fileName);
       const stats = fs.statSync(filePath);
-      return { fileName, filePath, mtimeMs: stats.mtimeMs };
+      return { fileName, filePath, mtimeMs: stats.mtimeMs, directoryPath };
     })
     .sort((a, b) => b.mtimeMs - a.mtimeMs);
 }
 
-function getLatestPdfInDirectory(directoryPath: string) {
-  const pdfFiles = getPdfFilesInDirectory(directoryPath);
+function getPdfFilesFromCandidates() {
+  const byPath = new Map<string, { fileName: string; filePath: string; mtimeMs: number; directoryPath: string }>();
+
+  cvStoragePaths.forEach((directoryPath) => {
+    getPdfFilesInDirectory(directoryPath).forEach((file) => {
+      byPath.set(file.filePath, file);
+    });
+  });
+
+  return Array.from(byPath.values()).sort((a, b) => b.mtimeMs - a.mtimeMs);
+}
+
+function getLatestPdfInDirectory() {
+  const pdfFiles = getPdfFilesFromCandidates();
   return pdfFiles[0] ?? null;
 }
 
-function getCvByLanguage(directoryPath: string, lang: 'en' | 'es') {
-  const pdfFiles = getPdfFilesInDirectory(directoryPath);
+function getCvByLanguage(lang: 'en' | 'es') {
+  const pdfFiles = getPdfFilesFromCandidates();
 
   const preferredNames = lang === 'en'
-    ? ['english-eh-cv.pdf']
+    ? ['english-eh-cv.pdf', 'english-eh-cv']
     : ['spanish-eh-cv.pdf', 'spanish-eh-cv'];
 
   const exactMatch = pdfFiles.find((file) => preferredNames.includes(file.fileName.toLowerCase()));
@@ -116,24 +130,24 @@ app.get('/api/cv/download', (req: any, res: any) => {
   const lang = String(req.query.lang ?? '').toLowerCase();
 
   if (lang === 'en' || lang === 'es') {
-    const languageCv = getCvByLanguage(cvStoragePath, lang);
+    const languageCv = getCvByLanguage(lang);
 
     if (!languageCv) {
       return res.status(404).json({
         error: 'CV PDF not found',
-        message: `Could not find ${lang.toUpperCase()} CV inside: ${cvStoragePath}`
+        message: `Could not find ${lang.toUpperCase()} CV in configured paths: ${cvStoragePaths.join(', ')}`
       });
     }
 
     return res.download(languageCv.filePath, getDownloadFileName(languageCv.fileName));
   }
 
-  const latestPdf = getLatestPdfInDirectory(cvStoragePath);
+  const latestPdf = getLatestPdfInDirectory();
 
   if (!latestPdf) {
     return res.status(404).json({
       error: 'CV PDF not found',
-      message: `Place a PDF file inside: ${cvStoragePath}`
+      message: `Place a CV file inside one of: ${cvStoragePaths.join(', ')}`
     });
   }
 
