@@ -6,7 +6,24 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-dotenv.config();
+const currentFilePath = fileURLToPath(import.meta.url);
+const currentDirPath = path.dirname(currentFilePath);
+
+const envCandidatePaths = [
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(currentDirPath, '../.env'),
+  path.resolve(currentDirPath, '../../.env')
+];
+
+const seenEnvPaths = new Set<string>();
+for (const envPath of envCandidatePaths) {
+  if (seenEnvPaths.has(envPath) || !fs.existsSync(envPath)) {
+    continue;
+  }
+
+  dotenv.config({ path: envPath, override: false });
+  seenEnvPaths.add(envPath);
+}
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
@@ -18,6 +35,14 @@ const requests = new Map<string, number[]>();
 
 const frontendUrl = process.env.FRONTEND_URL;
 
+function normalizeEnvValue(value: string | undefined) {
+  if (!value) return '';
+
+  const trimmed = value.trim();
+  const withoutWrappingQuotes = trimmed.replace(/^['"]|['"]$/g, '');
+  return withoutWrappingQuotes.trim();
+}
+
 function getPublicBaseUrl(req: any) {
   const forwardedProto = req.header('x-forwarded-proto')?.split(',')[0]?.trim();
   const proto = forwardedProto || req.protocol || 'https';
@@ -25,8 +50,6 @@ function getPublicBaseUrl(req: any) {
   return host ? `${proto}://${host}` : null;
 }
 
-const currentFilePath = fileURLToPath(import.meta.url);
-const currentDirPath = path.dirname(currentFilePath);
 const clientDistPath = path.resolve(currentDirPath, '../../client/dist');
 const hasClientDist = fs.existsSync(clientDistPath);
 const fallbackCvDir = path.resolve(currentDirPath, '../../client/public/cv');
@@ -169,38 +192,109 @@ app.post('/api/contact', async (req: any, res: any) => {
   const now = Date.now();
   const windowMs = 60_000;
   const maxPerWindow = 3;
-  const history = (requests.get(ip) ?? []).filter((ts) => now - ts < windowMs);
+
+  if (!name || !email || !subject || !message) {
+    return res.status(400).json({ error: 'MISSING_REQUIRED_FIELDS', message: 'Missing required fields' });
+  }
+
+  const normalizedEmail = String(email).trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(normalizedEmail)) {
+    return res.status(400).json({ error: 'INVALID_EMAIL_FORMAT', message: 'Invalid email format' });
+  }
+
+  const contactToEmail = normalizeEnvValue(process.env.CONTACT_TO_EMAIL);
+  const emailHost = normalizeEnvValue(process.env.EMAIL_HOST);
+  const emailPort = Number(normalizeEnvValue(process.env.EMAIL_PORT) || '587');
+  const emailUser = normalizeEnvValue(process.env.EMAIL_USER);
+  const emailPass = normalizeEnvValue(process.env.EMAIL_PASS).replace(/\s+/g, '');
+  const emailFrom = normalizeEnvValue(process.env.EMAIL_FROM) || `Portfolio <${emailUser}>`;
+  const emailSecure = normalizeEnvValue(process.env.EMAIL_SECURE).toLowerCase() === 'true' || emailPort === 465;
+  const emailTlsRejectUnauthorized = normalizeEnvValue(process.env.EMAIL_TLS_REJECT_UNAUTHORIZED).toLowerCase() !== 'false';
+
+  if (!contactToEmail || !emailHost || !emailUser || !emailPass || Number.isNaN(emailPort)) {
+    return res.status(503).json({
+      error: 'CONTACT_SERVICE_UNAVAILABLE',
+      message: 'Email configuration is incomplete. Set EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS and CONTACT_TO_EMAIL.'
+    });
+  }
+
+  const rateLimitKey = `${ip}:${normalizedEmail.toLowerCase()}`;
+  const history = (requests.get(rateLimitKey) ?? []).filter((ts) => now - ts < windowMs);
 
   if (history.length >= maxPerWindow) {
-    return res.status(429).json({ error: 'Too many requests' });
+    const retryAfterSeconds = Math.max(1, Math.ceil((history[0] + windowMs - now) / 1000));
+    res.setHeader('Retry-After', String(retryAfterSeconds));
+    return res.status(429).json({
+      error: 'TOO_MANY_REQUESTS',
+      message: `Too many requests. Try again in ${retryAfterSeconds}s`,
+      retryAfterSeconds
+    });
   }
 
   history.push(now);
-  requests.set(ip, history);
+  requests.set(rateLimitKey, history);
 
-  if (!name || !email || !subject || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
+  try {
+    const transporter = nodemailer.createTransport({
+      host: emailHost,
+      port: emailPort,
+      secure: emailSecure,
+      auth: {
+        user: emailUser,
+        pass: emailPass
+      },
+      tls: {
+        rejectUnauthorized: emailTlsRejectUnauthorized
+      }
+    });
 
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT ?? 587),
-    secure: Number(process.env.SMTP_PORT ?? 587) === 465,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
+    await transporter.sendMail({
+      from: emailFrom,
+      to: contactToEmail,
+      replyTo: normalizedEmail,
+      subject: `[Portfolio] ${String(subject).trim()}`,
+      text: `Name: ${String(name).trim()}
+Email: ${normalizedEmail}
+
+${String(message).trim()}`,
+      html: `
+        <p><strong>Name:</strong> ${String(name).trim()}</p>
+        <p><strong>Email:</strong> ${normalizedEmail}</p>
+        <p><strong>Subject:</strong> ${String(subject).trim()}</p>
+        <p><strong>Message:</strong></p>
+        <p>${String(message).trim().replace(/\n/g, '<br/>')}</p>
+      `
+    });
+
+    return res.json({ ok: true, provider: 'smtp' });
+  } catch (error: any) {
+    const errorCode = String(error?.code ?? 'UNKNOWN');
+    const errorResponseCode = typeof error?.responseCode === 'number' ? String(error.responseCode) : '';
+
+    console.error('Contact email failed (SMTP):', {
+      code: errorCode,
+      responseCode: errorResponseCode || undefined,
+      message: String(error?.message ?? 'Unknown email transport error')
+    });
+
+    const reason = [errorCode, errorResponseCode].filter(Boolean).join(':');
+
+    if (errorCode === 'EAUTH' || errorResponseCode === '535') {
+      return res.status(503).json({
+        error: 'CONTACT_SERVICE_UNAVAILABLE',
+        message: 'SMTP authentication failed. Check EMAIL_USER and EMAIL_PASS (App Password).',
+        reason: reason || 'EAUTH'
+      });
     }
-  });
 
-  await transporter.sendMail({
-    from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
-    to: process.env.CONTACT_TO_EMAIL,
-    replyTo: email,
-    subject: `[Portfolio] ${subject}`,
-    text: `Name: ${name}\nEmail: ${email}\n\n${message}`
-  });
-
-  return res.json({ ok: true });
+    return res.status(503).json({
+      error: 'CONTACT_SERVICE_UNAVAILABLE',
+      message: 'Email service is temporarily unavailable',
+      reason: reason || 'UNKNOWN'
+    });
+  }
 });
 
 if (hasClientDist) {
