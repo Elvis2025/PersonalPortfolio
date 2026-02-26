@@ -1064,6 +1064,13 @@ function AboutPage({ lang }: { lang: Lang }) {
 
 function ResumePage({ lang }: { lang: Lang }) {
   const data = resumeContent[lang];
+  const [showProgress, setShowProgress] = useState(false);
+
+  useEffect(() => {
+    setShowProgress(false);
+    const timer = window.setTimeout(() => setShowProgress(true), 220);
+    return () => window.clearTimeout(timer);
+  }, [lang]);
 
   return (
     <section id="resume" className="resume section">
@@ -1075,7 +1082,7 @@ function ResumePage({ lang }: { lang: Lang }) {
       <div className="container" data-aos="fade-up" data-aos-delay="120">
         <div className="row g-4">
           <div className="col-12 col-lg-7">
-            <div className="resume-item" data-aos="fade-right" data-aos-delay="150">
+            <div className="resume-item resume-card" data-aos="fade-right" data-aos-delay="150">
               <h3 className="resume-title"><i className="bi bi-person-badge" /> {data.profileTitle}</h3>
               <div className="resume-content">
                 <article>
@@ -1089,7 +1096,9 @@ function ResumePage({ lang }: { lang: Lang }) {
                     <li>
                       <i className="bi bi-linkedin" aria-hidden="true" />
                       <span className="contact-link-stack">
-                        <a href={data.linkedin.url} target="_blank" rel="noreferrer">{data.linkedin.label}</a>
+                        <a href={data.linkedin.url} target="_blank" rel="noreferrer">
+                          {data.linkedin.label}
+                        </a>
                         <small>{data.linkedin.displayUrl}</small>
                       </span>
                     </li>
@@ -1108,7 +1117,9 @@ function ResumePage({ lang }: { lang: Lang }) {
                     <li>
                       <i className="bi bi-github" aria-hidden="true" />
                       <span className="contact-link-stack">
-                        <a href={data.github.url} target="_blank" rel="noreferrer">{data.github.label}</a>
+                        <a href={data.github.url} target="_blank" rel="noreferrer">
+                          {data.github.label}
+                        </a>
                         <small>{data.github.displayUrl}</small>
                       </span>
                     </li>
@@ -1127,22 +1138,28 @@ function ResumePage({ lang }: { lang: Lang }) {
           </div>
 
           <div className="col-12 col-lg-5">
-            <div className="resume-item" data-aos="fade-left" data-aos-delay="180">
+            <div className="resume-item resume-card" data-aos="fade-left" data-aos-delay="180">
               <h3 className="resume-title"><i className="bi bi-stars" /> {data.skillsTitle}</h3>
-              <div className="resume-content">
-                <article>
-                  <ul>
-                    {data.highlightedSkills.map((skill) => (
-                      <li key={skill.name}><strong>{skill.name}</strong> — {skill.level}%</li>
-                    ))}
-                  </ul>
-                </article>
-              </div>
+              {data.highlightedSkills.map((skill) => (
+                <div key={skill.name} className="skill-item">
+                  <h4>{skill.name}</h4>
+                  <div className="progress">
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      aria-valuenow={skill.level}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      style={{ width: showProgress ? `${skill.level}%` : '0%' }}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="col-12">
-            <div className="resume-item" data-aos="fade-up" data-aos-delay="210">
+            <div className="resume-item resume-card" data-aos="fade-up" data-aos-delay="210">
               <h3 className="resume-title"><i className="bi bi-briefcase" /> {data.experienceTitle}</h3>
               <div className="resume-content">
                 {data.experience.map((job) => (
@@ -1162,7 +1179,7 @@ function ResumePage({ lang }: { lang: Lang }) {
           </div>
 
           <div className="col-12">
-            <div className="resume-item" data-aos="fade-up" data-aos-delay="250">
+            <div className="resume-item resume-card" data-aos="fade-up" data-aos-delay="250">
               <h3 className="resume-title"><i className="bi bi-mortarboard" /> {data.educationTitle}</h3>
               <div className="resume-content">
                 {data.education.map((item) => (
