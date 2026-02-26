@@ -143,13 +143,14 @@ h6 {
 # Global Header
 --------------------------------------------------------------*/
 .header {
-  --background-color: rgba(255, 255, 255, 0);
+  --background-color: rgba(15, 28, 35, 0.88);
   color: var(--default-color);
   background-color: var(--background-color);
+  backdrop-filter: blur(10px);
   padding: 15px 0;
-  transition: all 0.5s;
+  transition: background-color 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
   z-index: 997;
-  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
 }
 
 .header .logo {
@@ -205,7 +206,9 @@ h6 {
 /* Global Header on Scroll
 ------------------------------*/
 .scrolled .header {
-  --background-color: rgba(16, 26, 32, 0.9);
+  --background-color: rgba(10, 20, 26, 0.96);
+  box-shadow: 0 12px 28px rgba(3, 10, 14, 0.35);
+  border-bottom-color: color-mix(in srgb, var(--default-color), transparent 78%);
 }
 
 /*--------------------------------------------------------------
@@ -346,6 +349,9 @@ h6 {
 /* Mobile Navigation */
 @media (max-width: 1199px) {
   .mobile-nav-toggle {
+    appearance: none;
+    background: transparent;
+    border: 0;
     color: var(--nav-color);
     font-size: 28px;
     line-height: 0;
@@ -448,7 +454,7 @@ h6 {
 
   .mobile-nav-active .mobile-nav-toggle {
     color: #fff;
-    position: absolute;
+    position: fixed;
     font-size: 32px;
     top: 15px;
     right: 15px;

@@ -1477,6 +1477,12 @@ function navigateTo(path: string) {
   window.dispatchEvent(new PopStateEvent('popstate'));
 }
 
+function normalizePathname(pathname: string) {
+  const [pathOnly] = pathname.split(/[?#]/);
+  const trimmed = pathOnly.length > 1 ? pathOnly.replace(/\/+$/, '') : pathOnly;
+  return trimmed || '/';
+}
+
 function Link({ to, children, className }: { to: string; children: ReactNode; className?: string }) {
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -1508,10 +1514,41 @@ function triggerDualCvDownload(event: MouseEvent<HTMLAnchorElement>) {
 }
 
 function Header({ pathname, navItems, langToggle, onToggleLang }: { pathname: string; navItems: NavItem[]; langToggle: string; onToggleLang: () => void }) {
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
+  useEffect(() => {
+    const onEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileNavOpen(false);
+      }
+    };
+
+    document.body.classList.toggle('mobile-nav-active', isMobileNavOpen);
+    document.addEventListener('keydown', onEsc);
+
+    return () => {
+      document.body.classList.remove('mobile-nav-active');
+      document.removeEventListener('keydown', onEsc);
+    };
+  }, [isMobileNavOpen]);
+
+  useEffect(() => {
+    setIsMobileNavOpen(false);
+  }, [pathname]);
+
   return (
     <header id="header" className="header d-flex align-items-center light-background sticky-top">
       <div className="container position-relative d-flex align-items-center justify-content-between">
-        <nav id="navmenu" className="navmenu">
+        <nav
+          id="navmenu"
+          className="navmenu"
+          aria-label="Main navigation"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) {
+              setIsMobileNavOpen(false);
+            }
+          }}
+        >
           <ul>
             {navItems.map((item) => (
               <li key={item.to}>
@@ -1521,7 +1558,14 @@ function Header({ pathname, navItems, langToggle, onToggleLang }: { pathname: st
               </li>
             ))}
           </ul>
-          <i className="mobile-nav-toggle d-xl-none bi bi-list" />
+          <button
+            type="button"
+            className={`mobile-nav-toggle d-xl-none bi ${isMobileNavOpen ? 'bi-x' : 'bi-list'}`}
+            aria-label="Toggle navigation"
+            aria-controls="navmenu"
+            aria-expanded={isMobileNavOpen}
+            onClick={() => setIsMobileNavOpen((current) => !current)}
+          />
         </nav>
 
         <div className="header-social-links">
@@ -2419,8 +2463,9 @@ function Footer({ lang }: { lang: Lang }) {
 }
 
 function renderPage(pathname: string, lang: Lang) {
+  const normalizedPath = normalizePathname(pathname);
   const pages = copy[lang].pages;
-  switch (pathname) {
+  switch (normalizedPath) {
     case '/':
       return <HomePage lang={lang} />;
     case '/about':
@@ -2439,7 +2484,7 @@ function renderPage(pathname: string, lang: Lang) {
 }
 
 export function App() {
-  const [pathname, setPathname] = useState(window.location.pathname);
+  const [pathname, setPathname] = useState(normalizePathname(window.location.pathname));
   const [isBootLoading, setIsBootLoading] = useState(true);
   const [lang, setLang] = useState<Lang>('en');
   const [showFloatingDownload, setShowFloatingDownload] = useState(true);
@@ -2458,9 +2503,19 @@ export function App() {
   }, [lang]);
 
   useEffect(() => {
-    const onPopState = () => setPathname(window.location.pathname);
+    const onPopState = () => setPathname(normalizePathname(window.location.pathname));
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  useEffect(() => {
+    const onScrollState = () => {
+      document.body.classList.toggle('scrolled', window.scrollY > 8);
+    };
+
+    onScrollState();
+    window.addEventListener('scroll', onScrollState, { passive: true });
+    return () => window.removeEventListener('scroll', onScrollState);
   }, []);
 
   useEffect(() => {
