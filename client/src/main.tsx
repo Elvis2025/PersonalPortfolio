@@ -8,6 +8,5 @@ import { WhatsAppFloat } from './WhatsAppFloat';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
-    <WhatsAppFloat />
   </React.StrictMode>
 );
