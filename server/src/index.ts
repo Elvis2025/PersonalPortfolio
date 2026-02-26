@@ -1,17 +1,18 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import nodemailer from 'nodemailer';
+import type { Request, Response } from 'express-serve-static-core';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { Resend } from 'resend';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDirPath = path.dirname(currentFilePath);
 
-// ============================
-// Load env from possible paths
-// ============================
+// ==============================
+// Load .env safely from candidates
+// ==============================
 const envCandidatePaths = [
   path.resolve(process.cwd(), '.env'),
   path.resolve(currentDirPath, '../.env'),
@@ -25,83 +26,66 @@ for (const envPath of envCandidatePaths) {
   seenEnvPaths.add(envPath);
 }
 
-// ============================
+// ==============================
 // Helpers
-// ============================
+// ==============================
 function normalizeEnvValue(value: string | undefined) {
   if (!value) return '';
   const trimmed = value.trim();
-  const withoutWrappingQuotes = trimmed.replace(/^['"]|['"]$/g, '');
-  return withoutWrappingQuotes.trim();
+  return trimmed.replace(/^['"]|['"]$/g, '').trim();
 }
 
-function normalizeOrigin(origin: string) {
-  // Quita trailing slash
-  return origin.replace(/\/+$/, '');
+function toBool(value: string | undefined, defaultValue = false) {
+  const v = normalizeEnvValue(value).toLowerCase();
+  if (!v) return defaultValue;
+  return v === 'true' || v === '1' || v === 'yes';
 }
 
-function getPublicBaseUrl(req: any) {
-  const forwardedProto = req.header('x-forwarded-proto')?.split(',')[0]?.trim();
-  const proto = forwardedProto || req.protocol || 'https';
-
-  const host = req.header('x-forwarded-host') || req.get('host');
-  return host ? `${proto}://${host}` : null;
+function getAllowedOrigins() {
+  const raw = normalizeEnvValue(process.env.ALLOWED_ORIGINS);
+  if (!raw) return [];
+  return raw
+    .split(',')
+    .map((x) => x.trim())
+    .filter(Boolean);
 }
 
-// ============================
+// ==============================
 // App
-// ============================
+// ==============================
 const app = express();
-app.set('trust proxy', 1); // ✅ Railway / proxies
-
 const port = Number(process.env.PORT ?? 4000);
 
-// ============================
-// CORS (PRODUCTION-SAFE)
-// ============================
-// - Permite FRONTEND_URL (si existe)
-// - Permite localhost en dev
-// - Permite mismo origen (cuando FE y API son el mismo dominio)
-// - Permite Origin vacío (curl, SSR, healthchecks)
-const frontendUrl = normalizeEnvValue(process.env.FRONTEND_URL);
-const allowedOrigins = new Set<string>();
+app.set('trust proxy', 1);
+app.use(express.json());
 
-if (frontendUrl) allowedOrigins.add(normalizeOrigin(frontendUrl));
-allowedOrigins.add('http://localhost:5173');
-allowedOrigins.add('http://127.0.0.1:5173');
+// ==============================
+// CORS (prod + dev)
+// ==============================
+const allowedOrigins = getAllowedOrigins();
+// si no declaras ALLOWED_ORIGINS, en dev igual permitir localhost:5173
+const devFallbackOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173'];
+const effectiveOrigins = allowedOrigins.length ? allowedOrigins : devFallbackOrigins;
 
 app.use(
   cors({
-    origin(origin, callback) {
-      // Requests sin Origin (curl/healthcheck)
+    origin: (origin, callback) => {
+      // Requests sin origin (curl, server-to-server) -> permitir
       if (!origin) return callback(null, true);
 
-      const o = normalizeOrigin(origin);
-
-      // Permitidos explícitos
-      if (allowedOrigins.has(o)) return callback(null, true);
-
-      // Permitir mismo origen del server (cuando FE está servido por el mismo backend)
-      // Ej: origin=https://elvis-hernandez.up.railway.app
-      // y la request entra al mismo host
-      // Nota: aquí no tenemos req, pero si FE/API comparten dominio,
-      // casi siempre coincidirá con FRONTEND_URL (por eso debe estar correcto).
-      // Si no coincide, lo bloqueamos.
-      return callback(new Error('Not allowed by CORS'));
-    }
+      const isAllowed = effectiveOrigins.includes(origin);
+      if (!isAllowed) return callback(new Error('Not allowed by CORS'));
+      return callback(null, true);
+    },
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false
   })
 );
 
-app.use(express.json());
-
-// ============================
-// Simple rate-limit
-// ============================
-const requests = new Map<string, number[]>();
-
-// ============================
-// Static client (if exists)
-// ============================
+// ==============================
+// Static client (if dist exists)
+// ==============================
 const clientDistPath = path.resolve(currentDirPath, '../../client/dist');
 const hasClientDist = fs.existsSync(clientDistPath);
 
@@ -187,24 +171,24 @@ if (hasClientDist) {
   app.use(express.static(clientDistPath));
 }
 
-// ============================
-// Routes
-// ============================
-app.get('/', (req: any, res: any) => {
-  if (hasClientDist) return res.sendFile(path.join(clientDistPath, 'index.html'));
-
-  if (frontendUrl) return res.redirect(frontendUrl);
-
-  const publicBaseUrl = getPublicBaseUrl(req);
-  if (publicBaseUrl) return res.redirect(publicBaseUrl);
-
-  return res.status(200).send('portfolio-server running');
-});
-
-app.get('/health', (_req: any, res: any) => {
+// ==============================
+// Health
+// ==============================
+app.get('/health', (_req: Request, res: Response) => {
   return res.json({ ok: true, service: 'portfolio-server' });
 });
 
+// ==============================
+// Root
+// ==============================
+app.get('/', (_req: Request, res: Response) => {
+  if (hasClientDist) return res.sendFile(path.join(clientDistPath, 'index.html'));
+  return res.status(200).send('portfolio-server running');
+});
+
+// ==============================
+// CV Download
+// ==============================
 app.get('/api/cv/download', (req: any, res: any) => {
   const lang = String(req.query.lang ?? '').toLowerCase();
 
@@ -233,18 +217,50 @@ app.get('/api/cv/download', (req: any, res: any) => {
   return res.download(latestPdf.filePath, getDownloadFileName(latestPdf.fileName));
 });
 
-app.post('/api/contact', async (req: any, res: any) => {
-  const { name, email, subject, message, company } = req.body as Record<string, string>;
+// ==============================
+// Contact (Resend)
+// ==============================
+type ContactBody = {
+  name?: string;
+  email?: string;
+  subject?: string;
+  message?: string;
+  company?: string; // honeypot
+};
 
-  // Honeypot anti-bot
-  if (company) {
-    return res.status(200).json({ ok: true });
-  }
+const requests = new Map<string, number[]>();
 
+function rateLimit(req: any, email: string) {
   const ip = req.ip ?? 'unknown';
   const now = Date.now();
   const windowMs = 60_000;
   const maxPerWindow = 3;
+
+  const key = `${ip}:${email.toLowerCase()}`;
+  const history = (requests.get(key) ?? []).filter((ts) => now - ts < windowMs);
+
+  if (history.length >= maxPerWindow) {
+    const retryAfterSeconds = Math.max(1, Math.ceil((history[0] + windowMs - now) / 1000));
+    return { allowed: false, retryAfterSeconds };
+  }
+
+  history.push(now);
+  requests.set(key, history);
+  return { allowed: true, retryAfterSeconds: 0 };
+}
+
+const resendApiKey = normalizeEnvValue(process.env.RESEND_API_KEY);
+const resendFrom = normalizeEnvValue(process.env.RESEND_FROM);
+const contactToEmail = normalizeEnvValue(process.env.CONTACT_TO_EMAIL);
+
+const resendEnabled = Boolean(resendApiKey && resendFrom && contactToEmail);
+const resendClient = resendApiKey ? new Resend(resendApiKey) : null;
+
+app.post('/api/contact', async (req: any, res: any) => {
+  const { name, email, subject, message, company } = (req.body ?? {}) as ContactBody;
+
+  // Honeypot
+  if (company) return res.status(200).json({ ok: true });
 
   if (!name || !email || !subject || !message) {
     return res.status(400).json({ error: 'MISSING_REQUIRED_FIELDS', message: 'Missing required fields' });
@@ -252,113 +268,67 @@ app.post('/api/contact', async (req: any, res: any) => {
 
   const normalizedEmail = String(email).trim();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
   if (!emailRegex.test(normalizedEmail)) {
     return res.status(400).json({ error: 'INVALID_EMAIL_FORMAT', message: 'Invalid email format' });
   }
 
-  // Rate limit by ip+email
-  const rateLimitKey = `${ip}:${normalizedEmail.toLowerCase()}`;
-  const history = (requests.get(rateLimitKey) ?? []).filter((ts) => now - ts < windowMs);
-
-  if (history.length >= maxPerWindow) {
-    const retryAfterSeconds = Math.max(1, Math.ceil((history[0] + windowMs - now) / 1000));
-    res.setHeader('Retry-After', String(retryAfterSeconds));
+  const rl = rateLimit(req, normalizedEmail);
+  if (!rl.allowed) {
+    res.setHeader('Retry-After', String(rl.retryAfterSeconds));
     return res.status(429).json({
       error: 'TOO_MANY_REQUESTS',
-      message: `Too many requests. Try again in ${retryAfterSeconds}s`,
-      retryAfterSeconds
+      message: `Too many requests. Try again in ${rl.retryAfterSeconds}s`,
+      retryAfterSeconds: rl.retryAfterSeconds
     });
   }
 
-  history.push(now);
-  requests.set(rateLimitKey, history);
-
-  // SMTP config
-  const contactToEmail = normalizeEnvValue(process.env.CONTACT_TO_EMAIL);
-  const emailHost = normalizeEnvValue(process.env.EMAIL_HOST);
-  const emailPort = Number(normalizeEnvValue(process.env.EMAIL_PORT) || '587');
-  const emailUser = normalizeEnvValue(process.env.EMAIL_USER);
-  const emailPass = normalizeEnvValue(process.env.EMAIL_PASS).replace(/\s+/g, '');
-  const emailFrom = normalizeEnvValue(process.env.EMAIL_FROM) || `Portfolio <${emailUser}>`;
-
-  const emailSecure =
-    normalizeEnvValue(process.env.EMAIL_SECURE).toLowerCase() === 'true' || emailPort === 465;
-
-  // ✅ Fix para "self-signed certificate in certificate chain"
-  // Si EMAIL_TLS_REJECT_UNAUTHORIZED=false => no valida la cadena (menos estricto).
-  const emailTlsRejectUnauthorized =
-    normalizeEnvValue(process.env.EMAIL_TLS_REJECT_UNAUTHORIZED).toLowerCase() !== 'false';
-
-  if (!contactToEmail || !emailHost || !emailUser || !emailPass || Number.isNaN(emailPort)) {
+  if (!resendEnabled || !resendClient) {
     return res.status(503).json({
       error: 'CONTACT_SERVICE_UNAVAILABLE',
-      message: 'Email configuration is incomplete. Set EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS and CONTACT_TO_EMAIL.'
+      message: 'Email service is not configured. Set RESEND_API_KEY, RESEND_FROM and CONTACT_TO_EMAIL.'
     });
   }
 
+  const safeName = String(name).trim();
+  const safeSubject = String(subject).trim();
+  const safeMessage = String(message).trim();
+
   try {
-    const transporter = nodemailer.createTransport({
-      host: emailHost,
-      port: emailPort,
-      secure: emailSecure,
-      auth: {
-        user: emailUser,
-        pass: emailPass
-      },
-      tls: {
-        rejectUnauthorized: emailTlsRejectUnauthorized
-      }
-    });
-
-    await transporter.sendMail({
-      from: emailFrom,
-      to: contactToEmail,
+    const result = await resendClient.emails.send({
+      from: resendFrom, // Ej: "Elvis Portfolio <onboarding@resend.dev>"
+      to: contactToEmail, // tu correo donde recibes
       replyTo: normalizedEmail,
-      subject: `[Portfolio] ${String(subject).trim()}`,
-      text: `Name: ${String(name).trim()}
-Email: ${normalizedEmail}
-
-${String(message).trim()}`,
+      subject: `[Portfolio] ${safeSubject}`,
       html: `
-        <p><strong>Name:</strong> ${String(name).trim()}</p>
-        <p><strong>Email:</strong> ${normalizedEmail}</p>
-        <p><strong>Subject:</strong> ${String(subject).trim()}</p>
-        <p><strong>Message:</strong></p>
-        <p>${String(message).trim().replace(/\n/g, '<br/>')}</p>
+        <div style="font-family:Arial, sans-serif; line-height:1.5">
+          <h2 style="margin:0 0 12px">Nuevo mensaje desde tu Portfolio</h2>
+          <p><strong>Nombre:</strong> ${safeName}</p>
+          <p><strong>Email:</strong> ${normalizedEmail}</p>
+          <p><strong>Asunto:</strong> ${safeSubject}</p>
+          <hr style="margin:16px 0"/>
+          <p style="white-space:pre-wrap">${safeMessage.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+        </div>
       `
     });
 
-    return res.json({ ok: true, provider: 'smtp' });
+    return res.json({ ok: true, provider: 'resend', id: (result as any)?.data?.id ?? null });
   } catch (error: any) {
-    const errorCode = String(error?.code ?? 'UNKNOWN');
-    const errorResponseCode = typeof error?.responseCode === 'number' ? String(error.responseCode) : '';
+    const msg = String(error?.message ?? 'Unknown Resend error');
+    const code = String(error?.code ?? 'UNKNOWN');
 
-    console.error('Contact email failed (SMTP):', {
-      code: errorCode,
-      responseCode: errorResponseCode || undefined,
-      message: String(error?.message ?? 'Unknown email transport error')
-    });
-
-    const reason = [errorCode, errorResponseCode].filter(Boolean).join(':');
-
-    if (errorCode === 'EAUTH' || errorResponseCode === '535') {
-      return res.status(503).json({
-        error: 'CONTACT_SERVICE_UNAVAILABLE',
-        message: 'SMTP authentication failed. Check EMAIL_USER and EMAIL_PASS (App Password).',
-        reason: reason || 'EAUTH'
-      });
-    }
+    console.error('Contact email failed (Resend):', { code, message: msg });
 
     return res.status(503).json({
       error: 'CONTACT_SERVICE_UNAVAILABLE',
       message: 'Email service is temporarily unavailable',
-      reason: reason || 'UNKNOWN'
+      reason: code
     });
   }
 });
 
-// SPA fallback
+// ==============================
+// SPA fallback (only when dist exists)
+// ==============================
 if (hasClientDist) {
   app.get('*', (req: any, res: any, next: any) => {
     if (req.path.startsWith('/api') || req.path === '/health') return next();
@@ -366,6 +336,11 @@ if (hasClientDist) {
   });
 }
 
+// ==============================
+// Start
+// ==============================
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+  console.log(`CORS allowed origins: ${effectiveOrigins.join(', ') || '(none)'}`);
+  console.log(`Resend configured: ${resendEnabled ? 'YES' : 'NO'}`);
 });
