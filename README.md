@@ -47,6 +47,20 @@ npm run dev
 
 ## Proveedor de correo (SMTP / Nodemailer)
 
+## `.env` listo para Gmail (copiar/pegar)
+
+```bash
+PORT=4000
+CONTACT_TO_EMAIL=inelvis16031124@gmail.com
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=tu_correo@gmail.com
+EMAIL_PASS=tu_app_password_de_16_caracteres
+EMAIL_FROM="Portfolio <tu_correo@gmail.com>"
+EMAIL_SECURE=false
+FRONTEND_URL=http://localhost:5173
+```
+
 El backend usa Nodemailer con SMTP para enviar emails del formulario.
 
 Variables requeridas:
