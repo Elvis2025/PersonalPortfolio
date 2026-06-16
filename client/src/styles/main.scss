@@ -305,7 +305,7 @@ h6 {
 
   .navmenu {
     padding: 0;
-    z-index: 9997;
+    z-index: 10000;
   }
 
   .navmenu ul {
@@ -349,11 +349,11 @@ h6 {
   }
 
   /* Open state from body class (template behavior) */
-  .mobile-nav-active {
+  body.mobile-nav-active {
     overflow: hidden;
   }
 
-  .mobile-nav-active .mobile-nav-toggle {
+  body.mobile-nav-active .mobile-nav-toggle {
     color: #fff;
     position: fixed;
     font-size: 32px;
@@ -363,7 +363,7 @@ h6 {
     z-index: 10001;
   }
 
-  .mobile-nav-active .navmenu {
+  body.mobile-nav-active .navmenu {
     position: fixed;
     overflow: hidden;
     inset: 0;
@@ -371,7 +371,7 @@ h6 {
     transition: 0.3s;
   }
 
-  .mobile-nav-active .navmenu>ul {
+  body.mobile-nav-active .navmenu>ul {
     display: block;
   }
 
@@ -394,15 +394,16 @@ h6 {
   .navmenu ul.navmenu-list-open {
     display: block !important;
     position: fixed;
-    top: 76px;
-    right: 20px;
-    left: 20px;
+    top: calc(76px + env(safe-area-inset-top, 0px));
+    right: max(20px, env(safe-area-inset-right, 0px));
+    left: max(20px, env(safe-area-inset-left, 0px));
     bottom: auto;
     height: auto;
     min-height: 280px;
-    max-height: calc(100vh - 110px);
+    max-height: calc(100vh - 110px - env(safe-area-inset-top, 0px));
+    max-height: calc(100dvh - 110px - env(safe-area-inset-top, 0px));
     overflow-y: auto;
-    z-index: 100000;
+    z-index: 10002;
     background-color: var(--nav-mobile-background-color);
     border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
     border-radius: 10px;
