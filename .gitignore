@@ -1,13 +1,13 @@
 # Dependencies
 node_modules/
-client/node_modules/
-server/node_modules/
+front-end/node_modules/
+back-end/node_modules/
 
 # Build outputs
 dist/
 build/
-client/dist/
-server/dist/
+front-end/dist/
+back-end/dist/
 
 # Logs / temporary noise
 *.log
@@ -25,10 +25,10 @@ Thumbs.db
 .env
 .env.*
 !.env.example
-client/.env
-client/.env.*
-server/.env
-server/.env.*
+front-end/.env
+front-end/.env.*
+back-end/.env
+back-end/.env.*
 
 # Tooling
 .vscode/
@@ -41,5 +41,5 @@ coverage/
 .nyc_output/
 
 # Vite / TypeScript caches
-client/.vite/
+front-end/.vite/
 *.tsbuildinfo

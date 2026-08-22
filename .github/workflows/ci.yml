@@ -22,20 +22,20 @@ jobs:
           cache: npm
           cache-dependency-path: |
             package-lock.json
-            client/package-lock.json
-            server/package-lock.json
+            front-end/package-lock.json
+            back-end/package-lock.json
 
       - name: Install root dependencies
         run: npm ci
 
-      - name: Install client dependencies
-        run: npm ci --prefix client
+      - name: Install front-end dependencies
+        run: npm ci --prefix front-end
 
-      - name: Install server dependencies
-        run: npm ci --prefix server
+      - name: Install back-end dependencies
+        run: npm ci --prefix back-end
 
-      - name: Build client
-        run: npm run build --prefix client
+      - name: Build front-end
+        run: npm run build --prefix front-end
 
-      - name: Build server
-        run: npm run build --prefix server
+      - name: Build back-end
+        run: npm run build --prefix back-end

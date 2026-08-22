@@ -2,8 +2,27 @@
 
 Este proyecto migró de HTML/CSS/JS + PHP a un monorepo con:
 
-- `client/`: React + TypeScript + SCSS
-- `server/`: Node.js + Express + TypeScript + Nodemailer
+- `front-end/`: React + TypeScript + SCSS
+- `back-end/`: Node.js + Express + TypeScript + Resend
+
+## Arquitectura
+
+El frontend está organizado por funcionalidades y responsabilidades:
+
+- `front-end/src/app`: composición y ciclo de vida global.
+- `front-end/src/domain`: modelos y contratos.
+- `front-end/src/content`: traducciones y catálogos.
+- `front-end/src/features`: vistas aisladas por funcionalidad.
+- `front-end/src/shared`: componentes, layout y navegación reutilizables.
+
+El backend sigue una arquitectura limpia:
+
+- `back-end/src/domain`: reglas y validaciones del negocio.
+- `back-end/src/application`: casos de uso y puertos.
+- `back-end/src/infrastructure`: adaptadores de Resend y archivos.
+- `back-end/src/presentation`: rutas HTTP.
+- `back-end/src/config`: configuración del entorno.
+- `back-end/src/app.ts`: composición de Express.
 
 ## Requisitos
 
@@ -13,14 +32,14 @@ Este proyecto migró de HTML/CSS/JS + PHP a un monorepo con:
 
 ```bash
 npm install
-npm install --prefix client
-npm install --prefix server
+npm install --prefix front-end
+npm install --prefix back-end
 ```
 
 ## Variables de entorno
 
 1. Copia `.env.example` a `.env`.
-2. Completa credenciales SMTP reales (Gmail u otro proveedor).
+2. Completa las credenciales de Resend y el correo destinatario.
 
 ```bash
 cp .env.example .env
@@ -38,67 +57,46 @@ npm run dev
 
 ## Probar formulario de contacto
 
-1. Levanta client y server con `npm run dev`.
+1. Levanta front-end y back-end con `npm run dev`.
 2. Abre la web, completa Nombre/Email/Asunto/Mensaje.
 3. Envía y valida estado loading/success/error.
 4. Verifica llegada del correo a `inelvis16031124@gmail.com`.
 
 
 
-## Proveedor de correo (SMTP / Nodemailer)
+## Proveedor de correo (Resend)
 
-## `.env` listo para Gmail (copiar/pegar)
+## `.env` de ejemplo
 
 ```bash
 PORT=4000
 CONTACT_TO_EMAIL=inelvis16031124@gmail.com
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=tu_correo@gmail.com
-EMAIL_PASS=tu_app_password_de_16_caracteres
-EMAIL_FROM="Portfolio <tu_correo@gmail.com>"
-EMAIL_SECURE=false
-FRONTEND_URL=http://localhost:5173
+RESEND_API_KEY=re_tu_api_key
+RESEND_FROM="Portfolio <contacto@tu-dominio-verificado.com>"
+ALLOWED_ORIGINS=http://localhost:5173
 ```
 
-El backend usa Nodemailer con SMTP para enviar emails del formulario.
+El adaptador de infraestructura usa Resend para entregar los mensajes del formulario.
 
 Variables requeridas:
 
-- `EMAIL_HOST`
-- `EMAIL_PORT`
-- `EMAIL_USER`
-- `EMAIL_PASS`
+- `RESEND_API_KEY`
+- `RESEND_FROM`
 - `CONTACT_TO_EMAIL`
 
 Variables opcionales:
 
-- `EMAIL_FROM` (default: `Portfolio <EMAIL_USER>`)
-- `EMAIL_SECURE` (`true`/`false`, por defecto `true` si el puerto es `465`)
-- `EMAIL_TLS_REJECT_UNAUTHORIZED` (`true`/`false`, default `true`)
+- `ALLOWED_ORIGINS`: orígenes permitidos separados por comas.
+- `CV_STORAGE_PATH`: ubicación externa de los currículums.
 
-Ejemplo:
-
-```bash
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=tu_correo@gmail.com
-EMAIL_PASS=tu_app_password
-EMAIL_FROM="Portfolio <tu_correo@gmail.com>"
-EMAIL_SECURE=false
-EMAIL_TLS_REJECT_UNAUTHORIZED=true
-CONTACT_TO_EMAIL=tu_correo@dominio.com
-```
-
-## Troubleshooting de envío de correo (SMTP)
+## Troubleshooting de envío de correo
 
 Si el formulario devuelve `503` o falla el envío:
 
 1. Verifica que `.env` exista en la raíz del proyecto y que cada variable esté en una línea real (no uses `\n` literal dentro del archivo).
-2. Verifica `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS` y `CONTACT_TO_EMAIL` en `.env`.
-3. En Gmail, usa 2FA + App Password (no contraseña normal).
-4. Si el log dice `self-signed certificate in certificate chain`, prueba temporalmente `EMAIL_TLS_REJECT_UNAUTHORIZED=false` (solo para entornos controlados).
-5. Revisa la respuesta JSON de `POST /api/contact` y el campo `reason` para diagnosticar (`EAUTH`, `535`, `ESOCKET`, etc.).
+2. Verifica `RESEND_API_KEY`, `RESEND_FROM` y `CONTACT_TO_EMAIL`.
+3. Confirma que el dominio de `RESEND_FROM` esté verificado en Resend.
+4. Revisa la respuesta JSON de `POST /api/contact` y los logs del servidor.
 
 ## Retiro de PHP
 
