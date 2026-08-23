@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Lang } from '../../domain/portfolio.types';
 import { resumeContent } from '../../content/portfolio.content';
-import { Link, triggerDualCvDownload } from '../../shared/navigation/navigation';
+import { downloadCv, Link } from '../../shared/navigation/navigation';
 
 export function ResumePage({ lang }: { lang: Lang }) {
   const data = resumeContent[lang];
@@ -71,7 +71,7 @@ export function ResumePage({ lang }: { lang: Lang }) {
                 <Link to="/contact" className="btn btn-ghost">
                   <i className="bi bi-chat-dots" /> {data.contactCta} <i className="bi bi-arrow-up-right" />
                 </Link>
-                <a className="link-underline cv-download-trigger" href="/api/cv/download" onClick={triggerDualCvDownload}>
+                <a className="link-underline cv-download-trigger" href={`/api/cv/download?lang=${lang}`} onClick={(event) => downloadCv(event, lang)}>
                   {data.downloadCta} <i className="bi bi-download" />
                 </a>
               </div>

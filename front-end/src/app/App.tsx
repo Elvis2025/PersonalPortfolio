@@ -10,7 +10,7 @@ import { ServicesPage } from '../features/services/ServicesPage';
 import { Footer } from '../shared/layout/Footer';
 import { Header } from '../shared/layout/Header';
 import { WhatsAppFloat } from '../shared/components/WhatsAppFloat';
-import { normalizePathname, triggerDualCvDownload } from '../shared/navigation/navigation';
+import { downloadCv, normalizePathname } from '../shared/navigation/navigation';
 
 function renderPage(pathname: string, lang: Lang) {
   const normalizedPath = normalizePathname(pathname);
@@ -185,8 +185,8 @@ export function App() {
         ) : null}
         {showFloatingDownload ? (
           <a
-            href="/api/cv/download"
-            onClick={triggerDualCvDownload}
+            href={`/api/cv/download?lang=${lang}`}
+            onClick={(event) => downloadCv(event, lang)}
             className="floating-cv-download fab fab--cv active"
             aria-label="Download CV"
             title="Download CV"

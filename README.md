@@ -62,6 +62,16 @@ npm run dev
 3. Envía y valida estado loading/success/error.
 4. Verifica llegada del correo a `inelvis16031124@gmail.com`.
 
+## Descarga y notificación del CV
+
+- La aplicación descarga el PDF en inglés o español según el idioma activo.
+- Después de una descarga completada, Resend envía una notificación a `CONTACT_TO_EMAIL`.
+- La notificación incluye navegador, país y provincia/región aproximados.
+- La ubicación se obtiene a partir de la IP pública mediante `ipapi.co`; en desarrollo local o si el servicio no responde se informa como desconocida.
+- La descarga nunca se bloquea por un fallo de geolocalización o de notificación.
+
+Como esta función procesa información técnica y ubicación aproximada del visitante, debe explicarse en la política de privacidad del sitio antes de utilizarla en producción.
+
 
 
 ## Proveedor de correo (Resend)

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Lang } from '../../domain/portfolio.types';
 import { copy, rolesByLang } from '../../content/portfolio.content';
-import { Link, triggerDualCvDownload } from '../../shared/navigation/navigation';
+import { downloadCv, Link } from '../../shared/navigation/navigation';
 
 export function HomePage({ lang }: { lang: Lang }) {
   const roles = rolesByLang[lang];
@@ -71,7 +71,7 @@ export function HomePage({ lang }: { lang: Lang }) {
                 <Link to="/contact" className="btn btn-ghost">
                   <i className="bi bi-chat-dots" /> {text.ctaContact} <i className="bi bi-arrow-up-right" />
                 </Link>
-                <a href="/api/cv/download" onClick={triggerDualCvDownload} className="link-underline cv-download-trigger">
+                <a href={`/api/cv/download?lang=${lang}`} onClick={(event) => downloadCv(event, lang)} className="link-underline cv-download-trigger">
                   {text.ctaDownloadCv} <i className="bi bi-download" />
                 </a>
               </div>

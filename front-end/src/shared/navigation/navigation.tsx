@@ -25,19 +25,7 @@ export function Link({ to, children, className, onNavigate }: { to: string; chil
   );
 }
 
-export function triggerDualCvDownload(event: MouseEvent<HTMLAnchorElement>) {
+export function downloadCv(event: MouseEvent<HTMLAnchorElement>, lang: 'en' | 'es') {
   event.preventDefault();
-
-  const downloadUrls = ['/api/cv/download?lang=en', '/api/cv/download?lang=es'];
-
-  downloadUrls.forEach((url, index) => {
-    window.setTimeout(() => {
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.style.display = 'none';
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-    }, index * 180);
-  });
+  window.location.assign(`/api/cv/download?lang=${lang}`);
 }
