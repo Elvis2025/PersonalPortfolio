@@ -76,17 +76,17 @@ export function HomePage({ lang }: { lang: Lang }) {
                 </a>
               </div>
               <div className="social-links" data-aos="fade-up" data-aos-delay="600">
-                <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
-                  <i className="bi bi-twitter" />
+                <a href="https://x.com/elvish24" target="_blank" rel="noreferrer" aria-label="X">
+                  <i className="bi bi-twitter-x" />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                <a href="https://linkedin.com/in/elvis-hernandez-075496285" target="_blank" rel="noreferrer" aria-label="LinkedIn">
                   <i className="bi bi-linkedin" />
                 </a>
-                <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub">
+                <a href="https://github.com/Elvis2025" target="_blank" rel="noreferrer" aria-label="GitHub">
                   <i className="bi bi-github" />
                 </a>
-                <a href="https://dribbble.com" target="_blank" rel="noreferrer" aria-label="Dribbble">
-                  <i className="bi bi-dribbble" />
+                <a href="https://www.instagram.com/elvis_h24/" target="_blank" rel="noreferrer" aria-label="Instagram">
+                  <i className="bi bi-instagram" />
                 </a>
               </div>
             </div>
@@ -95,7 +95,7 @@ export function HomePage({ lang }: { lang: Lang }) {
           <div className="col-lg-6 order-1 order-lg-2">
             <div className="hero-image" data-aos="zoom-in" data-aos-delay="300">
               <div className="image-wrapper">
-                <img src="/img/profile/EH-IMG.webp" alt="Elvis Hernandez" className="img-fluid" />
+                <img src="/img/profile/elvis-hernandez.webp" alt="Elvis Hernandez" className="img-fluid" width="2272" height="1856" fetchPriority="high" />
                 <div className="floating-elements">
                   <div className="floating-card design" data-aos="fade-left" data-aos-delay="700">
                     <i className="bi bi-palette" />

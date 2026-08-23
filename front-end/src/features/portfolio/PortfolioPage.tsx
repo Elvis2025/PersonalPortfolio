@@ -44,15 +44,18 @@ export function PortfolioPage({ lang }: { lang: Lang }) {
       <div className="container" data-aos="fade-up" data-aos-delay="100">
         <ul className="portfolio-filters" data-aos="fade-up" data-aos-delay="200">
           {categoryOrder.map((category) => (
-            <li
-              key={category}
-              className={activeCategory === category ? 'filter-active' : ''}
-              onClick={() => {
-                setActiveCategory(category);
-                setActiveProjectIndex(null);
-              }}
-            >
-              {data.categories[category]}
+            <li key={category}>
+              <button
+                type="button"
+                className={activeCategory === category ? 'filter-active' : ''}
+                aria-pressed={activeCategory === category}
+                onClick={() => {
+                  setActiveCategory(category);
+                  setActiveProjectIndex(null);
+                }}
+              >
+                {data.categories[category]}
+              </button>
             </li>
           ))}
         </ul>

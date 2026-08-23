@@ -122,10 +122,12 @@ export function SkillsSection({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <ul className="skills-filters" data-aos="fade-up" data-aos-delay="180">
+      <ul className="skills-filters" data-aos="fade-up" data-aos-delay="180" aria-label={sectionText.title}>
         {filterOrder.map((filter) => (
-          <li key={filter} className={activeFilter === filter ? 'filter-active' : ''} onClick={() => setActiveFilter(filter)}>
-            {sectionText.filters[filter]}
+          <li key={filter}>
+            <button type="button" className={activeFilter === filter ? 'filter-active' : ''} aria-pressed={activeFilter === filter} onClick={() => setActiveFilter(filter)}>
+              {sectionText.filters[filter]}
+            </button>
           </li>
         ))}
       </ul>

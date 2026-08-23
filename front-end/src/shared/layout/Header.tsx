@@ -61,13 +61,13 @@ export function Header({ pathname, navItems, langToggle, onToggleLang }: { pathn
           <button type="button" className="lang-toggle" onClick={onToggleLang} aria-label="Change language">
             {langToggle}
           </button>
-          <a href="https://x.com" target="_blank" rel="noreferrer" className="twitter" aria-label="X">
+          <a href="https://x.com/elvish24" target="_blank" rel="noreferrer" className="twitter" aria-label="X">
             <i className="bi bi-twitter-x" />
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="linkedin" aria-label="LinkedIn">
+          <a href="https://linkedin.com/in/elvis-hernandez-075496285" target="_blank" rel="noreferrer" className="linkedin" aria-label="LinkedIn">
             <i className="bi bi-linkedin" />
           </a>
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="github" aria-label="GitHub">
+          <a href="https://github.com/Elvis2025" target="_blank" rel="noreferrer" className="github" aria-label="GitHub">
             <i className="bi bi-github" />
           </a>
         </div>

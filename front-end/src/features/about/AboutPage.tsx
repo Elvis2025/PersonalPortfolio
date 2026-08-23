@@ -1,6 +1,6 @@
 import type { Lang } from '../../domain/portfolio.types';
 import { copy } from '../../content/portfolio.content';
-import { Link } from '../../shared/navigation/navigation';
+import { downloadCv, Link } from '../../shared/navigation/navigation';
 import { SkillsSection } from './SkillsSection';
 
 export function AboutPage({ lang }: { lang: Lang }) {
@@ -27,7 +27,7 @@ export function AboutPage({ lang }: { lang: Lang }) {
                   <Link to="/portfolio" className="btn-ghost">
                     {about.ctaWork} <i className="bi bi-arrow-up-right" />
                   </Link>
-                  <a href="#" className="link-underline">
+                  <a href={`/api/cv/download?lang=${lang}`} onClick={(event) => downloadCv(event, lang)} className="link-underline cv-download-trigger">
                     {about.ctaResume} <i className="bi bi-download" />
                   </a>
                 </div>
@@ -36,7 +36,7 @@ export function AboutPage({ lang }: { lang: Lang }) {
 
             <div className="col-lg-5" data-aos="zoom-in" data-aos-delay="250">
               <figure className="profile-figure text-center text-lg-end">
-                <img src="/img/profile/EH-IMG.webp" alt="Elvis Hernandez" className="img-fluid profile-photo" />
+                <img src="/img/profile/elvis-hernandez.webp" alt="Elvis Hernandez" className="img-fluid profile-photo" width="2272" height="1856" loading="lazy" />
               </figure>
             </div>
           </div>

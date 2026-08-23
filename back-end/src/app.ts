@@ -6,7 +6,7 @@ export function createApp() {
   const origins = environment.origins.length ? environment.origins : ['http://localhost:5173', 'http://127.0.0.1:5173'];
   const cvs = new CvRepository([...(environment.cvPath ? [path.resolve(environment.cvPath)] : []), path.join(dist, 'cv'), path.join(projectRoot, 'front-end/public/cv')]);
   const gateway = new ResendGateway(environment.resend.apiKey, environment.resend.from, environment.resend.to);
-  const profileImageUrl = environment.brevo.profileImageUrl || `${origins[0].replace(/\/$/, '')}/img/profile/EH-IMG.webp`;
+  const profileImageUrl = environment.brevo.profileImageUrl || `${origins[0].replace(/\/$/, '')}/img/profile/elvis-hernandez.webp`;
   const autoReplySender = new BrevoAutoReplySender(
     environment.brevo.apiKey,
     environment.brevo.senderEmail,

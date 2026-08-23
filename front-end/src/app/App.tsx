@@ -10,6 +10,7 @@ import { ServicesPage } from '../features/services/ServicesPage';
 import { Footer } from '../shared/layout/Footer';
 import { Header } from '../shared/layout/Header';
 import { WhatsAppFloat } from '../shared/components/WhatsAppFloat';
+import { ExperienceLayer } from '../shared/components/ExperienceLayer';
 import { downloadCv, normalizePathname } from '../shared/navigation/navigation';
 
 function renderPage(pathname: string, lang: Lang) {
@@ -53,9 +54,21 @@ export function App() {
 
   useEffect(() => {
     const onPopState = () => setPathname(normalizePathname(window.location.pathname));
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = 'manual';
+    if (normalizePathname(window.location.pathname) === '/') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
     window.addEventListener('popstate', onPopState);
-    return () => window.removeEventListener('popstate', onPopState);
+    return () => {
+      window.history.scrollRestoration = previousScrollRestoration;
+      window.removeEventListener('popstate', onPopState);
+    };
   }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [pathname]);
 
   useEffect(() => {
     const onScrollState = () => {
@@ -68,7 +81,7 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsBootLoading(false), 2000);
+    const timer = window.setTimeout(() => setIsBootLoading(false), 650);
     return () => window.clearTimeout(timer);
   }, []);
 
@@ -152,6 +165,7 @@ export function App() {
 
   return (
     <>
+      <ExperienceLayer />
       <div id="preloader" className={isBootLoading ? 'preloader-visible' : 'preloader-hidden'} aria-hidden="true" />
       <Header
         pathname={pathname}
@@ -159,7 +173,9 @@ export function App() {
         langToggle={copy[lang].langToggle}
         onToggleLang={() => setLang((current) => (current === 'en' ? 'es' : 'en'))}
       />
-      <main className="main">{renderPage(pathname, lang)}</main>
+      <main className="main">
+        <div className="page-transition" key={`${pathname}-${lang}`}>{renderPage(pathname, lang)}</div>
+      </main>
       <div className="fab-stack" aria-label="Global quick actions">
         {showScrollTopFab ? (
           <button

@@ -89,7 +89,7 @@ RESEND_API_KEY=re_tu_api_key
 RESEND_FROM="Portfolio <contacto@tu-dominio-verificado.com>"
 BREVO_API_KEY=xkeysib_tu_api_key
 BREVO_SENDER_EMAIL=inelvis16031124@gmail.com
-PROFILE_IMAGE_URL=https://tu-portafolio.com/img/profile/EH-IMG.webp
+PROFILE_IMAGE_URL=https://tu-portafolio.com/img/profile/elvis-hernandez.webp
 ALLOWED_ORIGINS=http://localhost:5173
 ```
 

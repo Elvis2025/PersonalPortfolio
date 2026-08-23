@@ -2,6 +2,7 @@ import type { MouseEvent, ReactNode } from 'react';
 
 export function navigateTo(path: string) {
   window.history.pushState({}, '', path);
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   window.dispatchEvent(new PopStateEvent('popstate'));
 }
 
