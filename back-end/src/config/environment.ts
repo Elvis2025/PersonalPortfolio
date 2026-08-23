@@ -16,6 +16,12 @@ export const environment = {
   brevo: {
     apiKey: clean(process.env.BREVO_API_KEY),
     senderEmail: clean(process.env.BREVO_SENDER_EMAIL),
-    profileImageUrl: clean(process.env.PROFILE_IMAGE_URL)
+    profileImageUrl: clean(process.env.PROFILE_IMAGE_URL),
+    socialLinks: {
+      telegram: clean(process.env.SOCIAL_TELEGRAM_URL),
+      threads: clean(process.env.SOCIAL_THREADS_URL),
+      instagram: clean(process.env.SOCIAL_INSTAGRAM_URL),
+      x: clean(process.env.SOCIAL_X_URL)
+    }
   }
 };

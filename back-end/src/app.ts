@@ -11,6 +11,7 @@ export function createApp() {
     environment.brevo.apiKey,
     environment.brevo.senderEmail,
     profileImageUrl,
+    environment.brevo.socialLinks,
     (language) => cvs.find(language)
   );
   const trackCvDownload = new TrackCvDownload(new IpApiGeoLocator(), gateway);
