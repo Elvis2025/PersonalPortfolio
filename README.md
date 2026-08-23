@@ -62,6 +62,8 @@ npm run dev
 3. Envía y valida estado loading/success/error.
 4. Verifica llegada del correo a `inelvis16031124@gmail.com`.
 
+Después de una entrega correcta, el visitante recibe una respuesta automática en el idioma activo del portafolio. El correo incluye una presentación de agradecimiento, la foto de perfil incrustada y el CV correspondiente como archivo PDF adjunto.
+
 ## Descarga y notificación del CV
 
 - La aplicación descarga el PDF en inglés o español según el idioma activo.

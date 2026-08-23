@@ -37,7 +37,7 @@ export function ContactPage({ lang }: { lang: Lang }) {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, language: lang })
       });
 
       const payload = (await response.json().catch(() => null)) as { error?: string; message?: string; retryAfterSeconds?: number } | null;

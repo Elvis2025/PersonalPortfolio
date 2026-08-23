@@ -4,9 +4,15 @@ import { CvRepository } from './infrastructure/cv.repository.js'; import { IpApi
 export function createApp() {
   const app = express(); const dist = path.join(projectRoot, 'front-end/dist');
   const origins = environment.origins.length ? environment.origins : ['http://localhost:5173', 'http://127.0.0.1:5173'];
-  const gateway = new ResendGateway(environment.resend.apiKey, environment.resend.from, environment.resend.to);
-  const trackCvDownload = new TrackCvDownload(new IpApiGeoLocator(), gateway);
   const cvs = new CvRepository([...(environment.cvPath ? [path.resolve(environment.cvPath)] : []), path.join(dist, 'cv'), path.join(projectRoot, 'front-end/public/cv')]);
+  const gateway = new ResendGateway(
+    environment.resend.apiKey,
+    environment.resend.from,
+    environment.resend.to,
+    path.join(projectRoot, 'front-end/public/img/profile/EH-IMG.webp'),
+    (language) => cvs.find(language)
+  );
+  const trackCvDownload = new TrackCvDownload(new IpApiGeoLocator(), gateway);
   app.set('trust proxy', 1); app.use(express.json()); app.use(cors({ origin: (origin, cb) => cb(origin && !origins.includes(origin) ? new Error('Not allowed by CORS') : null, true) }));
   if (fs.existsSync(dist)) app.use(express.static(dist));
   app.get('/health', (_req, res) => res.json({ ok: true, service: 'portfolio-back-end' }));
