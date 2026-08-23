@@ -9,7 +9,7 @@ function greeting(date: Date, language: 'en' | 'es') {
   return hour < 12 ? 'Buenos días' : hour < 19 ? 'Buenas tardes' : 'Buenas noches';
 }
 
-export function createContactThankYouEmail(message: ContactMessage, sentAt = new Date()) {
+export function createContactThankYouEmail(message: ContactMessage, sentAt = new Date(), profileImageUrl = 'cid:elvis-profile') {
   const firstName = escapeHtml(message.name.trim().split(/\s+/)[0] || message.name);
   const isEnglish = message.language === 'en';
   const copy = isEnglish ? {
@@ -43,7 +43,7 @@ export function createContactThankYouEmail(message: ContactMessage, sentAt = new
 <table role="presentation" class="email-card" width="100%" cellpadding="0" cellspacing="0" style="max-width:680px;background:#0b1823;border:1px solid #1c3445;border-radius:30px;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.38)">
 <tr><td style="height:6px;background:linear-gradient(90deg,#38bdf8,#eaf8ff,#38bdf8);font-size:0">&nbsp;</td></tr>
 <tr><td class="hero" align="center" style="padding:42px 42px 32px;background:#0d2130">
-<img class="profile-photo" src="cid:elvis-profile" width="128" height="128" alt="Elvis Hernández" style="display:block;width:128px;height:128px;object-fit:cover;border-radius:50%;border:5px solid #f5fbff;box-shadow:0 0 0 5px #38bdf8">
+<img class="profile-photo" src="${escapeHtml(profileImageUrl)}" width="128" height="128" alt="Elvis Hernández" style="display:block;width:128px;height:128px;object-fit:cover;border-radius:50%;border:5px solid #f5fbff;box-shadow:0 0 0 5px #38bdf8">
 <div style="margin-top:26px"><span style="display:inline-block;padding:7px 13px;border-radius:999px;background:#12384d;color:#7dd3fc;font-size:11px;font-weight:800;letter-spacing:1.2px">${copy.eyebrow}</span></div>
 <p style="margin:22px 0 7px;color:#7dd3fc;font-size:16px;font-weight:700">${greeting(sentAt,message.language)}, ${firstName}</p>
 <h1 class="title" style="margin:0;color:#fff;font-size:38px;line-height:1.12;letter-spacing:-1px">${copy.title}</h1>
@@ -55,7 +55,7 @@ export function createContactThankYouEmail(message: ContactMessage, sentAt = new
 <table role="presentation" width="100%" style="margin-top:24px;background:#102b3b;border:1px solid #28506a;border-radius:18px"><tr><td width="52" style="padding:20px 0 20px 20px;font-size:28px">▣</td><td style="padding:20px 18px"><div style="color:#f4fbff;font-size:16px;font-weight:800">${copy.cvTitle}</div><div style="margin-top:5px;color:#92adbb;font-size:13px;line-height:1.55">${copy.cvText}</div></td><td style="padding:20px;color:#7dd3fc;font-size:12px;font-weight:800">PDF</td></tr></table>
 <p style="margin:26px 0 0;color:#d8e7ed;font-size:15px;line-height:1.7">${copy.closing}</p>
 <p style="margin:8px 0 22px;color:#7895a4;font-size:13px;font-style:italic">${copy.signature},</p>
-<table role="presentation" cellpadding="0" cellspacing="0"><tr><td><img src="cid:elvis-profile" width="58" height="58" alt="Elvis Hernández" style="display:block;width:58px;height:58px;object-fit:cover;border-radius:50%;border:2px solid #38bdf8"></td><td class="signature-copy" style="padding-left:15px"><div style="color:#fff;font-size:17px;font-weight:800">Elvis Hernández</div><div style="margin-top:4px;color:#7dd3fc;font-size:13px;font-weight:650">${copy.role}</div></td></tr></table>
+<table role="presentation" cellpadding="0" cellspacing="0"><tr><td><img src="${escapeHtml(profileImageUrl)}" width="58" height="58" alt="Elvis Hernández" style="display:block;width:58px;height:58px;object-fit:cover;border-radius:50%;border:2px solid #38bdf8"></td><td class="signature-copy" style="padding-left:15px"><div style="color:#fff;font-size:17px;font-weight:800">Elvis Hernández</div><div style="margin-top:4px;color:#7dd3fc;font-size:13px;font-weight:650">${copy.role}</div></td></tr></table>
 </td></tr>
 <tr><td class="footer" style="padding:28px 44px;background:#07131d;border-top:1px solid #193344">
 <div style="margin-bottom:15px;color:#718e9d;font-size:10px;font-weight:800;letter-spacing:1.2px">${copy.connect}</div>

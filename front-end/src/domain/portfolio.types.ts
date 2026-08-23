@@ -72,7 +72,6 @@ export type Dictionary = {
     emailLabel: string;
     emailValue: string;
     formTitle: string;
-    formText: string;
     placeholders: {
       name: string;
       email: string;

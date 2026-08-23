@@ -19,9 +19,14 @@ export class SendContactMessage {
   async execute(message: ContactMessage) {
     if (!this.gateway.configured) throw new ServiceUnavailableError('Email service is not configured');
     const delivery = await this.gateway.send(message);
-    const autoReplySent = this.autoReplySender.configured
-      ? await this.autoReplySender.send(message)
-      : false;
-    return { ...delivery, autoReplySent };
+    const autoReplyQueued = this.autoReplySender.configured;
+    if (autoReplyQueued) {
+      setImmediate(() => {
+        void this.autoReplySender.send(message).then((sent) => {
+          if (!sent) console.error('Brevo auto-reply was not accepted. Review the previous API error.');
+        });
+      });
+    }
+    return { ...delivery, autoReplyQueued };
   }
 }

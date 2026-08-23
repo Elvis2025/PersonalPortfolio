@@ -13,5 +13,9 @@ export const environment = {
   origins: clean(process.env.ALLOWED_ORIGINS).split(',').map((x) => x.trim()).filter(Boolean),
   cvPath: clean(process.env.CV_STORAGE_PATH),
   resend: { apiKey: clean(process.env.RESEND_API_KEY), from: clean(process.env.RESEND_FROM), to: clean(process.env.CONTACT_TO_EMAIL) },
-  gmail: { appPassword: clean(process.env.GMAIL_APP_PASSWORD).replace(/\s+/g, '') }
+  brevo: {
+    apiKey: clean(process.env.BREVO_API_KEY),
+    senderEmail: clean(process.env.BREVO_SENDER_EMAIL),
+    profileImageUrl: clean(process.env.PROFILE_IMAGE_URL)
+  }
 };

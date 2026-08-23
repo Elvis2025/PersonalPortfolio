@@ -1,16 +1,16 @@
 import cors from 'cors'; import express from 'express'; import fs from 'node:fs'; import path from 'node:path';
 import { TrackCvDownload } from './application/cv-download.js'; import { SendContactMessage } from './application/email.js'; import { environment, projectRoot } from './config/environment.js';
-import { CvRepository } from './infrastructure/cv.repository.js'; import { GmailAutoReplySender } from './infrastructure/gmail-auto-reply.sender.js'; import { IpApiGeoLocator } from './infrastructure/ipapi.geolocator.js'; import { ResendGateway } from './infrastructure/resend.gateway.js'; import { contactRouter } from './presentation/contact.router.js'; import { getBrowserName, getVisitorIp } from './presentation/request-metadata.js';
+import { BrevoAutoReplySender } from './infrastructure/brevo-auto-reply.sender.js'; import { CvRepository } from './infrastructure/cv.repository.js'; import { IpApiGeoLocator } from './infrastructure/ipapi.geolocator.js'; import { ResendGateway } from './infrastructure/resend.gateway.js'; import { contactRouter } from './presentation/contact.router.js'; import { getBrowserName, getVisitorIp } from './presentation/request-metadata.js';
 export function createApp() {
   const app = express(); const dist = path.join(projectRoot, 'front-end/dist');
   const origins = environment.origins.length ? environment.origins : ['http://localhost:5173', 'http://127.0.0.1:5173'];
   const cvs = new CvRepository([...(environment.cvPath ? [path.resolve(environment.cvPath)] : []), path.join(dist, 'cv'), path.join(projectRoot, 'front-end/public/cv')]);
-  const profileImagePath = path.join(projectRoot, 'front-end/public/img/profile/EH-IMG.webp');
   const gateway = new ResendGateway(environment.resend.apiKey, environment.resend.from, environment.resend.to);
-  const autoReplySender = new GmailAutoReplySender(
-    environment.resend.to,
-    environment.gmail.appPassword,
-    profileImagePath,
+  const profileImageUrl = environment.brevo.profileImageUrl || `${origins[0].replace(/\/$/, '')}/img/profile/EH-IMG.webp`;
+  const autoReplySender = new BrevoAutoReplySender(
+    environment.brevo.apiKey,
+    environment.brevo.senderEmail,
+    profileImageUrl,
     (language) => cvs.find(language)
   );
   const trackCvDownload = new TrackCvDownload(new IpApiGeoLocator(), gateway);
@@ -38,5 +38,5 @@ export function createApp() {
   app.use('/api/contact', contactRouter(new SendContactMessage(gateway, autoReplySender)));
   app.get('/', (_req, res) => fs.existsSync(dist) ? res.sendFile(path.join(dist, 'index.html')) : res.send('portfolio-back-end running'));
   if (fs.existsSync(dist)) app.get('*', (req, res, next) => req.path.startsWith('/api') || req.path === '/health' ? next() : res.sendFile(path.join(dist, 'index.html')));
-  return { app, origins, resendConfigured: gateway.configured, gmailConfigured: autoReplySender.configured };
+  return { app, origins, resendConfigured: gateway.configured, brevoConfigured: autoReplySender.configured };
 }

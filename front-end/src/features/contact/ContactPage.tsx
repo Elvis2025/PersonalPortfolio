@@ -116,7 +116,6 @@ export function ContactPage({ lang }: { lang: Lang }) {
           <div className="col-lg-7">
             <div className="contact-form" data-aos="fade-up" data-aos-delay="300">
               <h3>{text.formTitle}</h3>
-              <p>{text.formText}</p>
 
               <form className="php-email-form" data-aos="fade-up" data-aos-delay="200" onSubmit={onSubmit}>
                 <div className="row gy-4">

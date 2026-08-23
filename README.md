@@ -64,6 +64,8 @@ npm run dev
 
 Después de una entrega correcta, Gmail SMTP envía al visitante una respuesta automática en el idioma activo del portafolio. El correo incluye una presentación de agradecimiento, la foto de perfil incrustada y el CV correspondiente como archivo PDF adjunto.
 
+La respuesta automática se inicia en segundo plano después de confirmar el mensaje enviado al propietario; el formulario no espera a que Gmail complete la entrega. En Railway, SMTP saliente requiere un plan que permita conexiones a los puertos 465/587. Si el log muestra `ETIMEDOUT`, debe habilitarse SMTP en el proveedor de hosting o utilizarse una API HTTPS de correo.
+
 ## Descarga y notificación del CV
 
 - La aplicación descarga el PDF en inglés o español según el idioma activo.
@@ -85,24 +87,28 @@ PORT=4000
 CONTACT_TO_EMAIL=inelvis16031124@gmail.com
 RESEND_API_KEY=re_tu_api_key
 RESEND_FROM="Portfolio <contacto@tu-dominio-verificado.com>"
-GMAIL_APP_PASSWORD=tu_password_de_aplicacion_de_16_caracteres
+BREVO_API_KEY=xkeysib_tu_api_key
+BREVO_SENDER_EMAIL=inelvis16031124@gmail.com
+PROFILE_IMAGE_URL=https://tu-portafolio.com/img/profile/EH-IMG.webp
 ALLOWED_ORIGINS=http://localhost:5173
 ```
 
 El adaptador de infraestructura usa Resend para entregar los mensajes del formulario.
-La respuesta automática al visitante se envía mediante Gmail SMTP usando `CONTACT_TO_EMAIL` como usuario y `GMAIL_APP_PASSWORD` como credencial.
+La respuesta automática al visitante se envía en segundo plano mediante la API HTTPS de Brevo, compatible con Railway sin habilitar puertos SMTP.
 
 Variables requeridas:
 
 - `RESEND_API_KEY`
 - `RESEND_FROM`
 - `CONTACT_TO_EMAIL`
-- `GMAIL_APP_PASSWORD`
+- `BREVO_API_KEY`
+- `BREVO_SENDER_EMAIL`: debe coincidir con un remitente verificado en Brevo.
 
 Variables opcionales:
 
 - `ALLOWED_ORIGINS`: orígenes permitidos separados por comas.
 - `CV_STORAGE_PATH`: ubicación externa de los currículums.
+- `PROFILE_IMAGE_URL`: URL pública de la foto usada en la plantilla; si se omite, se deriva del primer origen permitido.
 
 ## Troubleshooting de envío de correo
 

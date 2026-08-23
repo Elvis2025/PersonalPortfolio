@@ -83,7 +83,6 @@ export const copy: Record<Lang, Dictionary> = {
       emailLabel: 'Email',
       emailValue: 'inelvis16031124@gmail.com',
       formTitle: 'Get In Touch',
-      formText: 'Share a few details and I will respond directly by email.',
       placeholders: {
         name: 'Your Name',
         email: 'Your Email',
@@ -185,7 +184,6 @@ export const copy: Record<Lang, Dictionary> = {
       emailLabel: 'Correo',
       emailValue: 'inelvis16031124@gmail.com',
       formTitle: 'Hablemos',
-      formText: 'Comparte algunos detalles y te responderé directamente por correo.',
       placeholders: {
         name: 'Tu nombre',
         email: 'Tu correo',
