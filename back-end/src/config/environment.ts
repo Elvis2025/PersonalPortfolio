@@ -12,5 +12,6 @@ export const environment = {
   port: Number(process.env.PORT ?? 4000),
   origins: clean(process.env.ALLOWED_ORIGINS).split(',').map((x) => x.trim()).filter(Boolean),
   cvPath: clean(process.env.CV_STORAGE_PATH),
-  resend: { apiKey: clean(process.env.RESEND_API_KEY), from: clean(process.env.RESEND_FROM), to: clean(process.env.CONTACT_TO_EMAIL) }
+  resend: { apiKey: clean(process.env.RESEND_API_KEY), from: clean(process.env.RESEND_FROM), to: clean(process.env.CONTACT_TO_EMAIL) },
+  gmail: { appPassword: clean(process.env.GMAIL_APP_PASSWORD).replace(/\s+/g, '') }
 };

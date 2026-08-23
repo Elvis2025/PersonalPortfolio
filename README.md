@@ -3,7 +3,7 @@
 Este proyecto migró de HTML/CSS/JS + PHP a un monorepo con:
 
 - `front-end/`: React + TypeScript + SCSS
-- `back-end/`: Node.js + Express + TypeScript + Resend
+- `back-end/`: Node.js + Express + TypeScript + Resend + Gmail SMTP
 
 ## Arquitectura
 
@@ -19,7 +19,7 @@ El backend sigue una arquitectura limpia:
 
 - `back-end/src/domain`: reglas y validaciones del negocio.
 - `back-end/src/application`: casos de uso y puertos.
-- `back-end/src/infrastructure`: adaptadores de Resend y archivos.
+- `back-end/src/infrastructure`: adaptadores de Resend, Gmail SMTP y archivos.
 - `back-end/src/presentation`: rutas HTTP.
 - `back-end/src/config`: configuración del entorno.
 - `back-end/src/app.ts`: composición de Express.
@@ -39,7 +39,7 @@ npm install --prefix back-end
 ## Variables de entorno
 
 1. Copia `.env.example` a `.env`.
-2. Completa las credenciales de Resend y el correo destinatario.
+2. Completa las credenciales de Resend, el correo destinatario y la contraseña de aplicación de Gmail.
 
 ```bash
 cp .env.example .env
@@ -62,7 +62,7 @@ npm run dev
 3. Envía y valida estado loading/success/error.
 4. Verifica llegada del correo a `inelvis16031124@gmail.com`.
 
-Después de una entrega correcta, el visitante recibe una respuesta automática en el idioma activo del portafolio. El correo incluye una presentación de agradecimiento, la foto de perfil incrustada y el CV correspondiente como archivo PDF adjunto.
+Después de una entrega correcta, Gmail SMTP envía al visitante una respuesta automática en el idioma activo del portafolio. El correo incluye una presentación de agradecimiento, la foto de perfil incrustada y el CV correspondiente como archivo PDF adjunto.
 
 ## Descarga y notificación del CV
 
@@ -85,16 +85,19 @@ PORT=4000
 CONTACT_TO_EMAIL=inelvis16031124@gmail.com
 RESEND_API_KEY=re_tu_api_key
 RESEND_FROM="Portfolio <contacto@tu-dominio-verificado.com>"
+GMAIL_APP_PASSWORD=tu_password_de_aplicacion_de_16_caracteres
 ALLOWED_ORIGINS=http://localhost:5173
 ```
 
 El adaptador de infraestructura usa Resend para entregar los mensajes del formulario.
+La respuesta automática al visitante se envía mediante Gmail SMTP usando `CONTACT_TO_EMAIL` como usuario y `GMAIL_APP_PASSWORD` como credencial.
 
 Variables requeridas:
 
 - `RESEND_API_KEY`
 - `RESEND_FROM`
 - `CONTACT_TO_EMAIL`
+- `GMAIL_APP_PASSWORD`
 
 Variables opcionales:
 
