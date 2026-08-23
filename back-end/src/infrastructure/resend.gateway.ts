@@ -27,6 +27,7 @@ export class ResendGateway implements EmailGateway, CvDownloadNotifier {
     const result = await this.client.emails.send({ from: this.from, to: this.to, replyTo: message.email, subject: email.subject, html: email.html });
     if (result.error) throw new ServiceUnavailableError(result.error.message);
 
+    let autoReplySent = false;
     try {
       const reply = createContactThankYouEmail(message);
       const cv = this.findCv(message.language);
@@ -46,12 +47,16 @@ export class ResendGateway implements EmailGateway, CvDownloadNotifier {
         html: reply.html,
         attachments
       });
-      if (autoReply.error) console.error('Contact auto-reply failed:', autoReply.error);
+      if (autoReply.error) {
+        console.error('Contact auto-reply rejected by Resend:', JSON.stringify(autoReply.error));
+      } else {
+        autoReplySent = true;
+      }
     } catch (autoReplyError) {
       console.error('Contact auto-reply failed:', autoReplyError);
     }
 
-    return { provider: 'resend', id: result.data?.id ?? null };
+    return { provider: 'resend', id: result.data?.id ?? null, autoReplySent };
   }
 
   async notifyCvDownload(event: CvDownloadEvent) {

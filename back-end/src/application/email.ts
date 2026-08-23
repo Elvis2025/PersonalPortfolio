@@ -1,5 +1,14 @@
 import type { ContactMessage } from '../domain/contact.js';
-export interface EmailGateway { readonly configured: boolean; send(message: ContactMessage): Promise<{ provider: string; id: string | null }> }
+export type EmailDelivery = {
+  provider: string;
+  id: string | null;
+  autoReplySent: boolean;
+};
+
+export interface EmailGateway {
+  readonly configured: boolean;
+  send(message: ContactMessage): Promise<EmailDelivery>;
+}
 export class ServiceUnavailableError extends Error {}
 export class SendContactMessage {
   constructor(private gateway: EmailGateway) {}
