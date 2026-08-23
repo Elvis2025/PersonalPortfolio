@@ -4,6 +4,7 @@ import type { CvDownloadNotifier } from '../application/cv-download.js';
 import { ServiceUnavailableError } from '../application/email.js';
 import type { ContactMessage } from '../domain/contact.js';
 import type { CvDownloadEvent } from '../domain/cv-download.js';
+import { createCvDownloadEmail } from './email-templates/cv-download.template.js';
 
 const escape = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 export class ResendGateway implements EmailGateway, CvDownloadNotifier {
@@ -20,21 +21,12 @@ export class ResendGateway implements EmailGateway, CvDownloadNotifier {
 
   async notifyCvDownload(event: CvDownloadEvent) {
     if (!this.client) throw new ServiceUnavailableError('Resend is not configured');
-    const language = event.language === 'en' ? 'Inglés' : 'Español';
-    const html = `
-      <h2>Tu CV fue descargado</h2>
-      <p>Alguien descargó la versión en <strong>${language}</strong> de tu CV.</p>
-      <ul>
-        <li><strong>Navegador:</strong> ${escape(event.browser)}</li>
-        <li><strong>País:</strong> ${escape(event.country)}</li>
-        <li><strong>Provincia/Región:</strong> ${escape(event.region)}</li>
-        <li><strong>Fecha:</strong> ${escape(event.downloadedAt.toISOString())}</li>
-      </ul>`;
+    const email = createCvDownloadEmail(event);
     const result = await this.client.emails.send({
       from: this.from,
       to: this.to,
-      subject: `[Portfolio] CV descargado (${language})`,
-      html
+      subject: email.subject,
+      html: email.html
     });
     if (result.error) throw new ServiceUnavailableError(result.error.message);
   }
