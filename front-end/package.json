@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:pages": "tsc -b && vite build --base=/PersonalPortfolio/",
     "preview": "vite preview",
     "check:conflicts": "node scripts/check-conflicts.mjs",
     "predev": "npm run check:conflicts",

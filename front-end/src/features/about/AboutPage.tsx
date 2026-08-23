@@ -36,7 +36,7 @@ export function AboutPage({ lang }: { lang: Lang }) {
 
             <div className="col-lg-5" data-aos="zoom-in" data-aos-delay="250">
               <figure className="profile-figure text-center text-lg-end">
-                <img src="/img/profile/elvis-hernandez.webp" alt="Elvis Hernandez" className="img-fluid profile-photo" width="2272" height="1856" loading="lazy" />
+                <img src={`${import.meta.env.BASE_URL}img/profile/elvis-hernandez.webp`} alt="Elvis Hernandez" className="img-fluid profile-photo" width="2272" height="1856" loading="lazy" />
               </figure>
             </div>
           </div>

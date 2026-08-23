@@ -67,7 +67,7 @@ export function ServicesPage({ lang }: { lang: Lang }) {
             </button>
 
             <div className="service-modal-media">
-              <img src="/img/profile/eh-details.webp" alt="Elvis Hernandez details" loading="lazy" />
+              <img src={`${import.meta.env.BASE_URL}img/profile/eh-details.webp`} alt="Elvis Hernandez details" loading="lazy" />
             </div>
 
             <div className="service-modal-content">

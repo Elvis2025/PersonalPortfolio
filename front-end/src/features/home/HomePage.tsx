@@ -95,7 +95,7 @@ export function HomePage({ lang }: { lang: Lang }) {
           <div className="col-lg-6 order-1 order-lg-2">
             <div className="hero-image" data-aos="zoom-in" data-aos-delay="300">
               <div className="image-wrapper">
-                <img src="/img/profile/elvis-hernandez.webp" alt="Elvis Hernandez" className="img-fluid" width="2272" height="1856" fetchPriority="high" />
+                <img src={`${import.meta.env.BASE_URL}img/profile/elvis-hernandez.webp`} alt="Elvis Hernandez" className="img-fluid" width="2272" height="1856" fetchPriority="high" />
                 <div className="floating-elements">
                   <div className="floating-card design" data-aos="fade-left" data-aos-delay="700">
                     <i className="bi bi-palette" />
