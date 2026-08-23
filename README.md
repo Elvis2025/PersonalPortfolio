@@ -90,10 +90,6 @@ RESEND_FROM="Portfolio <contacto@tu-dominio-verificado.com>"
 BREVO_API_KEY=xkeysib_tu_api_key
 BREVO_SENDER_EMAIL=inelvis16031124@gmail.com
 PROFILE_IMAGE_URL=https://tu-portafolio.com/img/profile/EH-IMG.webp
-SOCIAL_TELEGRAM_URL=https://t.me/tu_usuario
-SOCIAL_THREADS_URL=https://www.threads.net/@tu_usuario
-SOCIAL_INSTAGRAM_URL=https://www.instagram.com/tu_usuario
-SOCIAL_X_URL=https://x.com/tu_usuario
 ALLOWED_ORIGINS=http://localhost:5173
 ```
 
@@ -113,7 +109,6 @@ Variables opcionales:
 - `ALLOWED_ORIGINS`: orígenes permitidos separados por comas.
 - `CV_STORAGE_PATH`: ubicación externa de los currículums.
 - `PROFILE_IMAGE_URL`: URL pública de la foto usada en la plantilla; si se omite, se deriva del primer origen permitido.
-- `SOCIAL_TELEGRAM_URL`, `SOCIAL_THREADS_URL`, `SOCIAL_INSTAGRAM_URL` y `SOCIAL_X_URL`: perfiles mostrados en la respuesta automática.
 
 ## Troubleshooting de envío de correo
 

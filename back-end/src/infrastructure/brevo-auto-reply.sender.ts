@@ -4,7 +4,6 @@ import type { ContactMessage } from '../domain/contact.js';
 import { createContactThankYouEmail } from './email-templates/contact-thank-you.template.js';
 
 type CvAttachment = { fileName: string; filePath: string };
-type OptionalSocialLinks = { telegram: string; threads: string; instagram: string; x: string };
 
 export class BrevoAutoReplySender implements ContactAutoReplySender {
   readonly configured: boolean;
@@ -13,7 +12,6 @@ export class BrevoAutoReplySender implements ContactAutoReplySender {
     private apiKey: string,
     private senderEmail: string,
     private profileImageUrl: string,
-    private socialLinks: OptionalSocialLinks,
     private findCv: (language: 'en' | 'es') => CvAttachment | null
   ) {
     this.configured = Boolean(apiKey && senderEmail);
@@ -32,7 +30,7 @@ export class BrevoAutoReplySender implements ContactAutoReplySender {
     }
 
     try {
-      const email = createContactThankYouEmail(message, new Date(), this.profileImageUrl, this.socialLinks);
+      const email = createContactThankYouEmail(message, new Date(), this.profileImageUrl);
       const response = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
         headers: { accept: 'application/json', 'api-key': this.apiKey, 'content-type': 'application/json' },

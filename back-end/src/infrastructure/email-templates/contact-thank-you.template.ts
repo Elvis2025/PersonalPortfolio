@@ -2,8 +2,6 @@ import type { ContactMessage } from '../../domain/contact.js';
 
 const timeZone = 'America/Santo_Domingo';
 const escapeHtml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-type OptionalSocialLinks = { telegram: string; threads: string; instagram: string; x: string };
-
 const socialCell = (url: string, icon: string, padding: string) => {
   const displayUrl = url.replace(/^mailto:/, '').replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
   return `<td class="social-cell" width="50%" style="padding:${padding}"><a class="social-link" href="${escapeHtml(url)}" style="display:block;padding:12px 14px;background:#102837;border-radius:12px;color:#eaf8ff;text-decoration:none;font-size:12px;font-weight:700"><img src="https://img.icons8.com/ios-filled/48/7dd3fc/${icon}.png" width="20" height="20" alt="" style="display:inline-block;width:20px;height:20px;margin-right:9px;vertical-align:middle">${escapeHtml(displayUrl)}</a></td>`;
@@ -15,7 +13,7 @@ function greeting(date: Date, language: 'en' | 'es') {
   return hour < 12 ? 'Buenos días' : hour < 19 ? 'Buenas tardes' : 'Buenas noches';
 }
 
-export function createContactThankYouEmail(message: ContactMessage, sentAt = new Date(), profileImageUrl = 'cid:elvis-profile', optionalSocials: OptionalSocialLinks = { telegram: '', threads: '', instagram: '', x: '' }) {
+export function createContactThankYouEmail(message: ContactMessage, sentAt = new Date(), profileImageUrl = 'cid:elvis-profile') {
   const visitorName = escapeHtml(message.name.trim());
   const isEnglish = message.language === 'en';
   const copy = isEnglish ? {
@@ -39,11 +37,10 @@ export function createContactThankYouEmail(message: ContactMessage, sentAt = new
     { url: 'mailto:inelvis16031124@gmail.com', icon: 'new-post' },
     { url: 'https://linkedin.com/in/elvis-hernandez-075496285', icon: 'linkedin' },
     { url: 'https://github.com/Elvis2025', icon: 'github' },
-    { url: optionalSocials.telegram, icon: 'telegram-app' },
-    { url: optionalSocials.threads, icon: 'threads' },
-    { url: optionalSocials.instagram, icon: 'instagram-new' },
-    { url: optionalSocials.x, icon: 'twitterx--v2' }
-  ].filter((item) => item.url);
+    { url: 'https://www.instagram.com/elvis_h24/', icon: 'instagram-new' },
+    { url: 'https://x.com/elvish24', icon: 'twitterx--v2' },
+    { url: 'https://www.threads.com/@elvis_h24', icon: 'threads' }
+  ];
   const socialRows = Array.from({ length: Math.ceil(socialLinks.length / 2) }, (_, row) => {
     const left = socialLinks[row * 2];
     const right = socialLinks[row * 2 + 1];
