@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type { Lang, NavItem } from '../domain/portfolio.types';
 import { copy } from '../content/portfolio.content';
 import { AboutPage } from '../features/about/AboutPage';
@@ -43,16 +43,16 @@ export function App() {
   const navItems = useMemo<NavItem[]>(() => {
     const labels = copy[lang].nav;
     return [
-      { label: labels[0], to: '/' },
-      { label: labels[1], to: '/about' },
-      { label: labels[2], to: '/resume' },
-      { label: labels[3], to: '/services' },
-      { label: labels[4], to: '/portfolio' },
-      { label: labels[5], to: '/contact' }
+      { label: labels[0], to: '/', icon: 'bi-house-door' },
+      { label: labels[1], to: '/about', icon: 'bi-person' },
+      { label: labels[2], to: '/resume', icon: 'bi-file-earmark-person' },
+      { label: labels[3], to: '/services', icon: 'bi-grid' },
+      { label: labels[4], to: '/portfolio', icon: 'bi-code-square' },
+      { label: labels[5], to: '/contact', icon: 'bi-send' }
     ];
   }, [lang]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const onPopState = () => setPathname(normalizePathname(window.location.pathname));
     const previousScrollRestoration = window.history.scrollRestoration;
     window.history.scrollRestoration = 'manual';
@@ -87,6 +87,7 @@ export function App() {
 
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-aos]'));
+    const timers: number[] = [];
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -94,21 +95,30 @@ export function App() {
           if (!entry.isIntersecting) return;
           const element = entry.target as HTMLElement;
           const delay = Number(element.dataset.aosDelay ?? '0');
-          window.setTimeout(() => {
+          const timer = window.setTimeout(() => {
             element.classList.add('aos-animate');
-          }, delay);
+          }, Math.min(delay, 420));
+          timers.push(timer);
           observer.unobserve(element);
         });
       },
-      { threshold: 0.18, rootMargin: '0px 0px -5% 0px' }
+      { threshold: 0.04, rootMargin: '0px 0px 10% 0px' }
     );
 
     elements.forEach((element) => {
       element.classList.remove('aos-animate');
-      observer.observe(element);
+      const bounds = element.getBoundingClientRect();
+      if (bounds.top < window.innerHeight * 0.94 && bounds.bottom > 0) {
+        element.classList.add('aos-animate', 'aos-initial-visible');
+      } else {
+        observer.observe(element);
+      }
     });
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      timers.forEach((timer) => window.clearTimeout(timer));
+    };
   }, [pathname, lang]);
 
   useEffect(() => {

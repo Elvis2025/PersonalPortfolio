@@ -42,7 +42,8 @@ export function Header({ pathname, navItems, langToggle, onToggleLang }: { pathn
             {navItems.map((item) => (
               <li key={item.to}>
                 <Link to={item.to} className={pathname === item.to ? 'active' : ''} onNavigate={() => setIsMobileNavOpen(false)}>
-                  {item.label}
+                  <i className={`nav-item-icon bi ${item.icon}`} aria-hidden="true" />
+                  <span>{item.label}</span>
                 </Link>
               </li>
             ))}

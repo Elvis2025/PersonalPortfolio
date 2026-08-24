@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { Lang, ServiceItem } from '../../domain/portfolio.types';
 import { servicesContent } from '../../content/portfolio.content';
 import { Link } from '../../shared/navigation/navigation';
@@ -6,13 +7,23 @@ import { Link } from '../../shared/navigation/navigation';
 export function ServicesPage({ lang }: { lang: Lang }) {
   const data = servicesContent[lang];
   const [activeService, setActiveService] = useState<ServiceItem | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const closeModal = () => {
+    if (isClosing) return;
+    setIsClosing(true);
+    window.setTimeout(() => {
+      setActiveService(null);
+      setIsClosing(false);
+    }, 280);
+  };
 
   useEffect(() => {
     if (!activeService) return;
 
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setActiveService(null);
+        closeModal();
       }
     };
 
@@ -59,10 +70,11 @@ export function ServicesPage({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      {activeService ? (
-        <div className="service-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="service-modal-title" onClick={() => setActiveService(null)}>
-          <div className="service-modal" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="service-modal-close" aria-label="Close" onClick={() => setActiveService(null)}>
+      {activeService ? createPortal(
+        <div className="services service-modal-portal">
+          <div className={`service-modal-backdrop ${isClosing ? 'is-closing' : ''}`} role="dialog" aria-modal="true" aria-labelledby="service-modal-title" onClick={closeModal}>
+            <div className="service-modal" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="service-modal-close" aria-label="Close" onClick={closeModal}>
               <i className="bi bi-x-lg" />
             </button>
 
@@ -90,8 +102,9 @@ export function ServicesPage({ lang }: { lang: Lang }) {
                 <i className="bi bi-arrow-right" />
               </Link>
             </div>
+            </div>
           </div>
-        </div>
+        </div>, document.body
       ) : null}
     </section>
   );

@@ -175,6 +175,8 @@ export function ExperienceLayer() {
         <span className="orbital-sphere sphere-three" />
         <span className="orbital-sphere sphere-four" />
         <span className="orbital-sphere sphere-five" />
+        <span className="orbital-sphere sphere-six" />
+        <span className="orbital-sphere sphere-seven" />
       </div>
       <div className="cursor-aura" />
     </div>

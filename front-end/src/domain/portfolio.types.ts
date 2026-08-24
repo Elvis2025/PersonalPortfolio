@@ -15,6 +15,7 @@ export type SkillCategory =
 export type NavItem = {
   label: string;
   to: string;
+  icon: string;
 };
 
 export type AboutContent = {
