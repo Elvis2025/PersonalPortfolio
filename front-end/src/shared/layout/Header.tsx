@@ -50,7 +50,7 @@ export function Header({ pathname, navItems, langToggle, onToggleLang }: { pathn
           </ul>
           <button
             type="button"
-            className={`mobile-nav-toggle d-xl-none bi ${isMobileNavOpen ? 'bi-x' : 'bi-list'}`}
+            className={`mobile-nav-toggle d-lg-none bi ${isMobileNavOpen ? 'bi-x' : 'bi-list'}`}
             aria-label="Toggle navigation"
             aria-controls="navmenu"
             aria-expanded={isMobileNavOpen}
