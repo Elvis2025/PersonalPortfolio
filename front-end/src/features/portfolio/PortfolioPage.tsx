@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { Lang, PortfolioCategory } from '../../domain/portfolio.types';
 import { portfolioContent } from '../../content/portfolio.content';
 import { ProjectPreviewSvg } from './ProjectPreviewSvg';
@@ -7,6 +8,10 @@ export function PortfolioPage({ lang }: { lang: Lang }) {
   const data = portfolioContent[lang];
   const [activeCategory, setActiveCategory] = useState<PortfolioCategory>('all');
   const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
+  const [openPanel, setOpenPanel] = useState<'overview' | 'challenge' | 'solution' | null>('overview');
+  const [isClosing, setIsClosing] = useState(false);
+  const modalRef = useRef<HTMLElement>(null);
+  const modalContentRef = useRef<HTMLDivElement>(null);
 
   const visibleProjects = useMemo(
     () =>
@@ -16,11 +21,21 @@ export function PortfolioPage({ lang }: { lang: Lang }) {
 
   const activeProject = activeProjectIndex !== null ? visibleProjects[activeProjectIndex] : null;
 
+  const closeModal = () => {
+    if (isClosing) return;
+    setIsClosing(true);
+    window.setTimeout(() => {
+      setActiveProjectIndex(null);
+      setIsClosing(false);
+      setOpenPanel('overview');
+    }, 280);
+  };
+
   useEffect(() => {
     if (!activeProject) return;
     const onEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setActiveProjectIndex(null);
+        closeModal();
       }
     };
 
@@ -93,10 +108,11 @@ export function PortfolioPage({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      {activeProject ? (
-        <div className="portfolio-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="portfolio-modal-title" onClick={() => setActiveProjectIndex(null)}>
-          <article className="portfolio-modal" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="portfolio-modal-close" onClick={() => setActiveProjectIndex(null)} aria-label="Close">
+      {activeProject ? createPortal(
+        <div className="portfolio portfolio-modal-portal">
+        <div className={`portfolio-modal-backdrop ${isClosing ? 'is-closing' : ''}`} role="dialog" aria-modal="true" aria-labelledby="portfolio-modal-title" onClick={closeModal}>
+          <article ref={modalRef} className="portfolio-modal" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="portfolio-modal-close" onClick={closeModal} aria-label="Close">
               <i className="bi bi-x-lg" />
             </button>
 
@@ -111,7 +127,7 @@ export function PortfolioPage({ lang }: { lang: Lang }) {
               </div>
             </div>
 
-            <div className="portfolio-details-content">
+            <div ref={modalContentRef} className="portfolio-details-content">
               <div className="project-meta">
                 <div className="badge-wrapper">
                   <span className="project-badge">{activeProject.type}</span>
@@ -140,28 +156,40 @@ export function PortfolioPage({ lang }: { lang: Lang }) {
               <div className="project-overview">
                 <p className="lead">{activeProject.summary}</p>
                 <div className="accordion project-accordion">
-                  <div className="accordion-item">
+                  <div className={`accordion-item ${openPanel === 'overview' ? 'is-open' : ''}`}>
                     <h3 className="accordion-header">
-                      <button className="accordion-button" type="button">{data.overview}</button>
+                      <button className="accordion-button" type="button" aria-expanded={openPanel === 'overview'} aria-controls="project-panel-overview" onClick={() => setOpenPanel((current) => current === 'overview' ? null : 'overview')}>
+                        <span className="accordion-icon"><i className="bi bi-compass" /></span>
+                        <span>{data.overview}</span>
+                        <i className="bi bi-chevron-down accordion-chevron" />
+                      </button>
                     </h3>
-                    <div className="accordion-body">
-                      <p>{activeProject.summary}</p>
+                    <div id="project-panel-overview" className="accordion-panel" aria-hidden={openPanel !== 'overview'}>
+                      <div className="accordion-body"><p>{activeProject.summary}</p></div>
                     </div>
                   </div>
-                  <div className="accordion-item">
+                  <div className={`accordion-item ${openPanel === 'challenge' ? 'is-open' : ''}`}>
                     <h3 className="accordion-header">
-                      <button className="accordion-button" type="button">{data.challengeTitle}</button>
+                      <button className="accordion-button" type="button" aria-expanded={openPanel === 'challenge'} aria-controls="project-panel-challenge" onClick={() => setOpenPanel((current) => current === 'challenge' ? null : 'challenge')}>
+                        <span className="accordion-icon"><i className="bi bi-lightning-charge" /></span>
+                        <span>{data.challengeTitle}</span>
+                        <i className="bi bi-chevron-down accordion-chevron" />
+                      </button>
                     </h3>
-                    <div className="accordion-body">
-                      <p>{activeProject.challenge}</p>
+                    <div id="project-panel-challenge" className="accordion-panel" aria-hidden={openPanel !== 'challenge'}>
+                      <div className="accordion-body"><p>{activeProject.challenge}</p></div>
                     </div>
                   </div>
-                  <div className="accordion-item">
+                  <div className={`accordion-item ${openPanel === 'solution' ? 'is-open' : ''}`}>
                     <h3 className="accordion-header">
-                      <button className="accordion-button" type="button">{data.solutionTitle}</button>
+                      <button className="accordion-button" type="button" aria-expanded={openPanel === 'solution'} aria-controls="project-panel-solution" onClick={() => setOpenPanel((current) => current === 'solution' ? null : 'solution')}>
+                        <span className="accordion-icon"><i className="bi bi-stars" /></span>
+                        <span>{data.solutionTitle}</span>
+                        <i className="bi bi-chevron-down accordion-chevron" />
+                      </button>
                     </h3>
-                    <div className="accordion-body">
-                      <p>{activeProject.solution}</p>
+                    <div id="project-panel-solution" className="accordion-panel" aria-hidden={openPanel !== 'solution'}>
+                      <div className="accordion-body"><p>{activeProject.solution}</p></div>
                     </div>
                   </div>
                 </div>
@@ -180,7 +208,14 @@ export function PortfolioPage({ lang }: { lang: Lang }) {
                 <button
                   type="button"
                   className="btn-next-project"
-                  onClick={() => setActiveProjectIndex((current) => (current === null ? 0 : (current + 1) % visibleProjects.length))}
+                  onClick={() => {
+                    setOpenPanel('overview');
+                    setActiveProjectIndex((current) => (current === null ? 0 : (current + 1) % visibleProjects.length));
+                    window.requestAnimationFrame(() => {
+                      modalRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+                      modalContentRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+                    });
+                  }}
                 >
                   {data.nextProject} <i className="bi bi-arrow-right" />
                 </button>
@@ -188,6 +223,7 @@ export function PortfolioPage({ lang }: { lang: Lang }) {
             </div>
           </article>
         </div>
+        </div>, document.body
       ) : null}
     </section>
   );

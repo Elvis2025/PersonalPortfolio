@@ -8,7 +8,7 @@ export function Footer({ lang }: { lang: Lang }) {
       <div className="container" data-aos="fade-up" data-aos-delay="120">
         <div className="copyright text-center ">
           <p>
-            © <span>{text.copyright}</span> <strong className="px-1 sitename">Elvis Portfolio</strong>
+            © <span>{text.copyright}</span> <strong className="px-1 sitename">Elvis Hernandez</strong>
             <span> {text.allRights}</span>
           </p>
         </div>

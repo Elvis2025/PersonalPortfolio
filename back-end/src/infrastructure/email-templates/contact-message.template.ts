@@ -46,7 +46,7 @@ export function createContactMessageEmail(message: ContactMessage, receivedAt = 
 <div style="margin-top:14px;padding:22px;background:#f0f9ff;border-radius:18px;color:#173244"><div style="color:#39708c;font-size:11px;font-weight:800;letter-spacing:.8px">MENSAJE</div><div style="margin-top:11px;font-size:15px;line-height:1.75;white-space:pre-wrap;word-break:break-word">${content}</div></div>
 <table role="presentation" width="100%" style="margin-top:14px;background:#0a1924;border:1px solid #18394c;border-radius:16px"><tr><td width="48" style="padding:18px 0 18px 18px;font-size:22px">◷</td><td style="padding:18px 14px"><div style="color:#7698aa;font-size:11px;font-weight:800;letter-spacing:.8px">RECIBIDO</div><div style="margin-top:5px;color:#edf8fc;font-size:15px;font-weight:700">${day} · ${time}</div></td><td align="right" style="padding:18px;color:#38bdf8;font-size:12px;font-weight:700">AST · Santo Domingo</td></tr></table>
 <div style="margin-top:26px;padding:16px 18px;border-radius:14px;background:#102535;color:#91adbb;font-size:13px;line-height:1.55">↩ <strong style="color:#dff5ff">Respuesta directa:</strong> usa “Responder” y tu mensaje llegará a ${name}.</div>
-</td></tr><tr><td style="padding:19px 42px;background:#091923;border-top:1px solid #183648;color:#648493;font-size:11px">Notificación automática y privada de Elvis Portfolio · Mensaje enviado desde el formulario web.</td></tr>
+</td></tr><tr><td style="padding:19px 42px;background:#091923;border-top:1px solid #183648;color:#648493;font-size:11px">Notificación automática y privada de Elvis Hernandez · Mensaje enviado desde el formulario web.</td></tr>
 </table></td></tr></table></body></html>`
   };
 }

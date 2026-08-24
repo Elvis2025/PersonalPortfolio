@@ -13,7 +13,7 @@ export class IpApiGeoLocator implements GeoLocator {
     if (!isPublicIp(ipAddress)) return unknownLocation;
     try {
       const response = await fetch(`https://ipapi.co/${encodeURIComponent(ipAddress)}/json/`, {
-        headers: { 'User-Agent': 'ElvisPortfolio/1.0' },
+        headers: { 'User-Agent': 'ElvisHernandez/1.0' },
         signal: AbortSignal.timeout(3000)
       });
       if (!response.ok) return unknownLocation;

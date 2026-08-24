@@ -160,7 +160,7 @@ export function createCvDownloadEmail(event: CvDownloadEvent) {
             </td>
           </tr>
           <tr>
-            <td style="padding:19px 42px;background:#091923;border-top:1px solid #183648;color:#648493;font-size:11px;line-height:1.5;">Notificación automática y privada de Elvis Portfolio · La ubicación se estima mediante la red del visitante.</td>
+            <td style="padding:19px 42px;background:#091923;border-top:1px solid #183648;color:#648493;font-size:11px;line-height:1.5;">Notificación automática y privada de Elvis Hernandez · La ubicación se estima mediante la red del visitante.</td>
           </tr>
         </table>
       </td>
