@@ -5,8 +5,6 @@ import { getSkillDeepDescription, renderSkillIcon } from '../../shared/component
 
 export function SkillsSection({ lang }: { lang: Lang }) {
   const [activeFilter, setActiveFilter] = useState<SkillCategory>('all');
-  const [counts, setCounts] = useState({ frontend: 0, backend: 0, mobile: 0 });
-  const [summaryStarted, setSummaryStarted] = useState(false);
   const sectionText = copy[lang].skillsSection;
   const skills = skillsCatalog[lang];
 
@@ -17,65 +15,15 @@ export function SkillsSection({ lang }: { lang: Lang }) {
   }, [lang]);
 
   useEffect(() => {
-    const summaryElement = document.getElementById('skills-summary');
-    if (!summaryElement) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setSummaryStarted(true);
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-
-    observer.observe(summaryElement);
-    return () => observer.disconnect();
-  }, [lang]);
-
-  useEffect(() => {
-    if (!summaryStarted) return;
-    const timers: number[] = [];
-
-    const animateCounter = (key: 'frontend' | 'backend' | 'mobile', target: number) => {
-      let value = 0;
-      const timer = window.setInterval(() => {
-        value += 1;
-        setCounts((current) => ({ ...current, [key]: Math.min(value, target) }));
-        if (value >= target) window.clearInterval(timer);
-      }, 18);
-      timers.push(timer);
-    };
-
-    animateCounter('frontend', targets.frontend);
-    animateCounter('backend', targets.backend);
-    animateCounter('mobile', targets.mobile);
-
-    return () => timers.forEach((timer) => window.clearInterval(timer));
-  }, [summaryStarted]);
-
-  useEffect(() => {
     const skillElements = Array.from(document.querySelectorAll<HTMLElement>('#skills .skills-animation [data-aos]'));
     if (!skillElements.length) return;
-
-    const timers: number[] = [];
-    let revealOrder = 0;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const element = entry.target as HTMLElement;
-          const currentOrder = revealOrder;
-          revealOrder += 1;
-          const delay = Math.min(currentOrder * 28, 196);
-          const timer = window.setTimeout(() => {
-            element.classList.add('aos-animate');
-          }, delay);
-          timers.push(timer);
+          element.classList.add('aos-animate');
           observer.unobserve(element);
         });
       },
@@ -90,7 +38,6 @@ export function SkillsSection({ lang }: { lang: Lang }) {
 
     return () => {
       observer.disconnect();
-      timers.forEach((timer) => window.clearTimeout(timer));
     };
   }, [activeFilter, lang]);
 
@@ -109,15 +56,15 @@ export function SkillsSection({ lang }: { lang: Lang }) {
         <div className="skills-summary-grid">
           <div className="skills-summary-card" data-aos="zoom-in" data-aos-delay="140">
             <span>{sectionText.summary.frontend}</span>
-            <strong>{counts.frontend}%</strong>
+            <strong>{targets.frontend}%</strong>
           </div>
           <div className="skills-summary-card" data-aos="zoom-in" data-aos-delay="220">
             <span>{sectionText.summary.backend}</span>
-            <strong>{counts.backend}%</strong>
+            <strong>{targets.backend}%</strong>
           </div>
           <div className="skills-summary-card" data-aos="zoom-in" data-aos-delay="300">
             <span>{sectionText.summary.mobile}</span>
-            <strong>{counts.mobile}%</strong>
+            <strong>{targets.mobile}%</strong>
           </div>
         </div>
       </div>

@@ -1,17 +1,9 @@
-import { useEffect, useState } from 'react';
 import type { Lang } from '../../domain/portfolio.types';
 import { resumeContent } from '../../content/portfolio.content';
 import { downloadCv, Link } from '../../shared/navigation/navigation';
 
 export function ResumePage({ lang }: { lang: Lang }) {
   const data = resumeContent[lang];
-  const [showProgress, setShowProgress] = useState(false);
-
-  useEffect(() => {
-    setShowProgress(false);
-    const timer = window.setTimeout(() => setShowProgress(true), 220);
-    return () => window.clearTimeout(timer);
-  }, [lang]);
 
   return (
     <section id="resume" className="resume section">
@@ -91,7 +83,7 @@ export function ResumePage({ lang }: { lang: Lang }) {
                       aria-valuenow={skill.level}
                       aria-valuemin={0}
                       aria-valuemax={100}
-                      style={{ width: showProgress ? `${skill.level}%` : '0%' }}
+                      style={{ width: `${skill.level}%` }}
                     />
                   </div>
                 </div>

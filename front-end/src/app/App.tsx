@@ -35,7 +35,6 @@ function renderPage(pathname: string, lang: Lang) {
 
 export function App() {
   const [pathname, setPathname] = useState(normalizePathname(window.location.pathname));
-  const [isBootLoading, setIsBootLoading] = useState(true);
   const [lang, setLang] = useState<Lang>('en');
   const [showFloatingDownload, setShowFloatingDownload] = useState(true);
   const [showScrollTopFab, setShowScrollTopFab] = useState(false);
@@ -81,24 +80,14 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsBootLoading(false), 650);
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
     const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-aos]'));
-    const timers: number[] = [];
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const element = entry.target as HTMLElement;
-          const delay = Number(element.dataset.aosDelay ?? '0');
-          const timer = window.setTimeout(() => {
-            element.classList.add('aos-animate');
-          }, Math.min(delay, 420));
-          timers.push(timer);
+          element.classList.add('aos-animate');
           observer.unobserve(element);
         });
       },
@@ -117,7 +106,6 @@ export function App() {
 
     return () => {
       observer.disconnect();
-      timers.forEach((timer) => window.clearTimeout(timer));
     };
   }, [pathname, lang]);
 
@@ -176,7 +164,6 @@ export function App() {
   return (
     <>
       <ExperienceLayer />
-      <div id="preloader" className={isBootLoading ? 'preloader-visible' : 'preloader-hidden'} aria-hidden="true" />
       <Header
         pathname={pathname}
         navItems={navItems}

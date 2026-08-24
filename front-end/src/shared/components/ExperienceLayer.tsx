@@ -20,9 +20,10 @@ export function ExperienceLayer() {
     let width = 0;
     let height = 0;
     let dpr = 1;
+    let lastFrameTime = 0;
 
     const seedNodes = () => {
-      const count = reducedMotion ? 18 : compact ? 26 : Math.min(58, Math.round(width / 24));
+      const count = reducedMotion ? 12 : compact ? 18 : Math.min(36, Math.round(width / 42));
       nodes = Array.from({ length: count }, (_, index) => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -35,7 +36,7 @@ export function ExperienceLayer() {
     const resize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      dpr = Math.min(window.devicePixelRatio || 1, compact ? 1 : 1.25);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       canvas.style.width = `${width}px`;
@@ -45,6 +46,15 @@ export function ExperienceLayer() {
     };
 
     const draw = (time = 0) => {
+      if (!reducedMotion && time - lastFrameTime < 33) {
+        frame = window.requestAnimationFrame(draw);
+        return;
+      }
+      lastFrameTime = time;
+      if (document.hidden) {
+        frame = window.requestAnimationFrame(draw);
+        return;
+      }
       context.clearRect(0, 0, width, height);
       const connectionDistance = compact ? 115 : 155;
 
